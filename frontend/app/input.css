@@ -1,0 +1,68 @@
+:root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --colorForBar: #5d1b63;
+    --colorForTextBack: #a074bd;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.logTextbox {
+  background-color: var(--colorForTextBack);
+  color: #f1deef;
+  border: 2px solid var(--colorForBar);
+  border-radius: 10px;
+  margin-bottom: 25px;
+  width: 300px;
+}
+
+.logButton {
+  width: 100px;
+  background-color: var(--colorForTextBack);
+  color: #f1deef;
+  border: 2px solid var(--colorForBar);
+  border-radius: 10px;
+}
+
+.logButton:hover {
+    background-color: var(--colorForTextBack);
+}
+
+.centerDIV {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 25px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: var(--colorForBar);
+  border-radius: 10px;
+}
+
+.top-bar {
+  width: 100%;
+  height: 60px;
+  background-color: var(--colorForBar);
+  color: #f1deef;
+  font-weight: bold;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.textButton {
+    color: #918dfd;
+    font-size: 10px; 
+    margin-left: 10px; 
+}

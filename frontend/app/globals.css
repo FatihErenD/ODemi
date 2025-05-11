@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.textbox {
+  background-color: rgb(148, 93, 185);
+  color: #ffffff;
+  border: 2px solid rgb(87, 9, 80);
+  border-radius: 5px;
+}
