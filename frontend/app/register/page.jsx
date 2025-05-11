@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import '../input.css'    // login.jsx'le aynı stil
+import '../input.css'
+import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 
 export default function Register() {
+  const router = useRouter();
+
   const [username, setUsername] = useState('')
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
@@ -19,7 +22,11 @@ export default function Register() {
 
   return (
     <div>
-      <div className="top-bar">ODemi</div>
+      <div className="top-bar">
+        <button onClick={e => console.log('bastı :)')} > {/* Ana sayfaya döndürecek */}
+          <span className='top-bar-text' > ODemi </span>
+        </button>
+      </div>
       <div className="centerDIV">
         <h1 style={{ color: '#f1deef', fontSize: '30px', fontWeight: 'bold', margin: '20px', textAlign: 'center' }}>
           Kayıt Ol
@@ -55,11 +62,14 @@ export default function Register() {
           </div>
         </form>
 
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-          <span style={{ color: '#f1deef', fontSize: '10px' }}>Zaten hesabın var mı?</span>
-          <Link href="/login">
-            <button className="textButton">Giriş Yap</button>
-          </Link>
+        <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: '10px'
+          }} >
+            <span style={{ color: '#f1deef', fontSize: '10px' }}>Zaten hesabın var mı?</span>
+            <button className="textButton" onClick={e => router.push('./login')} >Giriş Yap</button>
         </div>
       </div>
     </div>

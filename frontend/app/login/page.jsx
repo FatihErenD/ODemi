@@ -1,10 +1,13 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 import '../input.css'
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -16,7 +19,11 @@ export default function LoginPage() {
 
   return (
     <div>
-      <div className="top-bar">ODemi</div>
+      <div className="top-bar">
+        <button onClick={e => console.log('bastı :)')} > {/* Ana sayfaya döndürecek */}
+          <span className='top-bar-text' > ODemi </span>
+        </button>
+      </div>
       <div className="centerDIV">
         <h1
           style={{
@@ -33,7 +40,7 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <input
             type="text"
-            placeholder="Kullanıcı Adı"
+            placeholder="E-posta"
             value={username}
             onChange={e => setUsername(e.target.value)}
             className="logTextbox"
@@ -65,9 +72,7 @@ export default function LoginPage() {
           <span style={{ color: '#f1deef', fontSize: '10px' }}>
             Hesabınız yok mu?
           </span>
-          <Link href="/register">
-            <button className="textButton">Kayıt Ol</button>
-          </Link>
+            <button className="textButton" onClick={e => router.push('./register')} >Kayıt Ol</button>
         </div>
       </div>
     </div>

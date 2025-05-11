@@ -3,6 +3,7 @@
     --foreground: #ededed;
     --colorForBar: #5d1b63;
     --colorForTextBack: #a074bd;
+    --textColor: #f1deef;
 }
 
 body {
@@ -11,25 +12,86 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+@keyframes glow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.top-bar {
+  width: 100%;
+  height: 60px;
+  background-color: var(--colorForBar);
+  color: var(--textColor);
+  font-weight: bold;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.top-bar-text {
+  position: relative;
+  display: inline-block;
+  color: var(--textColor);
+  font-weight: bold;
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #f0f 50%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shimmer 10s linear infinite;
+}
+
 .logTextbox {
   background-color: var(--colorForTextBack);
-  color: #f1deef;
+  color: var(--textColor);
   border: 2px solid var(--colorForBar);
   border-radius: 10px;
   margin-bottom: 25px;
   width: 300px;
 }
 
+.logTextbox:hover {
+    border-color: var(--textColor);
+}
+
 .logButton {
   width: 100px;
   background-color: var(--colorForTextBack);
-  color: #f1deef;
+  color: var(--textColor);
   border: 2px solid var(--colorForBar);
   border-radius: 10px;
 }
 
 .logButton:hover {
-    background-color: var(--colorForTextBack);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    background-color: #ad8fc0;
+    border-color: var(--textColor);
+    color: var(--colorForBar);
 }
 
 .centerDIV {
@@ -44,25 +106,12 @@ body {
   border-radius: 10px;
 }
 
-.top-bar {
-  width: 100%;
-  height: 60px;
-  background-color: var(--colorForBar);
-  color: #f1deef;
-  font-weight: bold;
-  font-size: 30px;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
 .textButton {
     color: #918dfd;
     font-size: 10px; 
-    margin-left: 10px; 
+    margin-left: 5px; 
+}
+
+.textButton:hover {
+    color: #c1bffa;
 }
