@@ -1,69 +1,50 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useRef, useState, useEffect } from 'react'
+import TopBar from '../components/TopBar';
 import '../input.css'
 
 export default function WatchPage() {
   const router = useRouter();
-  const [video, setVideo] = useState(null);
+  const searchParams = useSearchParams()
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const videoRef = useRef(null);
 
-  // Video listesi
   const videoList = [
     {
       id: '1',
       title: 'JavaScript Temelleri',
-      url: '/videos/javascript_intro.mp4',
+      url: '/videos/react1.mp4',
       description: 'Bu derste JavaScript\'in temel sözdizimi, değişkenler ve veri tipleri örneklerle ele alınır.'
     },
     {
       id: '2',
       title: 'Fonksiyonlar',
-      url: '/videos/functions.mp4',
+      url: '/videos/react1.mp4',
       description: 'Bu derste fonksiyonların tanımı ve kullanımı anlatılır.'
     },
   ];
 
+  const video = videoList.find(v => v.id === searchParams.get("id"));
+
   useEffect(() => {
-    // `router.isReady` ile `query`'nin hazır olup olmadığını kontrol ediyoruz
-    if (!router.isReady) return; // router henüz hazır değilse bekle
+        const token = localStorage.getItem('token');
+        setIsAuthenticated(token);
+      }, []);
 
-    const { id } = router.query;
-    console.log('Router query id:', id); // Test amaçlı id'yi logla
+  const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+        router.push('/login');
+    };
 
-    if (id) {
-      const foundVideo = videoList.find(v => v.id === id);
-      if (foundVideo) {
-        console.log('Found video:', foundVideo); // Test amaçlı video bilgilerini logla
-        setVideo(foundVideo);
-      } else {
-        console.log('Video bulunamadı!'); // Eğer video bulunmazsa logla
-      }
-    }
-  }, [router.isReady, router.query]); // router.query'yi izliyoruz
-
-  const handleFullscreen = () => {
-    if (videoRef.current?.requestFullscreen) {
-      videoRef.current.requestFullscreen();
-    }
-  };
-
-  // Eğer video verisi henüz gelmediyse (null) 'yükleniyor' mesajı göster
   if (!video) return <div>Video yükleniyor...</div>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', paddingTop: '60px' }}>
-      {/* Üst Bar */}
-      <div className="top-bar">
-        <button onClick={() => router.push('/')}>
-          <span className="top-bar-text">ODemi</span>
-        </button>
-      </div>
-
-      {/* İçerik Alanı */}
+      <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
       <div style={{ display: 'flex', flex: 1 }}>
-        {/* Sol taraf - Video */}
         <div style={{ flex: 3, padding: '40px', paddingTop: '20px' }}>
           <h1 style={{ color: 'var(--textColor)', fontSize: '24px', marginBottom: '10px' }}>
             {video.title}
@@ -83,20 +64,6 @@ export default function WatchPage() {
               <source src={video.url} type="video/mp4" />
               Tarayıcınız video etiketini desteklemiyor.
             </video>
-            <button
-              onClick={handleFullscreen}
-              className="logButton"
-              style={{
-                position: 'absolute',
-                bottom: '10px',
-                right: '10px',
-                width: 'auto',
-                padding: '6px 12px',
-                fontSize: '12px'
-              }}
-            >
-              Tam Ekran
-            </button>
           </div>
 
           <div style={{ marginTop: '30px', color: 'var(--textColor)' }}>

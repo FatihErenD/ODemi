@@ -36,6 +36,15 @@ body {
   left: 0;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.top-bar.hide {
+  transform: translateY(-100%);
+}
+
+.top-bar.show {
+  transform: translateY(0);
 }
 
 @keyframes shimmer {
@@ -54,9 +63,9 @@ body {
   font-weight: bold;
   background: linear-gradient(
     90deg,
-    #ffffff 0%,
+    #0a0a0a 0%,
     #f0f 50%,
-    #ffffff 100%
+    #0a0a0a 100%
   );
   background-size: 200% auto;
   background-clip: text;

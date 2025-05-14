@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react'
+import TopBar from '../components/TopBar';
 import '../input.css'
 
 export default function Home() {
@@ -27,26 +28,7 @@ export default function Home() {
 
     return (
         <div>
-        <div className="top-bar">
-            <button onClick={e => console.log('bastı :)')}
-                  style={{ cursor: 'pointer' }}>
-                <span className="top-bar-text">ODemi</span>
-            </button>
-            <div style={{ marginLeft: "auto", marginRight: "50px", display: "flex", gap: "10px" }}>
-                {!isAuthenticated ?  (
-                <>
-                    <button className="signIn-OutButton" onClick={() => router.push('./login')}   style={{ cursor: 'pointer' }}>Giriş Yap</button>
-                    <button className="signIn-OutButton" onClick={() => router.push('./register')}   style={{ cursor: 'pointer' }}>Kayıt Ol</button>
-                </>
-                ) : (
-                    <>
-                    <button onClick={() => router.push('/profile')}   style={{ cursor: 'pointer' }}>Profil</button>
-                    <button onClick={handleLogout}   style={{ cursor: 'pointer' }}>Çıkış Yap</button>
-                    </>
-                )
-                }
-            </div>  
-        </div>
+         <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
         <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
@@ -57,7 +39,7 @@ export default function Home() {
         {videos.map(video => (
           <div
             key={video.id}
-            onClick={() => router.push(`/watch?id=${video.id}`)}
+            onClick={() =>  router.push(`/watch?id=${video.id}`)}
             style={{
               cursor: 'pointer',
               border: '1px solid #ccc',

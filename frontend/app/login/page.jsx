@@ -45,7 +45,12 @@ export default function LoginPage() {
 
   return (
     <div>
-     
+     <div className="top-bar">
+        <button onClick={e => router.push('./home')}
+            style={{ cursor: 'pointer' }}>
+          <span className='top-bar-text' > ODemi </span>
+        </button>
+      </div>
       <div className="centerDIV">
         <h1
           style={{
@@ -102,6 +107,7 @@ export default function LoginPage() {
           <span style={{ color: '#f1deef', fontSize: '10px' }}>
             Hesabınız yok mu?
           </span>
+          <button className="textButton" onClick={e => router.push('./register')} >Kayıt Ol</button>
 
         </div>
       </div>
