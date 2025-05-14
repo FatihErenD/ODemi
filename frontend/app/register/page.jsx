@@ -7,21 +7,22 @@ import { useRouter } from 'next/navigation';
 export default function Register() {
   const router = useRouter();
 
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
 
   
   const handleRegister = async e => {
+    console.log("sa aga")
     e.preventDefault()
-    setError('')
-    setSuccess('')
 
     try {
       const res = await fetch('http://localhost:8080/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, email, password }),
       })
 
       const data = await res.json()
@@ -49,7 +50,7 @@ export default function Register() {
           Kayıt Ol
         </h1>
 
-        <form onSubmit={handleRegister}>
+        <form onSubmit={handleRegister} >
           <input
             type="text"
             placeholder="Kullanıcı Adı"
@@ -76,7 +77,7 @@ export default function Register() {
           <br/>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button type="submit" className="logButton"
-              style={{ cursor: 'pointer' }}>Kayıt Ol</button>
+              style={{ cursor: 'pointer' }} onClick={handleRegister} >Kayıt Ol</button>
           </div>
         </form>
 

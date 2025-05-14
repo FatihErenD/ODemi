@@ -11,15 +11,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
     private AuthenticationManager authManager;
     private JwtUtil jwtUtil;
@@ -52,7 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
-    record RegisterRequest(String username, String password) {}
+    record RegisterRequest(String username, String email, String password) {}
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
@@ -65,8 +63,9 @@ public class AuthController {
 
         User newUser = new User();
         newUser.setUsername(req.username());
+        newUser.setEmail(req.email());
         newUser.setPassword(passwordEncoder.encode(req.password()));
-        newUser.setRole("ROLE_USER");
+        newUser.setRole("USER");
 
         userRepository.save(newUser);
 
