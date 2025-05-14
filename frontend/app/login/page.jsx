@@ -73,6 +73,11 @@ export default function LoginPage() {
             Hesabınız yok mu?
           </span>
             <button className="textButton" onClick={e => router.push('./register')} >Kayıt Ol</button>
+
+          <span style={{ color: '#f1deef', fontSize: '10px' }}>
+            Video İzleme Sekmesi
+          </span>
+            <button className="textButton" onClick={e => router.push('./watch')} >Video İzleme Sekmesi</button>
         </div>
       </div>
     </div>
