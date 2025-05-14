@@ -11,14 +11,31 @@ export default function Register() {
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
 
-  const handleRegister = e => {
+  
+  const handleRegister = async e => {
     e.preventDefault()
-    console.log({ username, email, password })
-    // fetch('/api/register', { ... }) vs.
-    // yönlendirme:
-    // window.location.href = '/login'
-  }
+    setError('')
+    setSuccess('')
 
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'Kayıt başarısız.')
+      }
+
+      setSuccess(data.message)
+      // opsiyonel: kayıt sonrası otomatik /login sayfasına yönlendir
+      setTimeout(() => router.push('/login'), 1500)
+    } catch (err) {
+      setError(err.message)
+    }
+  }
   return (
     <div>
       <div className="top-bar">

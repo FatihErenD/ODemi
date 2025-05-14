@@ -36,7 +36,7 @@ export default function LoginPage() {
       // İsteğe bağlı: axios veya fetch wrapper’ınız varsa buraya interceptor ekleyin
 
       // Başarılıysa dashboard’a geç
-      router.push('/dashboard')
+      router.push('/')
     } catch (err) {
       console.error(err)
       setError(err.message || 'Sunucu hatası.')
