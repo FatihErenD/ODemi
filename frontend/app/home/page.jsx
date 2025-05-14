@@ -28,19 +28,20 @@ export default function Home() {
     return (
         <div>
         <div className="top-bar">
-            <button onClick={e => console.log('bastı :)')}>
+            <button onClick={e => console.log('bastı :)')}
+                  style={{ cursor: 'pointer' }}>
                 <span className="top-bar-text">ODemi</span>
             </button>
             <div style={{ marginLeft: "auto", marginRight: "50px", display: "flex", gap: "10px" }}>
                 {!isAuthenticated ?  (
                 <>
-                    <button className="signIn-OutButton" onClick={() => router.push('./login')} >Giriş Yap</button>
-                    <button className="signIn-OutButton" onClick={() => router.push('./register')}>Kayıt Ol</button>
+                    <button className="signIn-OutButton" onClick={() => router.push('./login')}   style={{ cursor: 'pointer' }}>Giriş Yap</button>
+                    <button className="signIn-OutButton" onClick={() => router.push('./register')}   style={{ cursor: 'pointer' }}>Kayıt Ol</button>
                 </>
                 ) : (
                     <>
-                    <button onClick={() => router.push('/profile')}>Profil</button>
-                    <button onClick={handleLogout}>Çıkış Yap</button>
+                    <button onClick={() => router.push('/profile')}   style={{ cursor: 'pointer' }}>Profil</button>
+                    <button onClick={handleLogout}   style={{ cursor: 'pointer' }}>Çıkış Yap</button>
                     </>
                 )
                 }

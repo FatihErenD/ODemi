@@ -19,7 +19,8 @@ export default function LoginPage() {
   return (
     <div>
       <div className="top-bar">
-        <button onClick={e => router.push('./home')} >
+        <button onClick={e => router.push('./home')}
+              style={{ cursor: 'pointer' }}>
           <span className='top-bar-text' > ODemi </span>
         </button>
       </div>
@@ -54,7 +55,8 @@ export default function LoginPage() {
           />
           <br />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button type="submit" className="logButton">
+            <button type="submit" className="logButton"
+              style={{ cursor: 'pointer' }}>
               Giriş
             </button>
           </div>
@@ -71,12 +73,14 @@ export default function LoginPage() {
           <span style={{ color: '#f1deef', fontSize: '10px' }}>
             Hesabınız yok mu?
           </span>
-            <button className="textButton" onClick={e => router.push('./register')} >Kayıt Ol</button>
+            <button className="textButton" onClick={e => router.push('./register')}
+                  style={{ cursor: 'pointer' }}>Kayıt Ol</button>
 
           <span style={{ color: '#f1deef', fontSize: '10px' }}>
             Video İzleme Sekmesi
           </span>
-            <button className="textButton" onClick={e => router.push('./watch')} >Video İzleme Sekmesi</button>
+            <button className="textButton" onClick={e => router.push('./watch')}
+                  style={{ cursor: 'pointer' }}>Video İzleme Sekmesi</button>
         </div>
       </div>
     </div>
