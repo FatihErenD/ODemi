@@ -115,3 +115,17 @@ body {
 .textButton:hover {
     color: #c1bffa;
 }
+
+.signIn-OutButton {
+  padding: 8px 12px;
+  background-color: var(--colorForTextBack);
+  color: var(--colorForBar);
+  border: 2px solid #2b2b2b;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.signIn-OutButton:hover {
+  background-color: #a886bf;
+  color: #3c0541;
+}

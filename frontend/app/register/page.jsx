@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import '../input.css'
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'
 
 export default function Register() {
   const router = useRouter();
@@ -23,7 +22,8 @@ export default function Register() {
   return (
     <div>
       <div className="top-bar">
-        <button onClick={e => console.log('bastı :)')} > {/* Ana sayfaya döndürecek */}
+        <button onClick={e => router.push('./home')}
+            style={{ cursor: 'pointer' }}>
           <span className='top-bar-text' > ODemi </span>
         </button>
       </div>
@@ -58,7 +58,8 @@ export default function Register() {
           />
           <br/>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button type="submit" className="logButton">Kayıt Ol</button>
+            <button type="submit" className="logButton"
+              style={{ cursor: 'pointer' }}>Kayıt Ol</button>
           </div>
         </form>
 
@@ -69,7 +70,8 @@ export default function Register() {
             marginTop: '10px'
           }} >
             <span style={{ color: '#f1deef', fontSize: '10px' }}>Zaten hesabın var mı?</span>
-            <button className="textButton" onClick={e => router.push('./login')} >Giriş Yap</button>
+            <button className="textButton" onClick={e => router.push('./login')}
+                  style={{ cursor: 'pointer' }}>Giriş Yap</button>
         </div>
       </div>
     </div>

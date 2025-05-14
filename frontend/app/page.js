@@ -1,10 +1,10 @@
-import Login from './login/page'
+import Home from './home/page'
 
-export default function Home() {
+export default function App() {
 
   return (
     <div>
-      <Login></Login>
+      <Home></Home>
     </div>
   );
 }
