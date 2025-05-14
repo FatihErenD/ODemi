@@ -1,23 +1,59 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import '../input.css'
-import '../globals.css'
 
 export default function WatchPage() {
-  const router = useRouter()
-  const videoRef = useRef(null)
+  const router = useRouter();
+  const [video, setVideo] = useState(null);
+  const videoRef = useRef(null);
+
+  // Video listesi
+  const videoList = [
+    {
+      id: '1',
+      title: 'JavaScript Temelleri',
+      url: '/videos/javascript_intro.mp4',
+      description: 'Bu derste JavaScript\'in temel sözdizimi, değişkenler ve veri tipleri örneklerle ele alınır.'
+    },
+    {
+      id: '2',
+      title: 'Fonksiyonlar',
+      url: '/videos/functions.mp4',
+      description: 'Bu derste fonksiyonların tanımı ve kullanımı anlatılır.'
+    },
+  ];
+
+  useEffect(() => {
+    // `router.isReady` ile `query`'nin hazır olup olmadığını kontrol ediyoruz
+    if (!router.isReady) return; // router henüz hazır değilse bekle
+
+    const { id } = router.query;
+    console.log('Router query id:', id); // Test amaçlı id'yi logla
+
+    if (id) {
+      const foundVideo = videoList.find(v => v.id === id);
+      if (foundVideo) {
+        console.log('Found video:', foundVideo); // Test amaçlı video bilgilerini logla
+        setVideo(foundVideo);
+      } else {
+        console.log('Video bulunamadı!'); // Eğer video bulunmazsa logla
+      }
+    }
+  }, [router.isReady, router.query]); // router.query'yi izliyoruz
 
   const handleFullscreen = () => {
-    if (videoRef.current.requestFullscreen) {
-      videoRef.current.requestFullscreen()
+    if (videoRef.current?.requestFullscreen) {
+      videoRef.current.requestFullscreen();
     }
-  }
+  };
+
+  // Eğer video verisi henüz gelmediyse (null) 'yükleniyor' mesajı göster
+  if (!video) return <div>Video yükleniyor...</div>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', paddingTop: '60px' }}>
-
       {/* Üst Bar */}
       <div className="top-bar">
         <button onClick={() => router.push('/')}>
@@ -27,11 +63,10 @@ export default function WatchPage() {
 
       {/* İçerik Alanı */}
       <div style={{ display: 'flex', flex: 1 }}>
-
-        {/* Sol taraf - Video ve içerik */}
+        {/* Sol taraf - Video */}
         <div style={{ flex: 3, padding: '40px', paddingTop: '20px' }}>
           <h1 style={{ color: 'var(--textColor)', fontSize: '24px', marginBottom: '10px' }}>
-            JavaScript Temelleri
+            {video.title}
           </h1>
 
           <div style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden' }}>
@@ -45,7 +80,7 @@ export default function WatchPage() {
                 maxHeight: '500px'
               }}
             >
-              <source src="/videos/javascript_intro.mp4" type="video/mp4" />
+              <source src={video.url} type="video/mp4" />
               Tarayıcınız video etiketini desteklemiyor.
             </video>
             <button
@@ -66,10 +101,7 @@ export default function WatchPage() {
 
           <div style={{ marginTop: '30px', color: 'var(--textColor)' }}>
             <h3>Ders Açıklaması</h3>
-            <p style={{ fontSize: '14px', lineHeight: '1.5' }}>
-              Bu derste JavaScript'in temel sözdizimi, değişkenler ve veri tipleri örneklerle ele alınır.
-              Kodlarla birlikte mantıksal yapı anlatılır.
-            </p>
+            <p style={{ fontSize: '14px', lineHeight: '1.5' }}>{video.description}</p>
           </div>
 
           <div style={{ marginTop: '40px', color: 'var(--textColor)' }}>
@@ -86,7 +118,7 @@ export default function WatchPage() {
           </div>
         </div>
 
-        {/* Sağ taraf - Önerilen Dersler */}
+        {/* Sağ taraf - Diğer videolar */}
         <div
           style={{
             flex: 1,
@@ -98,11 +130,11 @@ export default function WatchPage() {
           }}
         >
           <h3 style={{ color: 'var(--textColor)', marginBottom: '15px' }}>Diğer Dersler</h3>
-          {['Değişkenler', 'Fonksiyonlar', 'Koşullar', 'Döngüler', 'Array Metodları'].map((title, i) => (
+          {videoList.filter(v => v.id !== video.id).map((v, i) => (
             <div
-              key={i}
+              key={v.id}
               className="logButton"
-              onClick={() => console.log(`${title} tıklandı`)}
+              onClick={() => router.push(`/watch?id=${v.id}`)}
               style={{
                 marginBottom: '12px',
                 cursor: 'pointer',
@@ -110,11 +142,11 @@ export default function WatchPage() {
                 fontSize: '13px'
               }}
             >
-              {title}
+              {v.title}
             </div>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

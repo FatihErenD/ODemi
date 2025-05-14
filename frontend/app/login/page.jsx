@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 import '../input.css'
@@ -20,7 +19,7 @@ export default function LoginPage() {
   return (
     <div>
       <div className="top-bar">
-        <button onClick={e => console.log('bastı :)')} > {/* Ana sayfaya döndürecek */}
+        <button onClick={e => router.push('./home')} >
           <span className='top-bar-text' > ODemi </span>
         </button>
       </div>

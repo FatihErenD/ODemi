@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import '../input.css'
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'
 
 export default function Register() {
   const router = useRouter();
@@ -23,7 +22,7 @@ export default function Register() {
   return (
     <div>
       <div className="top-bar">
-        <button onClick={e => console.log('bastı :)')} > {/* Ana sayfaya döndürecek */}
+        <button onClick={e => router.push('./home')} >
           <span className='top-bar-text' > ODemi </span>
         </button>
       </div>
