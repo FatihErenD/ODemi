@@ -1,29 +1,51 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 import '../input.css'
 
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-  const handleLogin = e => {
+  const handleLogin = async e => {
     e.preventDefault()
-    console.log({ username, password })
-    // buraya fetch/post vs. ekleyebilirsin
+    setError('')
+
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+
+      if (!res.ok) {
+        // 401 vs. 400 vs. 500 ayrımı yapmak isterseniz res.status’a bakabilirsiniz
+        throw new Error('Kimlik doğrulama başarısız.')
+      }
+
+      const { token } = await res.json()
+
+      // JWT’yi localStorage’a kaydet
+      localStorage.setItem('token', token)
+
+      // İsteğe bağlı: axios veya fetch wrapper’ınız varsa buraya interceptor ekleyin
+
+      // Başarılıysa dashboard’a geç
+      router.push('/dashboard')
+    } catch (err) {
+      console.error(err)
+      setError(err.message || 'Sunucu hatası.')
+    }
   }
 
   return (
     <div>
-      <div className="top-bar">
-        <button onClick={e => router.push('./home')}
-              style={{ cursor: 'pointer' }}>
-          <span className='top-bar-text' > ODemi </span>
-        </button>
-      </div>
+     
       <div className="centerDIV">
         <h1
           style={{
@@ -54,6 +76,13 @@ export default function LoginPage() {
             className="logTextbox"
           />
           <br />
+
+          {error && (
+            <div style={{ color: 'salmon', marginBottom: '10px', textAlign: 'center' }}>
+              {error}
+            </div>
+          )}
+
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <button type="submit" className="logButton"
               style={{ cursor: 'pointer' }}>
@@ -73,14 +102,7 @@ export default function LoginPage() {
           <span style={{ color: '#f1deef', fontSize: '10px' }}>
             Hesabınız yok mu?
           </span>
-            <button className="textButton" onClick={e => router.push('./register')}
-                  style={{ cursor: 'pointer' }}>Kayıt Ol</button>
 
-          <span style={{ color: '#f1deef', fontSize: '10px' }}>
-            Video İzleme Sekmesi
-          </span>
-            <button className="textButton" onClick={e => router.push('./watch')}
-                  style={{ cursor: 'pointer' }}>Video İzleme Sekmesi</button>
         </div>
       </div>
     </div>
