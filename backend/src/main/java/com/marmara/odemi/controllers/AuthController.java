@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -73,4 +75,39 @@ public class AuthController {
                 .status(HttpStatus.CREATED)
                 .body(Map.of("message", "Kayıt başarılı. Giriş yapabilirsiniz"));
     }
+
+    public static record ChangePasswordRequest(
+            String oldPassword,
+            String newPassword
+    ) {}
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest req, Principal principal) {
+        // 3. Kullanıcıyı veritabanından çek
+        String username = principal.getName();
+        User user = (User) userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("Kullanıcı bulunamadı"));
+
+        // 4. Mevcut şifre kontrolü
+        if (passwordEncoder.matches(req.oldPassword(), user.getPassword())) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Şifre zaten aynı."));
+        }
+
+        user.setPassword(passwordEncoder.encode(req.newPassword));
+        userRepository.save(user);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(Map.of("message", "Şifre başarıyla değişti"));
+    }
+
+    // Sadece kullanıcı adı isterseniz
+    @GetMapping("/me")
+    public String whoAmI(Principal principal) {
+        return principal.getName();
+    }
+
 }

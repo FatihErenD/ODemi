@@ -31,11 +31,13 @@ export default function LoginPage() {
       const { token } = await res.json()
 
       // JWT’yi localStorage’a kaydet
+
       localStorage.setItem('token', token)
 
       // İsteğe bağlı: axios veya fetch wrapper’ınız varsa buraya interceptor ekleyin
 
       // Başarılıysa dashboard’a geç
+      localStorage.setItem('username', username)
       router.push('/')
     } catch (err) {
       console.error(err)
