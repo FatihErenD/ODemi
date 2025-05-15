@@ -1,5 +1,5 @@
 :root {
-    --background: #0a0a0a;
+    --background: #121212;
     --foreground: #ededed;
     --colorForBar: #5d1b63;
     --colorForTextBack: #a074bd;
@@ -12,6 +12,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* -------- */
+/* Efektler */
+/* -------- */
+
 @keyframes glow {
   0% {
     background-position: -200% 0;
@@ -19,32 +23,6 @@ body {
   100% {
     background-position: 200% 0;
   }
-}
-
-.top-bar {
-  width: 100%;
-  height: 60px;
-  background-color: var(--colorForBar);
-  color: var(--textColor);
-  font-weight: bold;
-  font-size: 30px;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-}
-
-.top-bar.hide {
-  transform: translateY(-100%);
-}
-
-.top-bar.show {
-  transform: translateY(0);
 }
 
 @keyframes shimmer {
@@ -56,23 +34,9 @@ body {
   }
 }
 
-.top-bar-text {
-  position: relative;
-  display: inline-block;
-  color: var(--textColor);
-  font-weight: bold;
-  background: linear-gradient(
-    90deg,
-    #0a0a0a 0%,
-    #f0f 50%,
-    #0a0a0a 100%
-  );
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: shimmer 10s linear infinite;
-}
+/* ----- */
+/* Pages */
+/* ----- */
 
 .logTextbox {
   background-color: var(--colorForTextBack);
@@ -93,6 +57,7 @@ body {
   color: var(--textColor);
   border: 2px solid var(--colorForBar);
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .logButton:hover {
@@ -132,9 +97,124 @@ body {
   border: 2px solid #2b2b2b;
   border-radius: 5px;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .signIn-OutButton:hover {
   background-color: #a886bf;
   color: #3c0541;
+}
+
+/* ------------- */
+/* Component CSS */
+/* ------------- */
+
+/* TopBar */
+
+.top-bar {
+  width: 100%;
+  height: 60px;
+  background-color: var(--colorForBar);
+  color: var(--textColor);
+  font-weight: bold;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.top-bar.hide {
+  transform: translateY(-100%);
+}
+
+.top-bar.show {
+  transform: translateY(0);
+}
+
+.top-bar-text {
+  position: relative;
+  display: inline-block;
+  color: var(--textColor);
+  font-weight: bold;
+  background: linear-gradient(
+    90deg,
+    #0a0a0a 0%,
+    #f0f 50%,
+    #0a0a0a 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shimmer 15s linear infinite;
+  cursor: pointer;
+}
+
+/* VidThumbnail */
+
+.vid-thumb-div {
+  cursor: pointer;
+  border-radius: 3px;
+  overflow: hidden;
+  
+  background-color: transparent;
+}
+
+.vid-thumb-img {
+  width: 100%; 
+  height: auto; 
+  display: block;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.4s ease;
+}
+
+.vid-thumb-img:hover {
+  transform: scale(1.05);
+}
+
+.vid-thumb-text {
+  padding-top: 2px;
+  padding-left: 2px;
+  text-align: left;
+}
+
+/* RecCourses */
+
+.slider-container {
+  width: 90vw;
+  height: 60vh;
+  margin: 0 auto;
+  margin-top: 80px;
+  margin-bottom: 0px;
+  position: relative;
+  background-color: #282828;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100%;
+  color:#121212;
+  margin-top: 20px;
+  height: 50vh;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  border: 1px solid #ccc;
+}
+
+.slick-slider,
+.slick-list,
+.slick-track {
+  margin: 0 auto;
+  width: 95%;
+  height: 95%;
 }

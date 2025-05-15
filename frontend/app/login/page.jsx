@@ -91,8 +91,7 @@ export default function LoginPage() {
           )}
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button type="submit" className="logButton"
-              style={{ cursor: 'pointer' }}>
+            <button type="submit" className="logButton" >
               Giriş
             </button>
           </div>
