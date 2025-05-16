@@ -32,10 +32,14 @@ export default function ProfilePage() {
       return
     }
 
+    const token = localStorage.getItem('token')
+
     try {
       const res = await fetch('http://localhost:8080/api/auth/change-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({currentPassword, newPassword})
       })
 
