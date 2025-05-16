@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -77,20 +78,22 @@ public class AuthController {
     }
 
     public static record ChangePasswordRequest(
-            String oldPassword,
+            String currentPassword,
             String newPassword
     ) {}
 
     @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest req, Principal principal) {
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest req, @AuthenticationPrincipal UserDetails userDetails) {
         // 3. Kullanıcıyı veritabanından çek
-        String username = principal.getName();
+        String username = userDetails.getUsername();
+        System.out.println(username + " hey yo ma nigyer");
         User user = (User) userRepository.findByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("Kullanıcı bulunamadı"));
 
+        String encodedCurrentPassword =passwordEncoder.encode(req.currentPassword);
         // 4. Mevcut şifre kontrolü
-        if (passwordEncoder.matches(req.oldPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(encodedCurrentPassword, user.getPassword())) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "Şifre zaten aynı."));
