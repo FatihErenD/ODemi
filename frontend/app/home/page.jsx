@@ -2,8 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react'
-import TopBar from '../components/TopBar';
 import '../input.css'
+
+import TopBar from '../components/TopBar';
+import VidThumbnail from '../components/VidThumbnail';
+import SlideComp from '../components/SlideComp';
 
 export default function Home() {
     const router = useRouter();
@@ -28,41 +31,21 @@ export default function Home() {
 
     return (
         <div>
-         <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-        <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-        gap: '20px',
-        padding: '30px',
-        marginTop: "70px"
-      }}>
-        {videos.map(video => (
-          <div
-            key={video.id}
-            onClick={() =>  router.push(`/watch?id=${video.id}`)}
-            style={{
-              cursor: 'pointer',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-              overflow: 'hidden',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              backgroundColor: '#fff',
-              transition: 'transform 0.2s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
-            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1.0)'}
-          >
-            <img
-              src={video.thumbnail}
-              alt={video.title}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-            />
-            <div style={{ padding: '10px', fontWeight: 'bold', textAlign: 'center' }}>
-              {video.title}
+            <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+            
+            <SlideComp />
+            
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                gap: '20px',
+                padding: '30px',
+                marginTop: "70px"
+            }}>
+            {videos.map(video => (
+                <VidThumbnail key={video.id} id={video.id} thumbnail={video.thumbnail} title={video.title} />
+            ))}
             </div>
-          </div>
-        ))}
-      </div>
-          </div>
+        </div>
     )
 }

@@ -10,9 +10,9 @@ export default function TopBar({ isAuthenticated, handleLogout }) {
     const handleScroll = () => {
       const currentY = window.scrollY;
       if (currentY > lastScrollY && currentY > 50) {
-        setVisible(false); // Aşağı kayıyorsa gizle
+        setVisible(false);
       } else {
-        setVisible(true); // Yukarı kayıyorsa göster
+        setVisible(true);
       }
       setLastScrollY(currentY);
     };
@@ -40,8 +40,8 @@ export default function TopBar({ isAuthenticated, handleLogout }) {
           </>
         ) : (
           <>
-            <button onClick={() => router.push('/profile')}>Profil</button>
-            <button onClick={handleLogout}>Çıkış Yap</button>
+            <button className="signIn-OutButton" onClick={() => router.push('/profile')}>Profil</button>
+            <button className="signIn-OutButton" onClick={handleLogout}>Çıkış Yap</button>
           </>
         )}
       </div>

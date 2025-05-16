@@ -15,7 +15,6 @@ export default function Register() {
 
   
   const handleRegister = async e => {
-    console.log("sa aga")
     e.preventDefault()
 
     try {
@@ -76,8 +75,7 @@ export default function Register() {
           />
           <br/>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button type="submit" className="logButton"
-              style={{ cursor: 'pointer' }} onClick={handleRegister} >Kayıt Ol</button>
+            <button type="submit" className="logButton" onClick={handleRegister} >Kayıt Ol</button>
           </div>
         </form>
 
@@ -88,8 +86,7 @@ export default function Register() {
             marginTop: '10px'
           }} >
             <span style={{ color: '#f1deef', fontSize: '10px' }}>Zaten hesabın var mı?</span>
-            <button className="textButton" onClick={e => router.push('./login')}
-                  style={{ cursor: 'pointer' }}>Giriş Yap</button>
+            <button className="textButton" onClick={e => router.push('./login')} > Giriş Yap </button>
         </div>
       </div>
     </div>
