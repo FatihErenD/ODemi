@@ -1,0 +1,43 @@
+.sidebar {
+    position: fixed;
+    left: -25vw;
+    width: 25vw;
+    height: 100vh;
+    background-color: var(--colorForBar);
+    color: white;
+    padding: 20px;
+    transition: left 0.4s ease-out;
+    box-shadow: 2px 5px 0px rgba(0,0,0,0.3);
+    z-index: 1002;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    background: var(--colorForBar);
+    color: var(--textColor);
+    border-radius: 2px;
+    border: none;
+    padding: 10px;
+    text-align: center;
+}
+
+.sidebar button:hover {
+    background-color: #7c2e83;
+}
+
+.sidebar span {
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+
+.sidebar span:hover {
+    color: #cc9fc8;
+    transform: translate(2px, 2px);
+}

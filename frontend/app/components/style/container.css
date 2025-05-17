@@ -1,0 +1,52 @@
+.container {
+    position: absolute;
+    top: 200px;
+    left: 120px;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+
+.side {
+    display: block;
+    width: 25vw;
+    height: 100%;
+    background-color: #363636;
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.side h2 {
+    font-size: 20;
+    margin: 10px auto 30px;
+    text-align: center;
+    color: var(--textColor);
+}
+
+.side button {
+    display: block;
+    width: 90%;
+    border-radius: 3px;
+    margin: 10px auto 10px;
+    padding: 10px;
+}
+
+.side button:hover {
+    background-color: #4b4b4b;
+}
+
+.side span {
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+
+.side span:hover {
+    color: #cc9fc8;
+    transform: translate(2px, 2px);
+}
+
+.delete-button {
+    background-color: #f83939;
+}

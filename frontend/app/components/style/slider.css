@@ -1,0 +1,32 @@
+.slider-container {
+    width: 90vw;
+    height: 60vh;
+    margin: 0 auto;
+    margin-top: 80px;
+    margin-bottom: 0px;
+    position: relative;
+    background-color: #282828;
+    overflow: hidden;
+}
+
+.slide {
+    width: 100%;
+    color:var(--background);
+    margin-top: 20px;
+    height: 50vh;
+    flex-shrink: 0;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    border: 1px solid #ccc;
+}
+
+.slick-slider,
+.slick-list,
+.slick-track {
+    margin: 0 auto;
+    width: 95%;
+    height: 95%;
+}

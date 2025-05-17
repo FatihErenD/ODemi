@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import "../input.css"
+import "./style/vidthumbnail.css"
 
 export default function VidThumbnail({ id, thumbnail, title }) {
     const router = useRouter()
@@ -10,7 +9,7 @@ export default function VidThumbnail({ id, thumbnail, title }) {
             key={id}
             onClick={() =>  router.push(`/watch?id=${id}`)}
             className='vid-thumb-div'
-          >
+        >
             <img
               src={thumbnail}
               alt={title}
@@ -19,6 +18,6 @@ export default function VidThumbnail({ id, thumbnail, title }) {
             <div className='vid-thumb-text'>
               {title}
             </div>
-          </div>
+        </div>
     );
 }

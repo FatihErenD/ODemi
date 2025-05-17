@@ -1,21 +1,31 @@
 'use client'
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import '../input.css'
 
-import TopBar from '../components/TopBar';
-import VidThumbnail from '../components/VidThumbnail';
-import SlideComp from '../components/SlideComp';
+import TopBar from '../components/TopBar'
+import VidThumbnail from '../components/VidThumbnail'
+import SlideComp from '../components/SlideComp'
+import SideBar from '../components/SideBar'
 
 export default function Home() {
     const router = useRouter();
+    const [username, setUsername] = useState('')
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [topBarVisible, setTopBarVisible] = useState(true);
 
     const videos = [
         { id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
         { id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
         { id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { id: 4, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { id: 5, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { id: 6, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { id: 7, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { id: 8, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { id: 9, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { id: 10, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
       ];
 
     useEffect(() => {
@@ -31,10 +41,12 @@ export default function Home() {
 
     return (
         <div>
-            <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-            
+            <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} onVisibilityChange={setTopBarVisible} />
+
+            <SideBar topOffset={topBarVisible} shouldOpen={true} />
+
             <SlideComp />
-            
+
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',

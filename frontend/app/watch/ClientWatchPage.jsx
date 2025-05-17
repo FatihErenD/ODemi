@@ -30,7 +30,7 @@ export default function ClientWatchPage({ videoId }) {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    setIsAuthenticated(!!token)
+    setIsAuthenticated(token)
   }, [])
 
   useEffect(() => {
