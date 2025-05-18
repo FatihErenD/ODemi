@@ -34,6 +34,24 @@ export default function TopBar({ isAuthenticated, handleLogout, onVisibilityChan
             <span className="top-bar-text">ODemi</span>
         </button>
 
+        <div style={{ flex: 1 }} />
+        <div className='search-bar' >
+            <input type='text' placeholder='Ara' >
+
+            </input>
+
+            <button>
+                <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                <lord-icon
+                    src="https://cdn.lordicon.com/hoetzosy.json"
+                    trigger="hover"
+                    colors="primary:#5d1b63"
+                    style={{width:"30px", height:"30px"}}>
+                </lord-icon>
+            </button>
+        </div>
+        <div style={{ flex: 1 }} />
+
         {/* Butonlar */}
         <div style={{ marginLeft: 'auto', marginRight: '50px', display: 'flex', gap: '10px' }}>
             {!isAuthenticated ? (

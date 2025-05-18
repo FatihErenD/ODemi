@@ -100,20 +100,6 @@ body {
     color: #c1bffa;
 }
 
-.signIn-OutButton {
-    padding: 8px 12px;
-    background-color: var(--colorForTextBack);
-    color: var(--colorForBar);
-    border: 2px solid #2b2b2b;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.signIn-OutButton:hover {
-    background-color: #a886bf;
-    color: #3c0541;
-}
 
 /* ------------- */
 /* Component CSS */
@@ -165,3 +151,108 @@ body {
     animation: shimmer 15s linear infinite;
     cursor: pointer;
 }
+
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotation {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
+  }
+}
+
+
+.search-bar {
+    height: 4vh;
+  aspect-ratio: 1 / 1.5;
+  background: var(--colorForTextBack);
+  border-radius: 0.5rem;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar::after, .search-bar::before{
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background-color: #de78fd;
+    border-radius: inherit;
+    animation: rotation 2s linear infinite;
+    animation-play-state: paused;
+}
+
+.search-bar:focus-within::before,
+.search-bar:focus-within::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    background: conic-gradient(
+        from var(--gradient-angle),
+        #de78fd,
+        #c769fb,
+        #a540f8,
+        #8d34c4,
+        #941fb1,
+        #b800f0,
+        #de78fd
+    );
+    border-radius: inherit;
+    animation-play-state: running;
+}
+.search-bar:focus-within::after{
+    filter: blur(0.5rem);
+}
+
+.search-bar input {
+    background: transparent;
+    color: var(--colorForBar);
+    border: 0px transparent;
+    padding: 15px;
+    font-size: 18;
+    font-weight: lighter;
+    border-radius: 0.5rem;
+    width: 25vw;
+    outline: none;
+}
+
+
+.search-bar button {
+    background-color: #8948b4;
+    height: 4vh;
+    width: 3vw;
+    border-left: 2px solid var(--colorForBar);
+    cursor: pointer;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+
+
+.signIn-OutButton {
+    padding: 8px 12px;
+    background-color: var(--colorForTextBack);
+    color: var(--colorForBar);
+    border: 2px solid #2b2b2b;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.signIn-OutButton:hover {
+    background-color: #a886bf;
+    color: #3c0541;
+}
+

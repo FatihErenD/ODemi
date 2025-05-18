@@ -1,20 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./style/container.css"
 import ChangePassword from './ChangePassword';
+import AccountInfo from './AccountInfo';
 
 export default function Container() {
     const [selected, setSelected] = useState(0)
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('username') || 'demoUser'
+        setUsername(storedUser)
+        setEmail('asdasd@example.com' || localStorage.getItem('e-mail'))
+    }, [])
 
     const renderContent = () => {
         switch (selected) {
             case 0:
-                return <ChangePassword />
+                return <AccountInfo username={username} email={email} />
             case 1:
-                return <p>İçerik B</p>;
+                return <ChangePassword type={true} username={username} />
             case 2:
-                return <p>İçerik C</p>;
+                return <ChangePassword type={false} username={username} />
+            case 3:
+                return <p> </p>
             default:
-                return <p>Bir içerik seçin</p>;
+                return <p> Hata! </p>;
         }
     };
 
@@ -28,15 +40,20 @@ export default function Container() {
                 <h2> Kullanıcı Ayarları </h2>
                 <button onClick={() => setSelected(0)}> 
                     <span>
+                        Kullanıcı Bilgileri
+                    </span>
+                </button>
+                <button onClick={() => setSelected(1)}> 
+                    <span>
                         Şifre Değiştir
                     </span>
                 </button>
-                <button onClick={() => setSelected(1)} > 
+                <button onClick={() => setSelected(2)} > 
                     <span>
                         Kullanıcı Adı Değiştir
                     </span>
                 </button>
-                <button onClick={() => setSelected(2)} > 
+                <button onClick={() => setSelected(3)} > 
                     <span>
                         Öğretmenlik Talep Et
                     </span>
