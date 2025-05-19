@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function TopBar({ isAuthenticated, handleLogout, onVisibilityChange }) {
+export default function TopBar({ onVisibilityChange }) {
   const [visible, setVisible] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const router = useRouter();
 
-  useEffect(() => {
-    const handleScroll = () => {
-        const currentY = window.scrollY;
-        
-        if (currentY > lastScrollY && currentY > 50) {
-            setVisible(false);
-        } else {
-            setVisible(true);
-        }
 
-        if (typeof onVisibilityChange === 'function') {
-            onVisibilityChange(visible);
-        }
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        setIsAuthenticated(token);
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentY = window.scrollY;
+            
+            if (currentY > lastScrollY && currentY > 50) {
+                setVisible(false);
+            } else {
+                setVisible(true);
+            }
+
+            if (typeof onVisibilityChange === 'function') {
+                onVisibilityChange(visible);
+            }
 
         setLastScrollY(currentY);
     };
@@ -26,6 +33,12 @@ export default function TopBar({ isAuthenticated, handleLogout, onVisibilityChan
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY, onVisibilityChange]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+        router.push('/login');
+    };
 
 
   return (
@@ -52,7 +65,6 @@ export default function TopBar({ isAuthenticated, handleLogout, onVisibilityChan
         </div>
         <div style={{ flex: 1 }} />
 
-        {/* Butonlar */}
         <div style={{ marginLeft: 'auto', marginRight: '50px', display: 'flex', gap: '10px' }}>
             {!isAuthenticated ? (
             <>

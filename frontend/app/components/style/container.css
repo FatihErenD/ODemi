@@ -39,7 +39,7 @@
 .side span {
     display: inline-block;
     cursor: pointer;
-    transition: 0.1s ease;
+    transition: 0.2s ease;
 }
 
 .side span:hover {

@@ -33,15 +33,10 @@ export default function Home() {
         setIsAuthenticated(token);  // Token varsa true, yoksa false
       }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        router.push('/login');
-    };
 
     return (
         <div>
-            <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} onVisibilityChange={setTopBarVisible} />
+            <TopBar onVisibilityChange={setTopBarVisible} />
 
             <SideBar topOffset={topBarVisible} shouldOpen={true} />
 

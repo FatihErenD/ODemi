@@ -1,0 +1,12 @@
+.wrapper {
+    background: transparent;
+    position: relative;
+    width: 65vw;
+    margin: 0 auto;
+}
+
+.wrapper video {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #000;
+}

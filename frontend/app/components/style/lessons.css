@@ -1,0 +1,34 @@
+.lesson {
+    width: 100%;
+    padding: 10px;
+    color: var(--textColor);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.lesson button {
+    width: 100%;
+    height: 5vh;
+    border-radius: 10px;
+    background-color: var(--colorForTextBack);
+    cursor: pointer;
+}
+
+.lesson button:hover {
+    background-color: color-mix(in srgb, var(--colorForTextBack) 90%, #fff);
+}
+
+.lesson button.selected {
+  background-color: color-mix(in srgb, var(--colorForTextBack) 80%, #000);
+}
+.lesson button.selected:hover {
+    background-color: color-mix(in srgb, var(--colorForTextBack) 90%, #000);
+}
+
+.lesson span {
+    display: block;
+    margin-left: 15px;
+    font-size: 18;
+    text-align: left;
+}
