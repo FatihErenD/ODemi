@@ -8,6 +8,10 @@
     user-select: text;
 }
 
+.comment:hover {
+    background-color: color-mix(in srgb, var(--colorForBar) 90%, #fff);
+}
+
 .comment h3 {
     font-size: 20;
     font-weight: bold;

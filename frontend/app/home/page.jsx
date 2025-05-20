@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react'
 import '../input.css'
 
 import TopBar from '../components/TopBar'
-import VidThumbnail from '../components/VidThumbnail'
 import SlideComp from '../components/SlideComp'
 import SideBar from '../components/SideBar'
+import RecVideos from '../components/RecVideos'
 
 export default function Home() {
     const router = useRouter();
@@ -42,17 +42,7 @@ export default function Home() {
 
             <SlideComp />
 
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                gap: '20px',
-                padding: '30px',
-                marginTop: "70px"
-            }}>
-            {videos.map(video => (
-                <VidThumbnail key={video.id} id={video.id} thumbnail={video.thumbnail} title={video.title} />
-            ))}
-            </div>
+            <RecVideos videos={videos} />
         </div>
     )
 }

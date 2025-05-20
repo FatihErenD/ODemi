@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function TopBar({ onVisibilityChange }) {
   const [visible, setVisible] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const searchRef = useRef();
   const router = useRouter();
 
 
@@ -40,6 +41,10 @@ export default function TopBar({ onVisibilityChange }) {
         router.push('/login');
     };
 
+    const handleSearch = () => {
+        const token = localStorage.getItem('token');
+    }
+
 
   return (
     <div className={`top-bar ${visible ? 'show' : 'hide'}`}>
@@ -49,11 +54,11 @@ export default function TopBar({ onVisibilityChange }) {
 
         <div style={{ flex: 1 }} />
         <div className='search-bar' >
-            <input type='text' placeholder='Ara' >
+            <input type='text' placeholder='Ara' ref={searchRef} >
 
             </input>
 
-            <button>
+            <button onClick={handleSearch} >
                 <script src="https://cdn.lordicon.com/lordicon.js"></script>
                 <lord-icon
                     src="https://cdn.lordicon.com/hoetzosy.json"

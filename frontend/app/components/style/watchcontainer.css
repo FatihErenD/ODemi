@@ -54,6 +54,89 @@
     font-size: 15;
 }
 
+.comm {
+    width: 100%;
+    height: 10vh;
+    border-radius: 10px;
+    display: flex;
+    gap: 30px;
+    position: relative;
+}
+
+.comm input {
+    outline: none;
+    color: var(--textColor);
+    width: 57vw;
+    height: 5vh;
+    margin-top: 15px;
+    border: 3px solid var(--colorForBar);
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    padding: 5px;
+    transition: border-color 0.5s ease-out;
+}
+
+.comm input:hover, input:focus {
+    border-color: color-mix(in srgb, var(--colorForBar) 70%, #fff);
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translate(10px, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slideTopFromIn {
+  from {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(10px, 10px);
+  }
+}
+
+.comm-button {
+    position: absolute;
+    right: 5vw;
+    top: 3vh;
+    font-size: 15;
+    height: 5vh;
+    width: 5vw;
+    border: 2px solid #242424;
+    border-radius: 5px;
+    background-color: var(--colorForTextBack);
+    color: var(--textColor);
+    opacity: 0;
+    transform: translate(10px, -10px);
+    pointer-events: auto;
+    cursor: pointer;
+    transition: color 0.5s ease-out, background-color 0.5s ease-out, transform 0.3s ease-out, opacity 0.3s ease;
+}
+
+.comm-button.show {
+    animation: slideInFromTop 0.3s ease-out forwards;
+    pointer-events: auto;
+}
+
+.comm-button.hide {
+    animation: slideTopFromIn 0.3s ease-out forwards;
+    pointer-events: none;
+}
+
+.comm-button:hover {
+    background-color: #c29fda;
+    color: var(--colorForBar);
+    transform: translate(3px, 3px);
+}
+
 .commh3 {
     text-align: right;
     font-size: 22;
