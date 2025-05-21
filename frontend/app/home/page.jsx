@@ -1,63 +1,70 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
-import '../input.css'
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import '../input.css';
 
-import TopBar from '../components/TopBar'
-import VidThumbnail from '../components/VidThumbnail'
-import SlideComp from '../components/SlideComp'
-import SideBar from '../components/SideBar'
+import TopBar from '../components/TopBar';
+import SlideComp from '../components/SlideComp';
+import SideBar from '../components/SideBar';
+import RecVideos from '../components/RecVideos';
+import ShortsPreview from '../components/ShortsPreview';
 
 export default function Home() {
-    const router = useRouter();
-    const [username, setUsername] = useState('')
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [topBarVisible, setTopBarVisible] = useState(true);
+  const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [topBarVisible, setTopBarVisible] = useState(true);
 
-    const videos = [
-        { id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 4, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 5, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 6, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 7, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 8, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 9, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 10, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-      ];
+  const videos = [
+    { id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 4, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 5, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 6, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 7, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 8, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 9, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { id: 10, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+  ];
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        setIsAuthenticated(token);  // Token varsa true, yoksa false
-      }, []);
+  const shorts = [
+    {
+      id: 101,
+      title: 'brainrot ders 1',
+      thumbnail: '/thumbs/thumbnail1.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 102,
+      title: 'brainrot ders 2',
+      thumbnail: '/thumbs/thumbnail2.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 103,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail3.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+  ];
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        router.push('/login');
-    };
 
-    return (
-        <div>
-            <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} onVisibilityChange={setTopBarVisible} />
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(token);
+  }, []);
 
-            <SideBar topOffset={topBarVisible} shouldOpen={true} />
+  return (
+    <div>
+      <TopBar onVisibilityChange={setTopBarVisible} />
+      <SideBar topOffset={topBarVisible} shouldOpen={true} />
+      <SlideComp />
 
-            <SlideComp />
+      <ShortsPreview shorts={shorts} />
 
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                gap: '20px',
-                padding: '30px',
-                marginTop: "70px"
-            }}>
-            {videos.map(video => (
-                <VidThumbnail key={video.id} id={video.id} thumbnail={video.thumbnail} title={video.title} />
-            ))}
-            </div>
-        </div>
-    )
+      <RecVideos videos={videos} />
+    </div>
+  );
 }

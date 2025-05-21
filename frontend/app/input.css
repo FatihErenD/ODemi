@@ -4,6 +4,16 @@
     --colorForBar: #5d1b63;
     --colorForTextBack: #a074bd;
     --textColor: #f1deef;
+
+    --primary: #ea00ff;
+    --primary-1: color-mix(in srgb, var(--primary) 60%, #fff);
+    --primary-2: color-mix(in srgb, var(--primary) 70%, #fff);
+    --primary-3: color-mix(in srgb, var(--primary) 90%, #fff);
+    --primary-4: #ea00ff;
+    --primary-5: color-mix(in srgb, var(--primary) 90%, #000);
+    --primary-6: color-mix(in srgb, var(--primary) 80%, #000);
+    --primary-7: color-mix(in srgb, var(--primary) 70%, #000);
+    --primary-7: color-mix(in srgb, var(--primary) 60%, #000);
 }
 
 body {
@@ -11,6 +21,25 @@ body {
     color: var(--foreground);
     font-family: Arial, Helvetica, sans-serif;
     user-select: none;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    max-height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--colorForTextBack);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--colorForTextBack) 80%, #fff);
+}
+::-webkit-scrollbar-corner {
+    background: var(--background);
 }
 
 
@@ -188,8 +217,9 @@ body {
     z-index: -1;
     background-color: #de78fd;
     border-radius: inherit;
-    animation: rotation 2s linear infinite;
+    animation: rotation 3s linear infinite;
     animation-play-state: paused;
+    transition: filter 0.6s ease-out;
 }
 
 .search-bar:focus-within::before,
@@ -198,6 +228,7 @@ body {
     position: absolute;
     inset: -2px;
     z-index: -1;
+    
     background: conic-gradient(
         from var(--gradient-angle),
         #de78fd,
@@ -208,10 +239,24 @@ body {
         #b800f0,
         #de78fd
     );
+    /*
+    background: conic-gradient(
+        from var(--gradient-angle),
+        var(--primary-1),
+        var(--primary-2),
+        var(--primary-3),
+        var(--primary-4),
+        var(--primary-5),
+        var(--primary-6),
+        var(--primary-7)
+    );*/
     border-radius: inherit;
     animation-play-state: running;
 }
 .search-bar:focus-within::after{
+    filter: blur(0.5rem);
+}
+.search-bar:hover::after {
     filter: blur(0.5rem);
 }
 
@@ -226,7 +271,6 @@ body {
     width: 25vw;
     outline: none;
 }
-
 
 .search-bar button {
     background-color: #8948b4;
@@ -249,6 +293,7 @@ body {
     border-radius: 5px;
     font-size: 12px;
     cursor: pointer;
+    transition: background-color 0.5s ease-out, color 0.5s ease-out;
 }
 
 .signIn-OutButton:hover {

@@ -9,21 +9,14 @@ import ProfileInfo from '../components/ProfileInfo'
 import SideBar from '../components/SideBar'
 
 export default function ProfilePage() {
-    const router = useRouter()
     const [username, setUsername] = useState('')
     const [isAuthenticated, setIsAuthenticated] = useState('')
     const [topBarVisible, setTopBarVisible] = useState(true);
 
 
-
-    const handleLogout = () => {
-        localStorage.removeItem('token')
-        router.push('/login')
-    }
-
     return (
         <div>
-            <TopBar isAuthenticated={isAuthenticated} handleLogout={handleLogout} onVisibilityChange={setTopBarVisible} />
+            <TopBar onVisibilityChange={setTopBarVisible} />
             <SideBar topOffset={topBarVisible} shouldOpen={false} />
             <ProfileInfo username={username} ></ProfileInfo>
             <Container />

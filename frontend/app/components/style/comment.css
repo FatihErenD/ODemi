@@ -1,0 +1,33 @@
+.comment {
+    position: relative;
+    background-color: var(--colorForBar);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+    color: var(--textColor);
+    user-select: text;
+}
+
+.comment:hover {
+    background-color: color-mix(in srgb, var(--colorForBar) 90%, #fff);
+}
+
+.comment h3 {
+    font-size: 20;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment p {
+    font-size: 15;
+}
+
+.comment span {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    width: 100%;
+    text-align: right;
+    font-size: 11;
+    color: color-mix(in srgb, var(--colorForBar) 80%, #fff);
+}
