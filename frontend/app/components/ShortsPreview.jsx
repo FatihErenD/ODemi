@@ -1,40 +1,35 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import "./style/shortpreview.css"
 
 export default function ShortsPreview({ shorts }) {
   const router = useRouter();
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2 style={{ color: 'white', marginBottom: '10px' }}>Brainrot Dersler</h2>
+    <div style={{ padding: '20px', margin: '10px 200px 10px 200px' }}>
+      <h2 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>Brainrot Dersler</h2>
       <div style={{
         display: 'flex',
         overflowX: 'auto',
-        gap: '10px'
+        gap: '30px'
       }}>
-        {shorts.map((video) => (
+        {shorts.map((video, index) => (
           <div
-            key={video.id}
+            key={index}
             onClick={() => router.push(`/shorts?id=${video.id}`)} // 👈 dikkat!
             style={{
               minWidth: '120px',
               cursor: 'pointer',
-              textAlign: 'center'
+              textAlign: 'left'
             }}
           >
             <img
               src={video.thumbnail}
               alt={video.title}
-              style={{
-                width: '120px',
-                height: '210px',
-                borderRadius: '8px',
-                objectFit: 'cover',
-                marginBottom: '5px'
-              }}
+              className='short-img'
             />
-            <p style={{ color: 'white', fontSize: '14px' }}>{video.title}</p>
+            <p className='short-title' >{video.title}</p>
           </div>
         ))}
       </div>

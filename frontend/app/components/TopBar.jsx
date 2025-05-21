@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -43,6 +45,12 @@ export default function TopBar({ onVisibilityChange }) {
   const handleSearch = () => {
     const token = localStorage.getItem('token');
     // Arama işlemi burada yapılabilir (searchRef.current.value)
+    const search = searchRef.current.value.trim();
+    if (search !== '') {
+      searchRef.current.value = ''
+      router.push(`/search?text=${search}`)
+    }
+    
   };
 
   return (
@@ -67,9 +75,6 @@ export default function TopBar({ onVisibilityChange }) {
       <div style={{ flex: 1 }} />
 
       <div style={{ marginLeft: 'auto', marginRight: '50px', display: 'flex', gap: '10px' }}>
-        <button className="signIn-OutButton" onClick={() => router.push('/my-courses')}>
-          Kurslarım
-        </button>
         {!isAuthenticated ? (
           <>
             <button className="signIn-OutButton" onClick={() => router.push('/login')}>
@@ -81,6 +86,9 @@ export default function TopBar({ onVisibilityChange }) {
           </>
         ) : (
           <>
+            <button className="signIn-OutButton" onClick={() => router.push('/my-courses')}>
+              Kurslarım
+            </button>
             <button className="signIn-OutButton" onClick={() => router.push('/profile')}>
               Profil
             </button>

@@ -30,3 +30,26 @@
     width: 95%;
     height: 95%;
 }
+
+@keyframes jump {
+  0% {
+    opacity: 0;
+  }
+  99% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.slide img {
+    width: 50%;
+    height: 80%;
+    margin-left: 10px;
+    opacity: 0;
+}
+
+.slide img:hover {
+    animation: jump 6s linear forwards;
+}

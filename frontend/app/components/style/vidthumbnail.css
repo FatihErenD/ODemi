@@ -1,6 +1,6 @@
 .vid-thumb-div {
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 10px;
     overflow: hidden;
     background-color: transparent;
 }
@@ -9,6 +9,7 @@
     width: 100%; 
     height: auto; 
     display: block;
+    border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: transform 0.4s ease;
 }
@@ -21,4 +22,11 @@
     padding-top: 2px;
     padding-left: 2px;
     text-align: left;
+    margin: 5px auto 0 10px;
+    color: white;
+    transition: color 0.2s ease-out;
+}
+
+.vid-thumb-text:hover {
+    color: color-mix(in srgb, white 80%, #000);
 }

@@ -25,7 +25,8 @@ export default function SlideComp() {
                     Renklere laf etme
                 </div>
                 <div className='slide' >
-                    Test için böyle düzeltçem
+                    <span> Test için böyle düzeltçem </span>
+                    <img src='/thumbs/jumpscare.jpg'  />
                 </div>
             </Slider>
          </div>
