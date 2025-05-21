@@ -4,6 +4,7 @@ import './style/sidebar.css';
 
 export default function SideBar({ topOffset, shouldOpen, items = [] }) {
     const defaultItems = [
+        { id: 1, label: "Profil", url: "/profile" },
         { id: 1, label: "Kategoriler", url: "/profile" },
         { id: 2, label: "Varsayılan 2", url: "/" },
     ];
