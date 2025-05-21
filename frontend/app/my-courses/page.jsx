@@ -1,43 +1,68 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-
 import '../input.css';
-
 import TopBar from '../components/TopBar';
 import SideBar from '../components/SideBar';
-import SlideComp from '../components/SlideComp'; // İstersen bu kaldırılabilir
 import RecVideos from '../components/RecVideos';
 
 export default function MyCoursesPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [topBarVisible, setTopBarVisible] = useState(true);
-  const [myCourses, setMyCourses] = useState([]);
+  // 1) State’ler
+  const [courses, setCourses]   = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState('');
+  const [isAuth, setIsAuth]     = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setIsAuthenticated(token);
+    if (!token) {
+      setError('Önce giriş yapmalısınız.');
+      setLoading(false);
+      return;
+    }
+    setIsAuth(true);
 
-    // Geçici sahte veri (ileride API bağlanacak)
-    const courses = [
-      { id: 1, title: 'Benim React Kursum', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-      { id: 2, title: 'Benim Next.js Kursum', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    ];
-
-    setMyCourses(courses);
+    fetch('http://localhost:8080/api/course/my-courses', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
+        return res.json();
+      })
+      .then(data => setCourses(data))
+      .catch(err => {
+        console.error(err);
+        setError(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return <p style={{ padding: 20 }}>Yükleniyor...</p>;
+  }
+  if (error) {
+    return <p style={{ color: 'salmon', padding: 20 }}>{error}</p>;
+  }
+  if (!isAuth) {
+    return <p style={{ padding: 20 }}>Giriş yapılmamış.</p>;
+  }
 
   return (
     <div>
-      <TopBar onVisibilityChange={setTopBarVisible} />
+      <TopBar />
+      <SideBar shouldOpen={true} />
 
-      <SideBar topOffset={topBarVisible} shouldOpen={true} />
-
-      <h1 style={{ padding: '20px' }}>Kurslarım</h1>
-
-      <RecVideos videos={myCourses} />
+      <h1 style={{ padding: '20px 20px 0' }}>Kurslarım</h1>
+      {courses.length === 0
+        ? <p style={{ padding: 20 }}>Henüz kurs kaydınız yok.</p>
+        : <RecVideos videos={courses} />
+      }
     </div>
   );
 }

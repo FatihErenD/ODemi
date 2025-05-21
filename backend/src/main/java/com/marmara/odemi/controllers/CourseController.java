@@ -1,15 +1,15 @@
 package com.marmara.odemi.controllers;
 
+import com.marmara.odemi.entity.Lesson;
 import com.marmara.odemi.entity.User;
+import com.marmara.odemi.repository.CourseRepository;
 import com.marmara.odemi.repository.EnrollmentRepository;
+import com.marmara.odemi.repository.LessonRepository;
 import com.marmara.odemi.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,12 +20,18 @@ import java.util.List;
 public class CourseController {
 
     private final UserRepository userRepo;
+    private final LessonRepository lessonRepo;
     private final EnrollmentRepository enrollRepo;
+    private final CourseRepository courseRepo;
 
     public CourseController(UserRepository userRepo,
-                            EnrollmentRepository enrollRepo) {
+                            EnrollmentRepository enrollRepo,
+                            LessonRepository lessonRepo,
+                            CourseRepository courseRepo) {
         this.userRepo    = userRepo;
         this.enrollRepo  = enrollRepo;
+        this.lessonRepo = lessonRepo;
+        this.courseRepo = courseRepo;
     }
 
     public record CourseDto(
@@ -34,19 +40,55 @@ public class CourseController {
             String thumbnail
     ) {}
 
-        @GetMapping("/my-courses")
-        public ResponseEntity<List<CourseDto>> getMyCourses(@AuthenticationPrincipal UserDetails userDetails) {
-            String username = userDetails.getUsername();
+    @GetMapping("/all-courses")
+    public ResponseEntity<List<CourseDto>> getAllCourses() {
 
-            User user = (User) userRepo.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
+        List<CourseDto> dtos = courseRepo.findAll().stream()
+                .map(c -> new CourseDto(
+                        c.getId(),
+                        c.getTitle(),
+                        c.getThumbnail()
+                ))
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
 
-            List<CourseDto> courses = enrollRepo.findByUser(user)
-                    .stream()
-                    .map(e-> e.getCourse())
-                    .map(c -> new CourseDto(c.getId(), c.getTitle(), c.getThumbnail()))
-                    .toList();
+    @GetMapping("/my-courses")
+    public ResponseEntity<List<CourseDto>> getMyCourses(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+         User user = (User) userRepo.findByUsername(username)
+                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
 
-            return ResponseEntity.ok(courses);
-        }
+         List<CourseDto> courses = enrollRepo.findByUser(user)
+                 .stream()
+                 .map(e-> e.getCourse())
+                 .map(c -> new CourseDto(c.getId(), c.getTitle(), c.getThumbnail()))
+                 .toList();
+         return ResponseEntity.ok(courses);
+    }
+
+
+    public record LessonDto(
+            String title,
+            String content,
+            String url,
+            Integer ep
+    ) {};
+
+    @GetMapping("/{courseId}/lessons")
+    public ResponseEntity<List<LessonDto>> getLessons(@PathVariable Long courseId) {
+        List<LessonDto> dtos = lessonRepo.findByCourseIdOrderByEpAsc(courseId)
+                .stream()
+                .map(l -> new LessonDto(
+                        l.getTitle(),
+                        l.getContent(),
+                         courseId+ "/" +  l.getEp(),
+                        l.getEp()
+                ))
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
+
+
 }
