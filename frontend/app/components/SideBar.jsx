@@ -4,9 +4,10 @@ import './style/sidebar.css';
 
 export default function SideBar({ topOffset, shouldOpen, items = [] }) {
     const defaultItems = [
-        { id: 1, label: "Profil", url: "/profile" },
-        { id: 2, label: "Kategoriler", url: "/profile" },
-        { id: 3, label: "Varsayılan 2", url: "/" },
+        { id: 1, label: "Ana Sayfa", url: "/" },
+        { id: 2, label: "Profil", url: "/profile" },
+        { id: 3, label: "Kurslarım", url: "/my-courses" },
+        { id: 4, label: "Kategoriler", url: "/" }
     ];
     const list = items.length > 0 ? items : defaultItems;
 

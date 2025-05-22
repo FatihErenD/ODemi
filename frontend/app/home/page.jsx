@@ -48,6 +48,48 @@ export default function Home() {
       thumbnail: '/thumbs/thumbnail3.png',
       videoUrl: '/videos/react1.mp4',
     },
+    {
+      id: 104,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail1.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 105,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail2.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 106,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail3.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 107,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail1.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 108,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail2.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 109,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail3.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 110,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail1.png',
+      videoUrl: '/videos/react1.mp4',
+    }
   ];
 
 

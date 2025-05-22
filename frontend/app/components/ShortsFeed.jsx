@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import TopBar from './TopBar';
+import SideBar from './SideBar';
 
 export default function ShortsFeed({ videos }) {
   const videoRefs = useRef([]);
@@ -28,9 +30,11 @@ export default function ShortsFeed({ videos }) {
         height: '100vh',
         overflowY: 'scroll',
         scrollSnapType: 'y mandatory',
-        background: '#000',
+        background: 'var(--background)',
       }}
     >
+      <TopBar />
+      <SideBar topOffset={true} shouldOpen={false} />
       {videos.map((video, index) => (
         <div
           key={video.id}
@@ -45,28 +49,42 @@ export default function ShortsFeed({ videos }) {
             padding: '10px',
           }}
         >
-          <video
-            ref={(el) => (videoRefs.current[index] = el)}
-            src={video.videoUrl}
-            muted
-            controls
-            playsInline
-            style={{
-              height: '100%',
-              aspectRatio: '9 / 16',
-              objectFit: 'contain', // 👈 videoyu kırpma, küçült
-              borderRadius: '12px',
-              backgroundColor: '#000',
-              boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-            }}
-          />
+          <div style={{
+                height: '85%',
+                aspectRatio: '9 / 16',
+                borderRadius: '12px',
+                boxShadow: '0 0 10px rgba(0,0,0,0.5)'
+              }} >
+            <video
+              ref={(el) => (videoRefs.current[index] = el)}
+              src={video.videoUrl}
+              muted
+              controls
+              playsInline
+              style={{
+                height: '100%',
+                aspectRatio: '9 / 16',
+                objectFit: 'contain',
+                borderRadius: '12px',
+                backgroundColor: '#000',
+                boxShadow: '0 0 10px rgba(0,0,0,0.5)'
+              }}
+            />
+            <div>
+              <h3 style={{margin: '10px 0 0 10px', fontSize: '18px'}} >
+                @kanaladi <button style={{ marginLeft: '10px' }}>Takip Et</button>
+              </h3>
+              <p style={{margin: '5px 0 0 10px'}} >{video.title}</p>
+            </div>
+            
+          </div>
 
           {/* Sağda ikonlar */}
           <div
             style={{
               position: 'absolute',
-              right: '20px',
-              top: '30%',
+              top: '40%',
+              margin: '0 auto 0 27%',
               display: 'flex',
               flexDirection: 'column',
               gap: '20px',
@@ -79,23 +97,6 @@ export default function ShortsFeed({ videos }) {
             <button>👎</button>
             <button>💬</button>
             <button>🔗</button>
-          </div>
-
-          {/* Açıklama ve kanal bilgisi */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '30px',
-              left: '20px',
-              right: '20px',
-              color: 'white',
-              fontSize: '14px',
-            }}
-          >
-            <p>
-              @kanaladi <button style={{ marginLeft: '10px' }}>Takip Et</button>
-            </p>
-            <p>{video.title}</p>
           </div>
         </div>
       ))}

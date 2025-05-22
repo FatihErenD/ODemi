@@ -73,6 +73,7 @@ body {
     background-color: var(--colorForTextBack);
     color: var(--textColor);
     border: 2px solid var(--colorForBar);
+    padding: 2px;
     border-radius: 10px;
     margin-bottom: 25px;
     width: 300px;
@@ -96,7 +97,7 @@ body {
     border: 2px solid var(--colorForBar);
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.2s ease-out;
+    transition: 0.3s ease-out, background-color 0.3s ease-out, color 0.3s ease-out;
 }
 
 .logButton:hover {

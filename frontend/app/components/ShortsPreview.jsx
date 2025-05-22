@@ -19,7 +19,7 @@ export default function ShortsPreview({ shorts }) {
             key={index}
             onClick={() => router.push(`/shorts?id=${video.id}`)} // 👈 dikkat!
             style={{
-              minWidth: '120px',
+              minWidth: '180px',
               cursor: 'pointer',
               textAlign: 'left'
             }}
