@@ -1,15 +1,16 @@
 import VidThumbnail from "./VidThumbnail"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./style/recvideos.css"
 
 export default function RecVideos({ videos }) {
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [filteredVideos, setFilteredVideos] = useState(videos)
 
     const handleCategoryChange = (id) => {
         setSelectedCategories((prev) =>
-        prev.includes(id)
-            ? prev.filter((catId) => catId !== id)
-            : [...prev, id]
+            prev.includes(id)
+                ? prev.filter((catId) => catId !== id)
+                : [...prev, id]
         );
         console.log(id)
     };
@@ -21,9 +22,25 @@ export default function RecVideos({ videos }) {
         },
         {
             id: 2,
-            name: "Python"
+            name: "Next.js"
+        },
+        {
+            id: 3,
+            name: "Backend"
         }
     ]
+
+    useEffect(() => {
+        if (selectedCategories.length === 0) {
+        setFilteredVideos(videos);
+        } else {
+        setFilteredVideos(
+            videos.filter(video =>
+            selectedCategories.includes(video.category_id)
+            )
+        );
+        }
+    }, [selectedCategories, videos]);
 
     return (
         <div style={{display: 'flex', width: '100%', height: '100%'}} >
@@ -45,7 +62,6 @@ export default function RecVideos({ videos }) {
                     </div>
                 ))}
                 
-                
             </div>
             <div style={{
                         display: 'grid',
@@ -55,8 +71,8 @@ export default function RecVideos({ videos }) {
                         marginTop: "70px",
                         width: '100%'
                     }}>
-                {videos.map(video => (
-                    <VidThumbnail key={video.id} id={video.id} thumbnail={video.thumbnail} title={video.title} />
+                {filteredVideos.map((video, index) => (
+                    <VidThumbnail key={index} courseId={video.course_id} lessonId={video.lesson_id} thumbnail={video.thumbnail} title={video.title} />
                 ))}
             </div>
         </div>

@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from "react"
 import Lessons from "./Lessons"
 
 
-export default function WatchContainer() {
+export default function WatchContainer({ video }) {
     const [isCommenting, setIsCommenting] = useState(false);
     const inputRef = useRef();
 
@@ -36,16 +36,7 @@ export default function WatchContainer() {
         const username = localStorage.getItem('username');
       }, []);
 
-    const [video, setVideo] = useState(
-        {
-            course_id: 1,
-            lesson_id: 1,
-            title: 'JavaScript Temelleri',
-            epTitle: 'JavaScript\'e Giriş',
-            url: '/videos/react1.mp4',
-            description: 'Bu derste JavaScript\'in temel sözdizimi, değişkenler ve veri tipleri örneklerle ele alınır.'
-        }
-    )
+
 
     const lessons = [
         {
@@ -60,18 +51,6 @@ export default function WatchContainer() {
         },
     ]
 
-    const handleChangeLesson = (ep, title, url) => {
-        setVideo(
-            {
-                course_id: 1,
-                lesson_id: ep,
-                title: 'JavaScript Temelleri',
-                epTitle: title,
-                url: url,
-                description: 'Bu derste JavaScript\'in temel sözdizimi, değişkenler ve veri tipleri örneklerle ele alınır.'
-            }
-        )
-    }
 
     const handleComment = () => {
         const text = inputRef.current.value;
@@ -92,7 +71,7 @@ export default function WatchContainer() {
                 <div className="left-panel" >
 
                     <h1 > {video.title} </h1>
-                    <h3> {video.epTitle} </h3>
+                    <h3> {lessons?.[video?.lesson_id - 1]?.title ?? ''} </h3>
 
                     <VideoPlayer video={video} />
 
@@ -119,7 +98,7 @@ export default function WatchContainer() {
                     {comments.map((comment, index) => (
                         <Comment key={index} comment={comment} ></Comment>
                     ))}
-                    
+
                 </div>
             </div>
 
@@ -128,8 +107,8 @@ export default function WatchContainer() {
                     <hr></hr>
 
                     {lessons.map((lesson, index) => (
-                        <Lessons key={index} courseId={video.course_id} ep={lesson.ep} title={lesson.title} 
-                        isSelected={lesson.ep === video.lesson_id} setVideo={setVideo} handleChangeLesson={() => handleChangeLesson(lesson.ep, lesson.title, lesson.url)} />
+                        <Lessons key={index} id={video.course_id} ep={lesson.ep} 
+                        title={lesson.title} isSelected={lesson.ep === video.lesson_id} />
                     ))}
                         
             </div>

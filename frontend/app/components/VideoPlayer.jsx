@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import ReactPlayer from 'react-player';
 import "./style/videoplayer.css"
 
 export default function VideoPlayer( {video} ) {
@@ -7,14 +8,13 @@ export default function VideoPlayer( {video} ) {
     return (
         <div className="wrapper" >
             {video ? (
-            <video
-                ref={videoRef}
+                <ReactPlayer
+                url={video.url}
                 controls
-            >
-                <source src={video.url} type="video/mp4" />
-                Tarayıcınız video etiketini desteklemiyor.
-            </video>
-            ) : null }
+                width="100%"
+                height="100%"
+                />
+            ) : null}
         </div>
     )
 }

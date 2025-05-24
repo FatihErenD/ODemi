@@ -1,13 +1,13 @@
 import { useRouter } from 'next/navigation';
 import "./style/vidthumbnail.css"
 
-export default function VidThumbnail({ id, thumbnail, title }) {
+export default function VidThumbnail({ courseId, lessonId, thumbnail, title }) {
     const router = useRouter()
 
     return (
         <div
-            key={id}
-            onClick={() =>  router.push(`/watch?id=${id}`)}
+            key={courseId}
+            onClick={() =>  router.push(`/watch?course_id=${courseId}&lesson_id=${lessonId}`)}
             className='vid-thumb-div'
         >
             <img

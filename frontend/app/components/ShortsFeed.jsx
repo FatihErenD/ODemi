@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import ReactPlayer from 'react-player';
 import TopBar from './TopBar';
 import SideBar from './SideBar';
 
@@ -55,19 +56,17 @@ export default function ShortsFeed({ videos }) {
                 borderRadius: '12px',
                 boxShadow: '0 0 10px rgba(0,0,0,0.5)'
               }} >
-            <video
-              ref={(el) => (videoRefs.current[index] = el)}
-              src={video.videoUrl}
-              muted
+            <ReactPlayer
+              ref={el => (videoRefs.current[index] = el)}
+              url={video.videoUrl}
               controls
-              playsInline
+              light={false}
+              width="100%"
+              height="100%"
+              playsinline
               style={{
-                height: '100%',
-                aspectRatio: '9 / 16',
-                objectFit: 'contain',
                 borderRadius: '12px',
                 backgroundColor: '#000',
-                boxShadow: '0 0 10px rgba(0,0,0,0.5)'
               }}
             />
             <div>

@@ -13,7 +13,7 @@ export default function SlideComp({ video }) {
             id: 1,
             url: '/thumbs/jumpscare.jpg',
             title: 'Kınık',
-            descr: 'Bu kursta nasıl yayalara çarpabileceğinizi ustasından öğreneceksiniz!'
+            descr: 'Bu kursta nasıl yayalara çarpabileceğinizi ustasından öğreneceksiniz! Yazı rengini ne yapalım la güzel birşey bulamadım. Bu yazıyı okuyan kişi düzeltsin 😈'
         },
         {
             id: 2,
