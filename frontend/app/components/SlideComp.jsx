@@ -45,6 +45,7 @@ export default function SlideComp({ video }) {
         e.currentTarget.querySelector('img').style.transform = `
         rotateX(${rotateX}deg) 
         rotateY(${rotateY}deg)
+        scale(1.05)
         `;
         e.currentTarget.querySelector('img').style.boxShadow = `0px 20px 40px rgba(0,0,0,0.5)`;
     }
@@ -64,7 +65,7 @@ export default function SlideComp({ video }) {
                             <div style={{ width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} 
                                 onMouseMove={handleOnMouseMove}
                                 onMouseLeave={handleOnMouseLeave}>
-                                <img src={video.url} />
+                                <img src={video.url} style={{transition: 'transform 0.5s ease-out, box-shadow 0.5s ease-out'}} />
                             </div>
                             <div style={{ width: '50%', height: '100%' }} >
                                 <h3> {video.title} </h3>

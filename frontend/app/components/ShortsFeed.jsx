@@ -20,7 +20,7 @@ export default function ShortsFeed({ videos }) {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // ilk kontrol
+    handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -78,7 +78,6 @@ export default function ShortsFeed({ videos }) {
             
           </div>
 
-          {/* Sağda ikonlar */}
           <div
             style={{
               position: 'absolute',

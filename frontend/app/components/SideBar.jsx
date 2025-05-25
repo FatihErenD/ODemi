@@ -7,7 +7,7 @@ export default function SideBar({ topOffset, shouldOpen, items = [] }) {
         { id: 1, label: "Ana Sayfa", url: "/" },
         { id: 2, label: "Profil", url: "/profile" },
         { id: 3, label: "Kurslarım", url: "/my-courses" },
-        { id: 4, label: "Kategoriler", url: "/" }
+        { id: 4, label: "Kurs Oluştur", url: "/create-course" }
     ];
     const list = items.length > 0 ? items : defaultItems;
 

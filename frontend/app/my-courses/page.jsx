@@ -20,8 +20,8 @@ export default function MyCoursesPage() {
   useEffect(() => {
     if (true) { // test için
       const courses = [
-        { id: 1, title: 'Benim React Kursum', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 2, title: 'Benim Next.js Kursum', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { course_id: 1, lesson_id: 1, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+        { course_id: 2, lesson_id: 1, category_id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' }
       ];
       setMyCourses(courses);
       setLoading(false);
