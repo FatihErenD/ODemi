@@ -1,14 +1,26 @@
 'use client'
 
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
 
 import SideBar from "../components/SideBar";
 import TopBar from "../components/TopBar";
 import "../components/style/vidthumbnail.css"
+import "../components/style/editcourse.css"
 
 
-export default function CourseCreate() {
+export default function EditCourse() {
+    const [topBarVisible, setTopBarVisible] = useState(true);
+    const [thumbnail, setThumbnail] = useState('/thumbs/no_thumbnail.png');
+    const [title, setTitle] = useState('');
+    const [query, setQuery] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [isFocused, setFocus] = useState(false);
+    const [filtered, setFiltered] = useState([]);
+    const [message, setMessage] = useState(' ');
+
+    const descriptionRef = useRef();
+    const fileInputRef = useRef();
+
     const allCategories = [
         { id: 1, name: 'React' },
         { id: 2, name: 'Next.js' },
@@ -26,20 +38,45 @@ export default function CourseCreate() {
         { id: 14, name: 'Tasarım' },
     ];
 
-    const [topBarVisible, setTopBarVisible] = useState(true);
-    const [query, setQuery] = useState('');
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [filtered, setFiltered] = useState([]);
-    const [isFocused, setFocus] = useState(false);
-    const [thumbnail, setThumbnail] = useState('/thumbs/no_thumbnail.png');
-    const[title, setTitle] = useState('');
+    const [sections, setSections] = useState([
+        { id: 1, title: 'Giriş ve Tanıtım' },
+        { id: 2, title: 'Temel Kavramlar' },
+        { id: 3, title: 'Uygulamalı Örnekler' }
+    ]);
 
-    const titleRef = useRef();
-    const descriptionRef = useRef();
-    const fileInputRef = useRef();
+    const course = {
+        course_id: 1,
+        lesson_number: 0,
+        thumbnail: '/thumbs/no_thumbnail.png',
+        title: 'JavaScript\'e Giriş',
+        description: 'Babababa'
+    }
 
-    const router = useRouter();
+    const categories = [
+        {
+            id: 1,
+            name: 'React'
+        },
+        {
+            id: 2,
+            name: 'Next.js'
+        }
+    ]
 
+    useEffect(() => {
+        setThumbnail(course.thumbnail)
+        setTitle(course.title)
+        descriptionRef.current.value = course.description
+        setSelectedCategories(categories)
+    }, []);
+
+    const handleThumbnailChange = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const previewUrl = URL.createObjectURL(file);
+            setThumbnail(previewUrl);
+        }
+    };
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -62,22 +99,20 @@ export default function CourseCreate() {
         setSelectedCategories(prev => prev.filter(c => c.id !== category.id));
     };
 
-
-    const handleClick = () => {
-        const description = descriptionRef.current.value
-        const courseId = 1 /* serverden çekilecek */
-
-        router.push(`/edit-course?course_id=${courseId}`)
-    }
-
-    const handleThumbnailChange = (e) => {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const previewUrl = URL.createObjectURL(file);
-            setThumbnail(previewUrl);
-        }
+    const handleReplaceVideo = (id) => {
+        // dosya seç veya video değiştir
+        console.log("Video değiştiriliyor: ", id);
     };
 
+    const handleDeleteSection = (id) => {
+        const confirmed = window.confirm("Bu bölümü silmek istediğinize emin misiniz?");
+        if (confirmed)
+            setSections(prev => prev.filter(sec => sec.id !== id));
+    };
+
+    const handleUpdate = () => {
+
+    }
 
 
     return (
@@ -85,34 +120,36 @@ export default function CourseCreate() {
             <TopBar onVisibilityChange={setTopBarVisible} />
             <SideBar topOffset={topBarVisible} shouldOpen={false} />
 
-            <div style={{ marginTop: '120px', marginLeft: '180px' }}>
-                <h1 style={{ fontSize: '25px', fontWeight: 'bold' }}>Kurs Oluştur</h1>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '50px' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '120px' }}>
                 <div style={{ width: '10vw', padding: '20px' }}>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', width: '80vw', backgroundColor: '#404040', borderRadius: '10px', padding: '20px' }} >
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '60vw', backgroundColor: '#404040', borderRadius: '10px', padding: '20px', color: '#fff' }}>
+                        
+                        {/* Başlık Kısmı */}
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline'}} >
-                            <h3 style={{fontSize: '18px', width: '8vw'}} > Kurs Başlığı: </h3>
-                            <input type='text' className='logTextbox' style={{width: '23vw'}} onChange={e => setTitle(e.target.value)} ></input>
+                            <h3 style={{fontSize: '18px', width: '10vw'}} > Kurs Başlığı: </h3>
+                            <input type='text' className='logTextbox' style={{width: '23vw'}} value={title} onChange={e => setTitle(e.target.value)} ></input>
                         </div>
+
+                        {/* Açıklama Kısmı */}
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', height: '10vh', alignItems: 'baseline'}} >
-                            <h3 style={{fontSize: '18px', width: '8vw'}} > Açıklama: </h3>
+                            <h3 style={{fontSize: '18px', width: '10vw'}} > Açıklama: </h3>
                             <textarea ref={descriptionRef} className='logTextbox' style={{
                                 width: '23vw',
                                 height: '100%',
                                 resize: 'none',
                             }} />
                         </div>
+
+                        {/* Kategori Kısmı */}
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline'}} >
-                            <h3 style={{fontSize: '18px', width: '8vw'}} > Kategoriler: </h3>
+                            <h3 style={{fontSize: '18px', width: '10vw'}} > Kategoriler: </h3>
                             <div style={{display: 'flex', flexDirection: 'column'}} >
                                 <div style={{display: 'flex', alignItems: 'flex-start', gap: '10px', marginTop: '20px', height: '35px'}} >
                                     <input type='text' className='logTextbox' style={{width: '23vw', marginTop: 0}} value={query} 
                                         onChange={handleInputChange} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
-                                    <div style={{display: 'flex', height: '35px'}} >
+                                    <div style={{display: 'flex', maxHeight: '136px', flexWrap: 'wrap', overflow: 'auto', maxWidth: '20vw', zIndex: '1001'}} >
                                         {selectedCategories.map((cat, index) => (
                                             <div key={index} style={{
                                                 backgroundColor: '#242424',
@@ -166,8 +203,10 @@ export default function CourseCreate() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Thumbnail Ayarlama Kısmı */}
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline', marginTop: '20px'}} >
-                            <h3 style={{fontSize: '18px', width: '8vw'}} > Thumbnail Resmi: </h3>
+                            <h3 style={{fontSize: '18px', width: '10vw'}} > Thumbnail Değiştir: </h3>
                             <input
                                 type="file"
                                 id="thumbnailInput"
@@ -180,10 +219,75 @@ export default function CourseCreate() {
                                 Thumbnail Seç
                             </label>
                         </div>
+
+                        {/* Bölümler Kısmı */}
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline', marginTop: '20px'}} >
-                            <button className='logButton' style={{width: '10vw', height: '5vh', margin: 'auto 5vw'}} onClick={handleClick} > Kursu Yayınla </button>
+                            <h3 style={{fontSize: '18px', width: '10vw'}} > Bölümler: </h3>
+                            <div style={{
+                                    maxHeight: '20vh',
+                                    overflowY: 'auto',
+                                    border: '1px solid #ccc',
+                                    borderRadius: '10px',
+                                    width: '30vw',
+                                    padding: '5px',
+                                    backgroundColor: 'var(--background)'
+                                }}
+                            >
+                                {sections.map((section, index) => (
+                                    <div key={section.id} className='ep-div' >
+                                        <span style={{ fontWeight: 'bold' }}>
+                                            Bölüm {index + 1}:
+                                        </span>
+                                        <input
+                                            type="text"
+                                            value={section.title}
+                                            onChange={(e) => {
+                                                const updated = [...sections];
+                                                updated[index].title = e.target.value;
+                                                setSections(updated);
+                                            }}
+                                            className='ep-input'
+                                        />
+
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <button
+                                                onClick={() => handleReplaceVideo(section.id)}
+                                                style={{
+                                                    padding: '6px 10px',
+                                                    backgroundColor: '#007bff',
+                                                    color: '#fff',
+                                                    border: 'none',
+                                                    borderRadius: '4px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                            Videoyu Değiştir
+                                            </button>
+                                            <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                                            <lord-icon
+                                                src="https://cdn.lordicon.com/oqeixref.json"
+                                                trigger="hover"
+                                                colors="primary:#ff2e2e"
+                                                onClick={() => handleDeleteSection(section.id)} >
+                                            </lord-icon>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
+
+                        {/* Güncelleme Kısmı */}
+                        <span style={{margin: 'auto auto auto 8.7vw', textAlign: 'center'}} > {message} </span>
+                        <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline'}} >
+                            
+                            <button className='logButton' style={{width: '10vw', height: '5vh', margin: 'auto 5vw'}} onClick={handleUpdate} > 
+                                Kursu Güncelle 
+                            </button>
+                        </div>
+
                     </div>
+
+                    {/* Video Thumbnail Kısmı */}
                     <div style={{ backgroundColor: 'var(--background)', width: '16vw', aspectRatio: '16/9', height: '9vw', margin: '30px 50px auto auto', borderRadius: '10px' }} >
                         <img
                             src={thumbnail}
@@ -195,6 +299,7 @@ export default function CourseCreate() {
                             {title}
                         </div>
                     </div>
+
                 </div>
                 <div style={{ width: '10vw', padding: '20px'}}>
                 </div>
