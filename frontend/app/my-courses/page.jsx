@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-import '../input.css';
-
 import TopBar from '../components/TopBar';
 import SideBar from '../components/SideBar';
 import RecVideos from '../components/RecVideos';

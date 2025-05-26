@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import '../input.css';
 
 import TopBar from '../components/TopBar';
 import SlideComp from '../components/SlideComp';

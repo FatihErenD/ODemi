@@ -4,8 +4,6 @@ import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import './profile.css'
 import TopBar from '../components/TopBar'
-import Container from '../components/Container'
-import ProfileInfo from '../components/ProfileInfo'
 import SideBar from '../components/SideBar'
 import RecVideos from '../components/RecVideos'
 
