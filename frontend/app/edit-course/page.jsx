@@ -99,11 +99,6 @@ export default function EditCourse() {
         setSelectedCategories(prev => prev.filter(c => c.id !== category.id));
     };
 
-    const handleReplaceVideo = (id) => {
-        // dosya seç veya video değiştir
-        console.log("Video değiştiriliyor: ", id);
-    };
-
     const handleDeleteSection = (id) => {
         const confirmed = window.confirm("Bu bölümü silmek istediğinize emin misiniz?");
         if (confirmed)
@@ -228,12 +223,6 @@ export default function EditCourse() {
                                         />
 
                                         <div style={{ display: 'flex', gap: '10px' }}>
-                                            <button
-                                                onClick={() => handleReplaceVideo(section.id)}
-                                                className='ep-button'
-                                            >
-                                            Videoyu Değiştir
-                                            </button>
                                             <script src="https://cdn.lordicon.com/lordicon.js"></script>
                                             <lord-icon
                                                 src="https://cdn.lordicon.com/oqeixref.json"

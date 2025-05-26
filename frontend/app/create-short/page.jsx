@@ -1,14 +1,28 @@
 'use client'
 
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
+
+import "../components/style/shortpreview.css"
 
 import SideBar from "../components/SideBar";
 import TopBar from "../components/TopBar";
-import "../components/style/vidthumbnail.css"
 
+export default function CreateShort() {
+    const [title, setTitle] = useState('');
+    const [topBarVisible, setTopBarVisible] = useState(true);
+    const [query, setQuery] = useState('');
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [filtered, setFiltered] = useState([]);
+    const [isFocused, setFocus] = useState(false);
+    const [thumbnail, setThumbnail] = useState('/thumbs/no_thumbnail_shorts.png');
 
-export default function CourseCreate() {
+    const descriptionRef = useRef();
+    const fileInputRef = useRef();
+    const videoFileInputRef = useRef();
+
+    const router = useRouter();
+
     const allCategories = [
         { id: 1, name: 'React' },
         { id: 2, name: 'Next.js' },
@@ -25,20 +39,6 @@ export default function CourseCreate() {
         { id: 13, name: 'Programlama' },
         { id: 14, name: 'Tasarım' },
     ];
-
-    const [topBarVisible, setTopBarVisible] = useState(true);
-    const [query, setQuery] = useState('');
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [filtered, setFiltered] = useState([]);
-    const [isFocused, setFocus] = useState(false);
-    const [thumbnail, setThumbnail] = useState('/thumbs/no_thumbnail.png');
-    const [title, setTitle] = useState('');
-
-    const descriptionRef = useRef();
-    const fileInputRef = useRef();
-
-    const router = useRouter();
-
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -64,9 +64,9 @@ export default function CourseCreate() {
 
     const handleClick = () => {
         const description = descriptionRef.current.value
-        const courseId = 1 /* serverden çekilecek */
+        const shortsId = 1 /* serverden çekilecek */
 
-        router.push(`/edit-course?course_id=${courseId}`)
+        router.push(`/shorts?id=${shortsId}`)
     }
 
     const handleThumbnailChange = (e) => {
@@ -75,9 +75,7 @@ export default function CourseCreate() {
             const previewUrl = URL.createObjectURL(file);
             setThumbnail(previewUrl);
         }
-    };
-
-
+    }
 
     return (
         <div>
@@ -85,18 +83,21 @@ export default function CourseCreate() {
             <SideBar topOffset={topBarVisible} shouldOpen={false} />
 
             <div style={{ marginTop: '120px', marginLeft: '180px' }}>
-                <h1 style={{ fontSize: '25px', fontWeight: 'bold' }}>Kurs Oluştur</h1>
+                <h1 style={{ fontSize: '25px', fontWeight: 'bold' }}>Short Oluştur</h1>
             </div>
-
+        
             <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '50px' }}>
                 <div style={{ width: '10vw', padding: '20px' }}>
                 </div>
+
                 <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', width: '80vw', backgroundColor: '#404040', borderRadius: '10px', padding: '20px' }} >
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '60vw', backgroundColor: '#404040', borderRadius: '10px', padding: '20px', color: '#fff' }}>
+                        
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline'}} >
-                            <h3 style={{fontSize: '18px', width: '8vw'}} > Kurs Başlığı: </h3>
-                            <input type='text' className='logTextbox' style={{width: '23vw'}} onChange={e => setTitle(e.target.value)} ></input>
+                            <h3 style={{fontSize: '18px', width: '8vw'}} > Short Başlığı: </h3>
+                            <input type='text' className='logTextbox' style={{width: '23vw'}} onChange={e => setTitle(e.target.value)} value={title} ></input>
                         </div>
+
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', height: '10vh', alignItems: 'baseline'}} >
                             <h3 style={{fontSize: '18px', width: '8vw'}} > Açıklama: </h3>
                             <textarea ref={descriptionRef} className='logTextbox' style={{
@@ -105,6 +106,7 @@ export default function CourseCreate() {
                                 resize: 'none',
                             }} />
                         </div>
+
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline'}} >
                             <h3 style={{fontSize: '18px', width: '8vw'}} > Kategoriler: </h3>
                             <div style={{display: 'flex', flexDirection: 'column'}} >
@@ -130,67 +132,81 @@ export default function CourseCreate() {
                                     </div>
                                 </div>                            
                                 <div style={{position: 'relative', maxHeight: '200px'}} >
-                                        <ul style={{
-                                            listStyle: 'none',
-                                            margin: 0,
-                                            padding: '5px',
-                                            border: '1px solid #ccc',
-                                            borderRadius: '6px',
-                                            backgroundColor: '#242424',
-                                            boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-                                            position: 'absolute',
-                                            width: '23vw',
-                                            zIndex: 1000,
-                                            scrollbarWidth: 'none',
-
-                                            maxHeight: isFocused && filtered.length > 0 ? '200px' : '0px',
-                                            opacity: isFocused && filtered.length > 0 ? 1 : 0,
-                                            overflow: 'auto',
-                                            transition: 'max-height 1s ease-out, opacity 0.3s ease',
-                                            pointerEvents: isFocused && filtered.length > 0 ? 'auto' : 'none'
-                                        }}>
-                                        {filtered.map((cat, i) => (
-                                            <li key={i}
+                                <ul style={{
+                                    listStyle: 'none',
+                                    margin: 0,
+                                    padding: '5px',
+                                    border: '1px solid #ccc',
+                                    borderRadius: '6px',
+                                    backgroundColor: '#242424',
+                                    boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                                    position: 'absolute',
+                                    width: '23vw',
+                                    zIndex: 1000,
+                                    scrollbarWidth: 'none',
+                
+                                    maxHeight: isFocused && filtered.length > 0 ? '200px' : '0px',
+                                    opacity: isFocused && filtered.length > 0 ? 1 : 0,
+                                    overflow: 'auto',
+                                    transition: 'max-height 1s ease-out, opacity 0.3s ease',
+                                    pointerEvents: isFocused && filtered.length > 0 ? 'auto' : 'none'
+                                }}>
+                                    {filtered.map((cat, i) => (
+                                        <li key={i}
                                             onMouseDown={() => handleSelect(cat)}
-                                            style={{
+                                                style={{
                                                 padding: '8px 12px',
                                                 cursor: 'pointer',
                                                 borderBottom: i !== filtered.length - 1 ? '1px solid #eee' : 'none'
                                             }}
-                                            >
+                                        >
                                             {cat.name}
-                                            </li>
-                                        ))}
-                                        </ul>
-                                </div>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         </div>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline', marginTop: '20px'}} >
+                        <h3 style={{fontSize: '18px', width: '8vw'}} > Thumbnail Resmi: </h3>
+                        <input
+                            type="file"
+                            id="thumbnailInput"
+                            accept="image/*"
+                            ref={fileInputRef}
+                            onChange={(e) => handleThumbnailChange(e)}
+                            style={{ color: '#fff', display: 'none' }}
+                        />
+                        <label htmlFor="thumbnailInput" className='logButton' style={{width: '8vw', textAlign: 'center', padding: '5px'}} >
+                            Thumbnail Seç
+                        </label>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline', marginTop: '20px'}} >
+                        <h3 style={{fontSize: '18px', width: '8vw'}} > Video Yükle: </h3>
+                        <input
+                            type="file"
+                            id="videoInput"
+                            accept="video/*"
+                            ref={videoFileInputRef}
+                            onChange={(e) => handleThumbnailChange(e)}
+                            style={{ color: '#fff', display: 'none' }}
+                        />
+                        <label htmlFor="videoInput" className='logButton' style={{width: '8vw', textAlign: 'center', padding: '5px'}} >
+                            Video Seç
+                        </label>
+                    </div>
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline', marginTop: '20px'}} >
-                            <h3 style={{fontSize: '18px', width: '8vw'}} > Thumbnail Resmi: </h3>
-                            <input
-                                type="file"
-                                id="thumbnailInput"
-                                accept="image/*"
-                                ref={fileInputRef}
-                                onChange={(e) => handleThumbnailChange(e)}
-                                style={{ color: '#fff', display: 'none' }}
-                            />
-                            <label htmlFor="thumbnailInput" className='logButton' style={{width: '8vw', textAlign: 'center', padding: '5px'}} >
-                                Thumbnail Seç
-                            </label>
-                        </div>
-                        <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline', marginTop: '20px'}} >
-                            <button className='logButton' style={{width: '10vw', height: '5vh', margin: 'auto 5vw'}} onClick={handleClick} > Kursu Yayınla </button>
+                            <button className='logButton' style={{width: '10vw', height: '5vh', margin: 'auto 5vw'}} onClick={handleClick} > Shorts Yayınla </button>
                         </div>
                     </div>
-                    <div style={{ backgroundColor: 'var(--background)', width: '16vw', aspectRatio: '16/9', height: '9vw', margin: '30px 50px auto auto', borderRadius: '10px' }} >
+                    <div style={{ backgroundColor: 'var(--background)', width: '9vw', aspectRatio: '9/16', height: '16vw', margin: '30px 50px auto auto', borderRadius: '10px' }} >
                         <img
                             src={thumbnail}
                             draggable={false}
-                            className='vid-thumb-img'
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px' }}
+                            className='short-img'
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px', margin: 0 }}
                         />
-                        <div className='vid-thumb-text'>
+                        <div className='short-title'>
                             {title}
                         </div>
                     </div>

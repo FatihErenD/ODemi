@@ -2,7 +2,7 @@ import VidThumbnail from "./VidThumbnail"
 import { useState, useEffect } from "react";
 import "./style/recvideos.css"
 
-export default function RecVideos({ videos }) {
+export default function RecVideos({ videos, isOwner=false }) {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [filteredVideos, setFilteredVideos] = useState(videos)
 
@@ -32,13 +32,13 @@ export default function RecVideos({ videos }) {
 
     useEffect(() => {
         if (selectedCategories.length === 0) {
-        setFilteredVideos(videos);
+            setFilteredVideos(videos);
         } else {
-        setFilteredVideos(
-            videos.filter(video =>
-            selectedCategories.includes(video.category_id)
-            )
-        );
+            setFilteredVideos(
+                videos.filter(video =>
+                selectedCategories.includes(video.category_id)
+                )
+            );
         }
     }, [selectedCategories, videos]);
 
@@ -72,7 +72,7 @@ export default function RecVideos({ videos }) {
                         width: '100%'
                     }}>
                 {filteredVideos.map((video, index) => (
-                    <VidThumbnail key={index} courseId={video.course_id} lessonId={video.lesson_id} thumbnail={video.thumbnail} title={video.title} />
+                    <VidThumbnail key={index} courseId={video.course_id} lessonId={video.lesson_id} thumbnail={video.thumbnail} title={video.title} isOwner={isOwner} />
                 ))}
             </div>
         </div>

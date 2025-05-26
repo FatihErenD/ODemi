@@ -1,5 +1,4 @@
-
-.github-container {
+.profile-container {
   margin-top:60px;
   display: flex;
   padding: 40px;
@@ -11,6 +10,7 @@
   flex-direction: column;
   width: 300px;
   min-width: 300px;
+  max-height: 580px;
   background-color: color-mix(in srgb, var(--background) 95%, #979797);
   border-radius: 10px;
   gap: 20px;
