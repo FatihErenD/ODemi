@@ -44,7 +44,7 @@ export default function RecVideos({ videos }) {
 
     return (
         <div style={{display: 'flex', width: '100%', height: '100%'}} >
-            <div style={{width: '20%', marginTop: '80px', borderRight: '2px solid #404040'}} >
+            <div style={{width: '20vw', minWidth: '16vw', marginTop: '80px', borderRight: '2px solid #404040'}} >
                 <h3 style={{textAlign: 'center', fontSize: '20px', fontWeight: 'bold', margin: '10px'}} > Kategoriler </h3>
                 <hr style={{color: 'var(--textColor)', margin: '0 40px 20px 40px'}} />
 

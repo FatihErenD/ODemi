@@ -58,7 +58,7 @@ export default function WatchContainer({ video }) {
             const newComment = {
             name: 'user', /* Username yazdıracak */
             text: text.trim(),
-            date: new Date().toLocaleDateString()
+            date: '26-05-2025'
             };
             inputRef.current.value = ""
             setComments([newComment, ...comments])

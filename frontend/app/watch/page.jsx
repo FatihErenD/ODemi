@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useRef, useState, useEffect } from 'react'
 import TopBar from '../components/TopBar';
-import '../input.css'
 import SideBar from '../components/SideBar';
 import WatchContainer from '../components/WatchContainer';
 
@@ -64,7 +63,7 @@ export default function WatchPage() {
     <div >
       <TopBar onVisibilityChange={setTopBarVisible} />
       <SideBar topOffset={topBarVisible} shouldOpen={false} />
-      <WatchContainer video={video} />
+      <WatchContainer key={`${courseId}-${lessonId}`} video={video} />
         
     </div>
   );

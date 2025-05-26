@@ -1,0 +1,90 @@
+
+.github-container {
+  margin-top:60px;
+  display: flex;
+  padding: 40px;
+  gap: 60px;
+}
+
+.profile.left-panel {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  min-width: 300px;
+  background-color: color-mix(in srgb, var(--background) 95%, #979797);
+  border-radius: 10px;
+  gap: 20px;
+  text-align: center;
+  align-items: center;
+}
+
+.avatar-edit-div {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin: 30px auto 15px auto;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-edit {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 6px;
+  border-radius: 50%;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.avatar-edit-div:hover .avatar-edit {
+  opacity: 1;
+}
+
+.username {
+  color: #8b949e;
+  margin-top: 0;
+  font-size: 14px;
+}
+
+.edit-btn {
+  background: color-mix(in srgb, var(--background) 85%, #979797);
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin: 10px 0;
+  width: 8vw;
+  transition: background-color 0.3s ease-out;
+}
+
+.edit-btn:hover {
+  background-color: color-mix(in srgb, var(--background) 75%, #979797);
+  transform: translate(1.1, 1.1);
+}
+
+.follow-info {
+  font-size: 14px;
+  color: #8b949e;
+  margin-bottom: 20px;
+}
+
+
+.courses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
