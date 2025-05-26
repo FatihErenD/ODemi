@@ -22,3 +22,71 @@
     border: none;
     background: none;
 }
+
+.ep-button {
+    padding: 6px 10px;
+    background-color: #404040;
+    border: 2px solid var(--background);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease-out, background-color 0.3s ease-out, transform 0.4s ease-out;
+}
+
+.ep-button:hover {
+    background-color: color-mix(in srgb, #404040 80%, #fff);
+    border-color: color-mix(in srgb, var(--background) 90%, #fff);
+    transform: translate(1.1, 1.1) scale(1.02);
+}
+
+.category-div {
+    background-color: #242424;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease-out;
+}
+
+.category-div:hover {
+    background-color: color-mix(in srgb, #242424 80%, #fff);
+}
+
+.cat-span {
+    margin-left: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.3s ease-out;
+}
+
+.cat-span:hover {
+    color: red;
+}
+
+.rec-cat-bar {
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #242424;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: absolute;
+    width: 23vw;
+    z-index: 1000;
+    scrollbar-width: none;
+    overflow: auto;
+    transition: max-height 1s ease-out, opacity 0.3s ease;
+}
+
+.rec-cat {
+    padding: 8px 12px;
+    background-color: #242424;
+    cursor: pointer;
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transition: background-color 0.3s ease-out;
+}
+
+.rec-cat:hover {
+    background-color: color-mix(in srgb, #242424 80%, #fff);
+}

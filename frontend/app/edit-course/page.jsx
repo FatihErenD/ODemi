@@ -151,48 +151,26 @@ export default function EditCourse() {
                                         onChange={handleInputChange} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
                                     <div style={{display: 'flex', maxHeight: '136px', flexWrap: 'wrap', overflow: 'auto', maxWidth: '20vw', zIndex: '1001'}} >
                                         {selectedCategories.map((cat, index) => (
-                                            <div key={index} style={{
-                                                backgroundColor: '#242424',
-                                                color: '#fff',
-                                                padding: '5px 10px',
-                                                borderRadius: '20px'
-                                            }}>
+                                            <div key={index} className='category-div' >
                                                 <span>{cat.name}</span>
-                                                <span onClick={() => handleRemove(cat)} style={{
-                                                    marginLeft: '8px',
-                                                    cursor: 'pointer',
-                                                    fontWeight: 'bold'
-                                                }}>×</span>
+                                                <span onClick={() => handleRemove(cat)} className='cat-span'>×</span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>                            
                                 <div style={{position: 'relative', maxHeight: '200px'}} >
-                                        <ul style={{
-                                            listStyle: 'none',
-                                            margin: 0,
-                                            padding: '5px',
-                                            border: '1px solid #ccc',
-                                            borderRadius: '6px',
-                                            backgroundColor: '#242424',
-                                            boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-                                            position: 'absolute',
-                                            width: '23vw',
-                                            zIndex: 1000,
-                                            scrollbarWidth: 'none',
-
+                                        <ul className='rec-cat-bar' style={{
                                             maxHeight: isFocused && filtered.length > 0 ? '200px' : '0px',
                                             opacity: isFocused && filtered.length > 0 ? 1 : 0,
-                                            overflow: 'auto',
-                                            transition: 'max-height 1s ease-out, opacity 0.3s ease',
                                             pointerEvents: isFocused && filtered.length > 0 ? 'auto' : 'none'
                                         }}>
                                         {filtered.map((cat, i) => (
                                             <li key={i}
                                             onMouseDown={() => handleSelect(cat)}
+                                            className='rec-cat'
                                             style={{
-                                                padding: '8px 12px',
-                                                cursor: 'pointer',
+                                                borderBottomLeftRadius: i !== filtered.length - 1 ? '0': '6px',
+                                                borderBottomRightRadius: i !== filtered.length - 1 ? '0': '6px',
                                                 borderBottom: i !== filtered.length - 1 ? '1px solid #eee' : 'none'
                                             }}
                                             >
@@ -252,14 +230,7 @@ export default function EditCourse() {
                                         <div style={{ display: 'flex', gap: '10px' }}>
                                             <button
                                                 onClick={() => handleReplaceVideo(section.id)}
-                                                style={{
-                                                    padding: '6px 10px',
-                                                    backgroundColor: '#007bff',
-                                                    color: '#fff',
-                                                    border: 'none',
-                                                    borderRadius: '4px',
-                                                    cursor: 'pointer'
-                                                }}
+                                                className='ep-button'
                                             >
                                             Videoyu Değiştir
                                             </button>
