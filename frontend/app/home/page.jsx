@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import '../input.css';
 
 import TopBar from '../components/TopBar';
 import SlideComp from '../components/SlideComp';
@@ -18,16 +17,18 @@ export default function Home() {
   const [topBarVisible, setTopBarVisible] = useState(true);
 
   const videos = [
-    { id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 4, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 5, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 6, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 7, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 8, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 9, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { id: 10, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 1, lesson_id: 1, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 1, lesson_id: 2, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 1, lesson_id: 3, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 2, lesson_id: 1, category_id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 3, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 4, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 5, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 6, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 7, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 8, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 9, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
+    { course_id: 10, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
   ];
 
   const shorts = [
@@ -49,6 +50,48 @@ export default function Home() {
       thumbnail: '/thumbs/thumbnail3.png',
       videoUrl: '/videos/react1.mp4',
     },
+    {
+      id: 104,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail1.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 105,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail2.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 106,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail3.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 107,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail1.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 108,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail2.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 109,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail3.png',
+      videoUrl: '/videos/react1.mp4',
+    },
+    {
+      id: 110,
+      title: 'brainrot3 ders 3',
+      thumbnail: '/thumbs/thumbnail1.png',
+      videoUrl: '/videos/react1.mp4',
+    }
   ];
 
 

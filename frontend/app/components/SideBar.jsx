@@ -4,9 +4,11 @@ import './style/sidebar.css';
 
 export default function SideBar({ topOffset, shouldOpen, items = [] }) {
     const defaultItems = [
-        { id: 1, label: "Profil", url: "/profile" },
-        { id: 1, label: "Kategoriler", url: "/profile" },
-        { id: 2, label: "Varsayılan 2", url: "/" },
+        { id: 1, label: "Ana Sayfa", url: "/" },
+        { id: 2, label: "Profil", url: "/profile" },
+        { id: 3, label: "Kurslarım", url: "/my-courses" },
+        { id: 4, label: "Kurs Oluştur", url: "/create-course" },
+        { id: 5, label: "Shorts Oluştur", url: "/create-short"}
     ];
     const list = items.length > 0 ? items : defaultItems;
 
@@ -33,8 +35,8 @@ export default function SideBar({ topOffset, shouldOpen, items = [] }) {
         <div className={`sidebar ${open ? 'open' : ''}`} style={{ top: topOffset ? 60 : 0 }} >
             <h3 style={{ textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}> Menü </h3>
 
-            { list.map(item => (
-                <button key={item.id} onClick={() => router.push(item.url)} >
+            { list.map((item, index) => (
+                <button key={index} onClick={() => router.push(item.url)} >
                     <span > {item.label} </span>
                 </button>
             ))}

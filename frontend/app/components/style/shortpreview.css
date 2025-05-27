@@ -1,0 +1,50 @@
+.short-img-div {
+    min-width: 180px;
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+}
+
+.short-img {
+    width: 180px;
+    height: 315px;
+    border-radius: 8px;
+    margin: 31px 0 31px 5px;
+    object-fit: cover;
+    margin-bottom: 5px;
+    transition: transform 0.3s ease-out;
+}
+
+.short-img-div:hover .short-img {
+    transform: scale(1.05);
+}
+
+.short-title {
+    color: white;
+    font-size: 15px;
+    margin: 10px 0 0 10px;
+    transition: color 0.2s ease-out;
+}
+
+.short-title:hover {
+    color: color-mix(in srgb, white 80%, #000);
+}
+
+.shorts-edit-icon {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 6px;
+  border-radius: 50%;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.short-img-div:hover .shorts-edit-icon{
+    opacity: 1;
+}

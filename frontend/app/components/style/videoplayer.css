@@ -2,7 +2,10 @@
     background: transparent;
     position: relative;
     width: 65vw;
+    min-height: 80vh;
     margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .wrapper video {

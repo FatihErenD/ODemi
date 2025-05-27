@@ -34,7 +34,7 @@
 .sidebar span {
     display: inline-block;
     cursor: pointer;
-    transition: 0.1s ease;
+    transition: 0.2s ease, color 0.2s ease-out;
 }
 
 .sidebar span:hover {

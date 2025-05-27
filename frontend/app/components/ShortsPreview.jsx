@@ -1,40 +1,40 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import "./style/shortpreview.css"
 
-export default function ShortsPreview({ shorts }) {
+export default function ShortsPreview({ shorts, isOwner=false }) {
   const router = useRouter();
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2 style={{ color: 'white', marginBottom: '10px' }}>Brainrot Dersler</h2>
+    <div style={{ padding: '20px', margin: '10px 200px 10px 200px' }}>
+      {isOwner ? null : <h2 style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>Brainrot Dersler</h2> }
       <div style={{
         display: 'flex',
         overflowX: 'auto',
-        gap: '10px'
+        gap: '30px'
       }}>
-        {shorts.map((video) => (
+        {shorts.map((video, index) => (
           <div
-            key={video.id}
-            onClick={() => router.push(`/shorts?id=${video.id}`)} // 👈 dikkat!
-            style={{
-              minWidth: '120px',
-              cursor: 'pointer',
-              textAlign: 'center'
-            }}
+            key={index}
+            onClick={() => router.push(`/shorts?id=${video.id}`)}
+            className='short-img-div'
           >
             <img
               src={video.thumbnail}
               alt={video.title}
-              style={{
-                width: '120px',
-                height: '210px',
-                borderRadius: '8px',
-                objectFit: 'cover',
-                marginBottom: '5px'
-              }}
+              className='short-img'
             />
-            <p style={{ color: 'white', fontSize: '14px' }}>{video.title}</p>
+            {isOwner ? (<img
+                          src="/icons/edit-icon.png"
+                          alt="Edit"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/shorts/edit?id=${video.id}`);
+                          }} 
+                          className='shorts-edit-icon'
+                          />) : null}
+            <p className='short-title' >{video.title}</p>
           </div>
         ))}
       </div>

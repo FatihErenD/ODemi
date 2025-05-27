@@ -1,0 +1,43 @@
+.cat-div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 30px;
+    transition: transform 0.3s ease-out;
+}
+
+.cat-div:hover {
+    transform: scale(1.1) translate(5px, -5px);
+}
+
+.cat-div label {
+    color: white;
+    cursor: pointer;
+}
+
+.cat-div label:hover {
+    color: color-mix(in srgb, white 80%, #000);
+}
+
+.checkmark {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #404040;
+    border-radius: 5px;
+    background-color: var(--colorForTextBack);
+    margin: 0 30px 0 20px;
+    display: inline-block;
+    position: relative;
+    transition: background-color 0.4s ease-out;
+}
+
+.custom-checkbox {
+    display: none;
+}
+
+  .custom-checkbox:checked + .checkmark{
+    content: "";
+    background-color: var(--colorForBar);
+  }

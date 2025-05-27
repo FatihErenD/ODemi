@@ -11,22 +11,56 @@
 
 .slide {
     width: 100%;
-    color:var(--background);
+    color: var(--background);
     margin-top: 20px;
     height: 50vh;
-    flex-shrink: 0;
-    background-color: #ffffff;
+    background-color: #363636;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
     font-size: 2em;
-    border: 1px solid #ccc;
 }
 
 .slick-slider,
 .slick-list,
 .slick-track {
+  outline: none;
+    border: 0px;
     margin: 0 auto;
     width: 95%;
     height: 95%;
+}
+
+@keyframes jump {
+  0% {
+    opacity: 0;
+  }
+  99% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.slide img {
+  width: 90%;
+  aspect-ratio: 16/9;
+  transform-style: preserve-3d;
+  will-change: transform;
+  box-shadow: 0px 20px 40px rgba(0,0,0,0.5);
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.slide h3 {
+  color: var(--background);
+  margin: 20px auto auto 20px;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.slide span {
+  color: var(--background);
+  margin: 10px auto 10px auto;
+  font-size: 25px;
 }
