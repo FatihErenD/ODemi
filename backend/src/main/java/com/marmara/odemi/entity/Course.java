@@ -29,6 +29,14 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Enrollment> enrollments = new HashSet<>();
 
+    @OneToMany(
+            mappedBy = "course",
+            cascade = CascadeType.ALL,      // tüm JPA işlemlerini (REMOVE de dahil) Lesson’a yansıt
+            orphanRemoval = true            // Course’dan çıkarılan Lesson’ı DB’den sil
+    )
+    private Set<Lesson> lessons = new HashSet<>();
+
+
     // getter/setter
 
     public Long getId() { return id; }

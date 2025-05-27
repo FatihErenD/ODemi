@@ -14,7 +14,7 @@ export default function MyCoursesPage() {
   const [topBarVisible, setTopBarVisible] = useState(true);
   const [myCourses, setMyCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     if (true) { // test için
       const courses = [
@@ -29,7 +29,7 @@ export default function MyCoursesPage() {
     const token = localStorage.getItem('token');
     axios.get('http://localhost:8080/api/course/my-courses', {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: Bearer ${token}
       }
     })
     .then(res => setCourses(res.data))

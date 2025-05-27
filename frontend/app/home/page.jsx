@@ -12,6 +12,7 @@ import ShortsPreview from '../components/ShortsPreview';
 export default function Home() {
   const router = useRouter();
   const [username, setUsername] = useState('');
+  const [courses, setCourses] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [topBarVisible, setTopBarVisible] = useState(true);
 
@@ -97,6 +98,26 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(token);
+
+    fetch('http://localhost:8080/api/course/all-courses', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
+        return res.json();
+      })
+      .then(data => setCourses(data))
+      .catch(err => {
+        console.error(err);
+        setError(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -107,7 +128,7 @@ export default function Home() {
 
       <ShortsPreview shorts={shorts} />
 
-      <RecVideos videos={videos} />
+      <RecVideos videos={courses} />
     </div>
   );
 }
