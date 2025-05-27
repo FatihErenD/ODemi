@@ -5,6 +5,7 @@ import "./style/recvideos.css"
 export default function RecVideos({ videos, isOwner=false }) {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [filteredVideos, setFilteredVideos] = useState(videos)
+    const [categories, setCategories] = useState([])
 
     const handleCategoryChange = (id) => {
         setSelectedCategories((prev) =>
@@ -15,20 +16,6 @@ export default function RecVideos({ videos, isOwner=false }) {
         console.log(id)
     };
 
-    const categories = [
-        {
-            id: 1,
-            name: "React"
-        },
-        {
-            id: 2,
-            name: "Next.js"
-        },
-        {
-            id: 3,
-            name: "Backend"
-        }
-    ]
 
     useEffect(() => {
         if (selectedCategories.length === 0) {
@@ -41,6 +28,23 @@ export default function RecVideos({ videos, isOwner=false }) {
             );
         }
     }, [selectedCategories, videos]);
+
+    useEffect(() => {
+        
+        fetch('http://localhost:8080/api/course/all-categories', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error(`Hata: ${res.status}`)
+            return res.json()
+        })
+        .then(data => setCategories(data))
+        .catch(err => console.error(err))
+        
+    })
 
     return (
         <div style={{display: 'flex', width: '100%', height: '100%'}} >
@@ -55,7 +59,7 @@ export default function RecVideos({ videos, isOwner=false }) {
                             <input 
                                 type="checkbox"
                                 className="custom-checkbox"
-                                onChange={() => handleCategoryChange(categorie.id)}
+                                onChange={() => handleCategoryChange(categorie.category_id)}
                             />
                             <span className="checkmark"></span>
                         </label>
@@ -72,7 +76,7 @@ export default function RecVideos({ videos, isOwner=false }) {
                         width: '100%'
                     }}>
                 {filteredVideos.map((video, index) => (
-                    <VidThumbnail key={index} courseId={video.course_id} lessonId={video.lesson_id} thumbnail={video.thumbnail} title={video.title} isOwner={isOwner} />
+                    <VidThumbnail key={index} courseId={video.course_id} lessonId={1} thumbnail={video.thumbnail} title={video.title} isOwner={isOwner} />
                 ))}
             </div>
         </div>

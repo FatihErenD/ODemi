@@ -102,7 +102,6 @@ export default function Home() {
     fetch('http://localhost:8080/api/course/all-courses', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     })
@@ -113,10 +112,10 @@ export default function Home() {
       .then(data => setCourses(data))
       .catch(err => {
         console.error(err);
-        setError(err.message);
+        console.log("");
       })
       .finally(() => {
-        setLoading(false);
+        console.log("naber")
       });
   }, []);
 

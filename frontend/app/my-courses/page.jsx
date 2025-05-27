@@ -16,7 +16,7 @@ export default function MyCoursesPage() {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    if (true) { // test için
+    if (false) { // test için
       const courses = [
         { course_id: 1, lesson_id: 1, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
         { course_id: 2, lesson_id: 1, category_id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' }
@@ -32,8 +32,8 @@ export default function MyCoursesPage() {
         Authorization: `Bearer ${token}`
       }
     })
-    .then(res => setCourses(res.data))
-    .catch(err => setError(err.response?.statusText || err.message))
+    .then(res => setMyCourses(res.data))
+    .catch(err => console.log("sa"))
     .finally(() => setLoading(false));
   }, []);
 

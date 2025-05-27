@@ -18,7 +18,14 @@ public class Course {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 255)
+    @Column(nullable = true)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "instructor_id", nullable = false)
+    private User user;
+
+    @Column(length = 255, nullable = true)
     private String thumbnail;
 
     @CreationTimestamp
@@ -36,8 +43,45 @@ public class Course {
     )
     private Set<Lesson> lessons = new HashSet<>();
 
+    public Course() {
+    }
 
-    // getter/setter
+    public Course(String title, String description, User user, String thumbnail) {
+        this.title = title;
+        this.description = description;
+        this.user = user;
+        this.thumbnail = thumbnail;
+    }
+
+// getter/setter
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
