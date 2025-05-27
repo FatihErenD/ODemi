@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import SideBar from "../components/SideBar";
@@ -9,23 +9,7 @@ import "../components/style/vidthumbnail.css"
 
 
 export default function CourseCreate() {
-    const allCategories = [
-        { id: 1, name: 'React' },
-        { id: 2, name: 'Next.js' },
-        { id: 3, name: 'Pazarlama' },
-        { id: 4, name: 'Matematik' },
-        { id: 5, name: 'Veri Bilimi' },
-        { id: 6, name: 'Yapay Zeka' },
-        { id: 7, name: 'Siber Güvenlik' },
-        { id: 8, name: 'Mobil Uygulama Geliştirme' },
-        { id: 9, name: 'Web Geliştirme' },
-        { id: 10, name: 'Oyun Tasarımı' },
-        { id: 11, name: 'Veritabanı Yönetimi' },
-        { id: 12, name: 'Makine Öğrenimi' },
-        { id: 13, name: 'Programlama' },
-        { id: 14, name: 'Tasarım' },
-    ];
-
+    const [categories, setCategories] = useState([]);
     const [topBarVisible, setTopBarVisible] = useState(true);
     const [query, setQuery] = useState('');
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -39,16 +23,34 @@ export default function CourseCreate() {
 
     const router = useRouter();
 
+    useEffect(() => {
+
+        fetch('http://localhost:8080/api/course/all-categories', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error(`Hata: ${res.status}`)
+            return res.json()
+        })
+        .then(data => setCategories(data))
+        .catch(err => console.error(err))
+        
+    },[])
+
 
     const handleInputChange = (e) => {
         const value = e.target.value;
         setQuery(value);
 
-        const filteredOptions = allCategories.filter(cat =>
+        const filteredOptions = categories.filter(cat =>
             cat.name.toLowerCase().includes(value.toLowerCase()) &&
-            !selectedCategories.some(selected => selected.id === cat.id)
+            !selectedCategories.some(selected => selected.category_id === cat.category_id)
         );
         setFiltered(filteredOptions);
+        selectedCategories.map(c => console.log(c));
     };
 
     const handleSelect = (category) => {
@@ -58,24 +60,69 @@ export default function CourseCreate() {
     };
 
     const handleRemove = (category) => {
-        setSelectedCategories(prev => prev.filter(c => c.id !== category.id));
+        setSelectedCategories(prev => prev.filter(c => c.category_id !== category.category_id));
     };
 
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+
+        e.preventDefault()
+
         const description = descriptionRef.current.value
-        const courseId = 1 /* serverden çekilecek */
+        const token = localStorage.getItem('token');
 
-        router.push(`/edit-course?course_id=${courseId}`)
-    }
-
-    const handleThumbnailChange = (e) => {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const previewUrl = URL.createObjectURL(file);
-            setThumbnail(previewUrl);
+        // JSON payload hazırla
+        const payload = {
+        title,
+        description,
+        categories: selectedCategories.map(cat => cat.category_id)
         }
-    };
+        
+        fetch('http://localhost:8080/api/course/add-course', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+        })
+        .then(res => {
+            if (!res.ok) throw new Error(`Hata: ${res.status}`)
+            return res.json()
+        })
+        .then(data => {
+            console.log('Backend yanıtı:', data)
+            // yönlendirme veya bildirim ekleyebilirsiniz
+        })
+        .catch(err => console.error(err))
+  }
+
+
+//        router.push(`/edit-course?course_id=${courseId}`)
+
+    const handleThumbnailChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('http://localhost:8080/api/course/thumbs', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) {
+                throw new Error(`Sunucu hatası: ${res.status}`);
+                }
+
+            const data = await res.json();
+            console.log("Yüklenen dosya:", data.fileUrl);
+            setThumbnail(data.fileUrl);
+        } catch (err) {
+            console.error("Yükleme hatası:", err);
+        }
+    }
 
 
 
@@ -180,7 +227,7 @@ export default function CourseCreate() {
                             </label>
                         </div>
                         <div style={{display: 'flex', flexDirection: 'row', gap: '20px', width: '100%', alignItems: 'baseline', marginTop: '20px'}} >
-                            <button className='logButton' style={{width: '10vw', height: '5vh', margin: 'auto 5vw'}} onClick={handleClick} > Kursu Yayınla </button>
+                            <button className='logButton' style={{width: '10vw', height: '5vh', margin: 'auto 5vw'}} onClick={(e) => handleClick(e)} > Kursu Yayınla </button>
                         </div>
                     </div>
                     <div style={{ backgroundColor: 'var(--background)', width: '16vw', aspectRatio: '16/9', height: '9vw', margin: '30px 50px auto auto', borderRadius: '10px' }} >

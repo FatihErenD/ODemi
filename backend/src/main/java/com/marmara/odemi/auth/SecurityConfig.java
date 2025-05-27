@@ -66,6 +66,10 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/course/all-courses").permitAll()
+                        .requestMatchers("/api/course/all-categories").permitAll()
+                        .requestMatchers("/api/course/thumbs").permitAll()
+                        .requestMatchers("/api/course/add-course").authenticated()
                         .requestMatchers("/api/auth/change-password").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
