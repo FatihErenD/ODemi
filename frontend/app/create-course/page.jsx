@@ -21,6 +21,8 @@ export default function CourseCreate() {
     const descriptionRef = useRef();
     const fileInputRef = useRef();
 
+    const thumbnailData = new FormData();
+
     const router = useRouter();
 
     useEffect(() => {
@@ -91,7 +93,6 @@ export default function CourseCreate() {
         })
         .then(data => {
             console.log('Backend yanıtı:', data)
-            // yönlendirme veya bildirim ekleyebilirsiniz
         })
         .catch(err => console.error(err))
   }
@@ -103,25 +104,10 @@ export default function CourseCreate() {
         const file = e.target.files[0];
         if (!file) return;
 
-        const formData = new FormData();
-        formData.append('file', file);
+        thumbnailData.append('file', file);
 
-        try {
-            const res = await fetch('http://localhost:8080/api/course/thumbs', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!res.ok) {
-                throw new Error(`Sunucu hatası: ${res.status}`);
-                }
-
-            const data = await res.json();
-            console.log("Yüklenen dosya:", data.fileUrl);
-            setThumbnail(data.fileUrl);
-        } catch (err) {
-            console.error("Yükleme hatası:", err);
-        }
+        const localUrl = URL.createObjectURL(file);
+        setThumbnail(localUrl);
     }
 
 

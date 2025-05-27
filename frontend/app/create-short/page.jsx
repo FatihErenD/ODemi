@@ -69,11 +69,24 @@ export default function CreateShort() {
         router.push(`/shorts?id=${shortsId}`)
     }
 
-    const handleThumbnailChange = (e) => {
+    const handleThumbnailChange = async (e) => {
         const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const previewUrl = URL.createObjectURL(file);
-            setThumbnail(previewUrl);
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('http://localhost:8080/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await res.json();
+            console.log("Yüklenen dosya:", data.fileUrl);
+            setThumbnail(data.fileUrl);
+        } catch (err) {
+            console.error("Yükleme hatası:", err);
         }
     }
 
