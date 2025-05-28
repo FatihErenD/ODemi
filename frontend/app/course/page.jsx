@@ -17,6 +17,8 @@ export default function CoursePage() {
     const courseId = Number(searchParams.get('course_id'));
 
     useEffect(() => {
+
+        if(!courseId) return;
         
         fetch(`http://localhost:8080/api/course/${courseId}`,{
             method: 'GET',
@@ -36,13 +38,13 @@ export default function CoursePage() {
             setThumbnail(data.thumbnail)
         }
         )
-    },[]);
+    }, [courseId]);
 
 
     const handleEnroll = async () => {
         const username = localStorage.getItem('username')
         try {
-            const res = await fetch(`/api/enroll?username=${username}&course_id=${courseId}`, {
+            const res = await fetch(`http://localhost:8080/api/enroll?username=${username}&course_id=${courseId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +88,7 @@ export default function CoursePage() {
                 <div className="right-sidebar">
                     <img className="instructor-photo" src="/images/instructor.jpg" alt="Kurs veren kişinin resmi" />
                     <p className="instructor-name"> {instructorName} </p>
-                    <button className="enroll-button" onClick={() => handleEnroll}>KAYIT OL</button>
+                    <button className="enroll-button" onClick={handleEnroll}>KAYIT OL</button>
                 </div>
             </div>
         </div>

@@ -31,7 +31,6 @@ public class EnrollmentController {
         this.enrollRepo = enrollmentRepo;
     }
 
-
     @PostMapping("")
     public ResponseEntity<?> enrollUser(@RequestParam("username") String username,
                                         @RequestParam("course_id") Long courseId
