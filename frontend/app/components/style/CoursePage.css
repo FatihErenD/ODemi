@@ -1,0 +1,106 @@
+.page-wrapper {
+    background-color: #000;
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.course-layout {
+    display: flex;
+    gap: 30px;
+    margin-top: 80px;
+    padding: 20px;
+}
+
+.left-content {
+    flex: 3;
+}
+
+.course-main-image {
+    width: 100%;
+    height: auto;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.course-title {
+    font-size: 36px;
+    margin: 20px 0 10px;
+}
+
+.course-description {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.course-lessons {
+    background-color: #777;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.lesson {
+    background-color: #ccc;
+    color: black;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #000;
+}
+
+.comments-section {
+    background-color: #777;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.comments-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.comment {
+    background-color: #bbb;
+    color: black;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.right-sidebar {
+    flex: 1;
+    background-color: #666;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.instructor-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: white;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.instructor-name {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.enroll-button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.enroll-button:hover {
+    background-color: white;
+    color: black;
+}

@@ -21,7 +21,7 @@ export default function CourseCreate() {
     const descriptionRef = useRef();
     const fileInputRef = useRef();
 
-    const thumbnailData = new FormData();
+    
 
     const router = useRouter();
 
@@ -73,26 +73,26 @@ export default function CourseCreate() {
         const description = descriptionRef.current.value
         const token = localStorage.getItem('token');
 
-        // JSON payload hazırla
-        const payload = {
-        title,
-        description,
-        categories: selectedCategories.map(cat => cat.category_id)
-        }
+        const file = fileInputRef.current.files[0];
+
+        const dataFrame = new FormData();
+        dataFrame.append('file', file);
+        dataFrame.append("title", title);
+        dataFrame.append("description", description);
+        selectedCategories.forEach(cat => dataFrame.append("categories", cat.category_id)); // Dizi olarak gönder
         
         fetch('http://localhost:8080/api/course/add-course', {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token}`, 
-            'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+            'Authorization': `Bearer ${token}`},
+        body: dataFrame
         })
         .then(res => {
             if (!res.ok) throw new Error(`Hata: ${res.status}`)
             return res.json()
         })
         .then(data => {
-            console.log('Backend yanıtı:', data)
+            console.log(data)
         })
         .catch(err => console.error(err))
   }
@@ -101,10 +101,10 @@ export default function CourseCreate() {
 //        router.push(`/edit-course?course_id=${courseId}`)
 
     const handleThumbnailChange = async (e) => {
-        const file = e.target.files[0];
+        const file = fileInputRef.current.files[0];
         if (!file) return;
 
-        thumbnailData.append('file', file);
+        
 
         const localUrl = URL.createObjectURL(file);
         setThumbnail(localUrl);
