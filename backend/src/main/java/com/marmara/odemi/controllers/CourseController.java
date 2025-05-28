@@ -1,8 +1,12 @@
 package com.marmara.odemi.controllers;
 
+import com.marmara.odemi.AddCourseRequest;
+import com.marmara.odemi.CourseResponse;
 import com.marmara.odemi.entity.*;
 import com.marmara.odemi.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +36,7 @@ public class CourseController {
     private final CategoryRepository categoryRepo;
     private final CourseCategoryRepository courseCategoryRepo;
 
+    @Autowired
     public CourseController(UserRepository userRepo,
                             EnrollmentRepository enrollRepo,
                             LessonRepository lessonRepo,
@@ -44,6 +49,28 @@ public class CourseController {
         this.courseRepo = courseRepo;
         this.categoryRepo = categoryRepo;
         this.courseCategoryRepo = courseCategoryRepo;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseResponse> getCourse(@PathVariable Long id) {
+        Course course = courseRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Kurs bulunamadı"));
+
+        CourseResponse response = new CourseResponse(
+                course.getId(),
+                course.getTitle(),
+                course.getDescription(),
+                course.getUser().getUsername(),
+                null,
+                course.getThumbnail(),
+                null
+//                course.getLessons().stream()
+//                        .map(lesson -> lesson.getTitle())
+//                        .collect(Collectors.toList())
+
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     public record CourseDto(
@@ -115,25 +142,41 @@ public class CourseController {
         return ResponseEntity.ok(dtos);
     }
 
-    record AddCourseRequest(String title, String description, List<Long> categories) {}
 
-    @PostMapping("/add-course")
-    public ResponseEntity<?> addCourse(@RequestBody AddCourseRequest req,  @AuthenticationPrincipal UserDetails userDetails) {
+    @PostMapping(value = "/add-course", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addCourse(
+            @ModelAttribute AddCourseRequest req,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
         String username = userDetails.getUsername();
         User user = (User) userRepo.findByUsername(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("Kullanıcı bulunamadı"));
+                .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı"));
+
+        // Dosya yükle
+        String fileUrl = null;
+        MultipartFile file = req.getFile();
+        if (file != null && !file.isEmpty()) {
+            try {
+                File uploadDir = new File(THUMB_UPLOAD_DIR);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+
+                String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+                Path filePath = Paths.get(THUMB_UPLOAD_DIR, fileName);
+                Files.write(filePath, file.getBytes());
+                fileUrl = "/thumbs/" + fileName;
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body(Map.of("error", "Yükleme başarısız."));
+            }
+        }
 
         Course course = new Course();
-
-        course.setTitle(req.title());
-        course.setDescription(req.description());
+        course.setTitle(req.getTitle());
+        course.setDescription(req.getDescription());
         course.setUser(user);
-
+        course.setThumbnail(fileUrl);
         courseRepo.save(course);
 
-        for (Long catId : req.categories()) {
-            System.out.println();
+        for (Long catId : req.getCategories()) {
             Category category = categoryRepo.findById(catId)
                     .orElseThrow(() -> new RuntimeException("Kategori bulunamadı: " + catId));
 
@@ -143,38 +186,66 @@ public class CourseController {
             courseCategoryRepo.save(cc);
         }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(Map.of("message", "KURS EKLENDİ"));
+        return ResponseEntity.ok(Map.of("message", "Kurs başarıyla eklendi"));
     }
+//    @PostMapping("/add-course")
+//    public ResponseEntity<?> addCourse(@RequestBody AddCourseRequest req,  @AuthenticationPrincipal UserDetails userDetails) {
+//        String username = userDetails.getUsername();
+//        User user = (User) userRepo.findByUsername(username)
+//                .orElseThrow(() ->
+//                        new UsernameNotFoundException("Kullanıcı bulunamadı"));
+//
+//        Course course = new Course();
+//
+//        course.setTitle(req.title());
+//        course.setDescription(req.description());
+//        course.setUser(user);
+//
+//        courseRepo.save(course);
+//
+//        for (Long catId : req.categories()) {
+//            System.out.println();
+//            Category category = categoryRepo.findById(catId)
+//                    .orElseThrow(() -> new RuntimeException("Kategori bulunamadı: " + catId));
+//
+//            CourseCategory cc = new CourseCategory();
+//            cc.setCourse(course);
+//            cc.setCategory(category);
+//            courseCategoryRepo.save(cc);
+//        }
+//
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(Map.of("message", "KURS EKLENDİ"));
+//    }
 
 
 
 
 
-    @PostMapping("/thumbs")
-    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Dosya boş."));
-        }
-
-        try {
-            // Kayıt klasörünü oluştur
-            File uploadDir = new File(THUMB_UPLOAD_DIR);
-            if (!uploadDir.exists()) uploadDir.mkdirs();
-
-            // Dosyayı kaydet
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(THUMB_UPLOAD_DIR, fileName);
-            Files.write(filePath, file.getBytes());
-
-            String fileUrl = "/thumbs/" + fileName; // Örn: frontend erişimi için
-
-            return ResponseEntity.ok(Map.of("fileUrl", fileUrl));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of("error", "Yükleme başarısız."));
-        }
-    }
+//    @PostMapping("/thumbs")
+//    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
+//        if (file.isEmpty()) {
+//            return ResponseEntity.badRequest().body(Map.of("error", "Dosya boş."));
+//        }
+//
+//        try {
+//            // Kayıt klasörünü oluştur
+//            File uploadDir = new File(THUMB_UPLOAD_DIR);
+//            if (!uploadDir.exists()) uploadDir.mkdirs();
+//
+//            // Dosyayı kaydet
+//            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+//            Path filePath = Paths.get(THUMB_UPLOAD_DIR, fileName);
+//            Files.write(filePath, file.getBytes());
+//
+//            String fileUrl = "/thumbs/" + fileName; // Örn: frontend erişimi için
+//
+//            return ResponseEntity.ok(Map.of("fileUrl", fileUrl));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(500).body(Map.of("error", "Yükleme başarısız."));
+//        }
+//    }
 
 }
