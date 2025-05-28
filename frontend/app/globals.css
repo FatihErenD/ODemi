@@ -3,9 +3,9 @@
 :root {
   --background: #121212;
     --foreground: #ededed;
-    --colorForBar: #5d1b63;
-    --colorForTextBack: #a074bd;
-    --textColor: #f1deef;
+    --colorForBar: #242424;
+    --colorForTextBack: #404040;
+    --textColor: #fff;
 }
 
 @theme inline {
@@ -23,8 +23,8 @@
 }
 
 body {
-  background: var(--background);
-    color: var(--foreground);
+    background: var(--background);
+    color: #e0e0e0;
     font-family: Arial, Helvetica, sans-serif;
     user-select: none;
     overflow-x: hidden;
@@ -116,7 +116,7 @@ body {
 .logButton:hover {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    background-color: #ad8fc0;
+    background-color: color-mix(in srgb, var(--colorForTextBack) 80%, #fff);
     border-color: var(--textColor);
     color: var(--colorForBar);
 }
@@ -130,6 +130,7 @@ body {
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: var(--colorForBar);
+    color: #e0e0e0;
     border-radius: 10px;
 }
 
@@ -276,7 +277,7 @@ body {
 
 .search-bar input {
     background: transparent;
-    color: var(--colorForBar);
+    color: #e0e0e0;
     border: 0px transparent;
     padding: 15px;
     font-size: 18;
@@ -287,7 +288,7 @@ body {
 }
 
 .search-bar button {
-    background-color: #8948b4;
+    background-color: var(--colorForBar);
     height: 4vh;
     width: 3vw;
     border-left: 2px solid var(--colorForBar);
@@ -302,7 +303,7 @@ body {
 .signIn-OutButton {
     padding: 8px 12px;
     background-color: var(--colorForTextBack);
-    color: var(--colorForBar);
+    color: #e0e0e0;
     border: 2px solid #2b2b2b;
     border-radius: 5px;
     font-size: 12px;
@@ -311,8 +312,7 @@ body {
 }
 
 .signIn-OutButton:hover {
-    background-color: #a886bf;
-    color: #3c0541;
+    background-color: color-mix(in srgb, var(--colorForTextBack) 80%, #fff);
 }
 
 

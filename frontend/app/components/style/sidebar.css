@@ -28,7 +28,7 @@
 }
 
 .sidebar button:hover {
-    background-color: #7c2e83;
+    background-color: color-mix(in srgb, var(--colorForBar) 80%, #979797);
 }
 
 .sidebar span {

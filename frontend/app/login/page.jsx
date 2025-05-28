@@ -55,7 +55,6 @@ export default function LoginPage() {
       <div className="centerDIV">
         <h1
           style={{
-            color: '#f1deef',
             fontWeight: 'bold',
             fontSize: '30px',
             margin: '20px',
@@ -104,7 +103,7 @@ export default function LoginPage() {
             marginTop: '10px'
           }}
         >
-          <span style={{ color: '#f1deef', fontSize: '10px' }}>
+          <span style={{ fontSize: '10px' }}>
             Hesabınız yok mu?
           </span>
           <button className="textButton" onClick={e => router.push('./register')} >Kayıt Ol</button>
