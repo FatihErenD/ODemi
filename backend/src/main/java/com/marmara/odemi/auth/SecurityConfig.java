@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/course/all-categories").permitAll()
                         .requestMatchers("/api/course/thumbs").permitAll()
                         .requestMatchers("/api/course/{id}").permitAll()
+                        .requestMatchers("/api/user/update-username").authenticated()
                         .requestMatchers("/api/course/add-course").authenticated()
                         .requestMatchers("/api/auth/change-password").authenticated()
                         .anyRequest().authenticated())
