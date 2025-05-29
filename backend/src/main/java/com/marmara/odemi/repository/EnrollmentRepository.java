@@ -14,5 +14,6 @@ import java.util.List;
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, EnrollmentId> {
     List<Enrollment> findByUser(User user);
+    List<Enrollment> findByUserOrderByEnrolledAtDesc(User user);
 
 }

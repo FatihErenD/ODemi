@@ -98,7 +98,7 @@ public class CourseController {
          User user = (User) userRepo.findByUsername(username)
                  .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
 
-         List<CourseDto> courses = enrollRepo.findByUser(user)
+         List<CourseDto> courses = enrollRepo.findByUserOrderByEnrolledAtDesc(user)
                  .stream()
                  .map(e-> e.getCourse())
                  .map(c -> new CourseDto(c.getId(), c.getTitle(), c.getThumbnail()))
