@@ -14,7 +14,7 @@
 
 .left-panel {
   width: 70vw;
-  background-color: #242424;
+  background-color: var(--background);
   padding: 20px;
   box-sizing: border-box;
   display: flex;
@@ -78,7 +78,7 @@
 }
 
 .comm input:hover, input:focus {
-    border-color: color-mix(in srgb, var(--colorForBar) 70%, #fff);
+    border-color: color-mix(in srgb, var(--colorForBar) 80%, #ffffff);
 }
 
 @keyframes slideInFromTop {
@@ -132,8 +132,7 @@
 }
 
 .comm-button:hover {
-    background-color: #c29fda;
-    color: var(--colorForBar);
+    background-color: color-mix(in srgb, var(--colorForTextBack) 80%, #fff);
     transform: translate(3px, 3px);
 }
 

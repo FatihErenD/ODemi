@@ -71,6 +71,18 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+
     public User() {
     }
 

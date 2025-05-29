@@ -44,7 +44,7 @@ export default function Register() {
         </button>
       </div>
       <div className="centerDIV">
-        <h1 style={{ color: '#f1deef', fontSize: '30px', fontWeight: 'bold', margin: '20px', textAlign: 'center' }}>
+        <h1 style={{ fontSize: '30px', fontWeight: 'bold', margin: '20px', textAlign: 'center' }}>
           Kayıt Ol
         </h1>
 
@@ -84,7 +84,7 @@ export default function Register() {
             justifyContent: 'center',
             marginTop: '10px'
           }} >
-            <span style={{ color: '#f1deef', fontSize: '10px' }}>Zaten hesabın var mı?</span>
+            <span style={{ fontSize: '10px' }}>Zaten hesabın var mı?</span>
             <button className="textButton" onClick={e => router.push('./login')} > Giriş Yap </button>
         </div>
       </div>

@@ -39,6 +39,20 @@ export default function ShortsPage() {
         setVideos(reordered);
         return;
       }
+
+      // id sahte videolarda yoksa → backend'den çek
+      fetch(`http://localhost:8080/api/shorts/${startId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const reordered = [data, ...allVideos];
+          setVideos(reordered);
+        })
+        .catch((err) => {
+          console.error('Short fetch error:', err);
+          setVideos(allVideos);
+        });
+
+      return;
     }
 
     setVideos(allVideos);

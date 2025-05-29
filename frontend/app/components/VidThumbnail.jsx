@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import "./style/vidthumbnail.css"
 
-export default function VidThumbnail({ courseId, lessonId, thumbnail, title, isOwner=false }) {
+export default function VidThumbnail({ courseId, thumbnail, title, isOwner=false }) {
     const router = useRouter()
 
     return (

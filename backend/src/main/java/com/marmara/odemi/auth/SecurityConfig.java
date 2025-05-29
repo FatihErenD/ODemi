@@ -72,6 +72,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/course/{id}").permitAll()
                         .requestMatchers("/api/user/update-username").authenticated()
                         .requestMatchers("/api/course/add-course").authenticated()
+                        .requestMatchers("/api/shorts", "/api/shorts/**").permitAll()
+                        .requestMatchers("/api/users/profile").permitAll()
+
                         .requestMatchers("/api/auth/change-password").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

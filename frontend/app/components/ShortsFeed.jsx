@@ -1,103 +1,24 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
-import ReactPlayer from 'react-player';
-import TopBar from './TopBar';
-import SideBar from './SideBar';
-
 export default function ShortsFeed({ videos }) {
-  const videoRefs = useRef([]);
+  if (!videos || videos.length === 0) {
+    return <div className="text-center mt-10 text-gray-500">Hiç kısa video bulunamadı.</div>;
+  }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      videoRefs.current.forEach((video) => {
-        if (!video) return;
-        const rect = video.getBoundingClientRect();
-        const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-        if (isVisible) video.play();
-        else video.pause();
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const currentVideo = videos[0]; // sadece ilk video
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        overflowY: 'scroll',
-        scrollSnapType: 'y mandatory',
-        background: 'var(--background)',
-      }}
-    >
-      <TopBar />
-      <SideBar topOffset={true} shouldOpen={false} />
-      {videos.map((video, index) => (
-        <div
-          key={video.id}
-          style={{
-            height: '100vh',
-            scrollSnapAlign: 'start',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative',
-            padding: '10px',
-          }}
-        >
-          <div style={{
-                height: '85%',
-                aspectRatio: '9 / 16',
-                borderRadius: '12px',
-                boxShadow: '0 0 10px rgba(0,0,0,0.5)'
-              }} >
-            <ReactPlayer
-              ref={el => (videoRefs.current[index] = el)}
-              url={video.videoUrl}
-              controls
-              light={false}
-              width="100%"
-              height="100%"
-              playsinline
-              style={{
-                borderRadius: '12px',
-                backgroundColor: '#000',
-              }}
-            />
-            <div>
-              <h3 style={{margin: '10px 0 0 10px', fontSize: '18px'}} >
-                @kanaladi <button style={{ marginLeft: '10px' }}>Takip Et</button>
-              </h3>
-              <p style={{margin: '5px 0 0 10px'}} >{video.title}</p>
-            </div>
-            
-          </div>
-
-          <div
-            style={{
-              position: 'absolute',
-              top: '40%',
-              margin: '0 auto 0 27%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-              color: 'white',
-              alignItems: 'center',
-            }}
-          >
-            <button>👍</button>
-            <span>105K</span>
-            <button>👎</button>
-            <button>💬</button>
-            <button>🔗</button>
-          </div>
-        </div>
-      ))}
+    <div className="flex items-center justify-center min-h-screen bg-black text-white">
+      <div
+        className="relative w-[360px] h-[640px] bg-black rounded-lg shadow-lg overflow-hidden"
+      >
+        {currentVideo.videoUrl && (
+          <video
+            src={currentVideo.videoUrl}
+            controls
+            autoPlay
+            className="w-full h-full object-contain"
+          />
+        )}
+      </div>
     </div>
   );
 }

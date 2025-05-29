@@ -191,9 +191,8 @@ public class CourseController {
 //    @PostMapping("/add-course")
 //    public ResponseEntity<?> addCourse(@RequestBody AddCourseRequest req,  @AuthenticationPrincipal UserDetails userDetails) {
 //        String username = userDetails.getUsername();
-//        User user = (User) userRepo.findByUsername(username)
-//                .orElseThrow(() ->
-//                        new UsernameNotFoundException("Kullanıcı bulunamadı"));
+//        User user = userRepo.findByUsername(username)
+//                  .orElseThrow(() -> new UserNotFoundException(username));
 //
 //        Course course = new Course();
 //
@@ -206,7 +205,7 @@ public class CourseController {
 //        for (Long catId : req.categories()) {
 //            System.out.println();
 //            Category category = categoryRepo.findById(catId)
-//                    .orElseThrow(() -> new RuntimeException("Kategori bulunamadı: " + catId));
+//                       .orElseThrow(() -> new CategoryNotFoundException(catId));
 //
 //            CourseCategory cc = new CourseCategory();
 //            cc.setCourse(course);
