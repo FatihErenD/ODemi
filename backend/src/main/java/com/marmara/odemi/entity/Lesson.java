@@ -31,14 +31,18 @@ public class Lesson {
     @Column(nullable = false)
     private Integer ep;
 
+    @Column(nullable = true)
+    private String video;
+
     public Lesson() {
     }
 
-    public Lesson(String title, String content, Course course, Integer ep) {
+    public Lesson(String title, String content, Course course, Integer ep, String video) {
         this.title = title;
         this.content = content;
         this.course = course;
         this.ep = ep;
+        this.video = video;
     }
 
     public Long getId() {
@@ -51,6 +55,14 @@ public class Lesson {
 
     public void setEp(Integer ep) {
         this.ep = ep;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     public void setId(Long id) {
