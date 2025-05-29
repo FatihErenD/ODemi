@@ -18,23 +18,34 @@ export default function ProfilePage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [topBarVisible, setTopBarVisible] = useState(true)
     const [user, setUser] = useState(null)
+    const [courses, setCourses] = useState([])
     const [shorts, setShorts] = useState([])
 
     useEffect(() => {
         if (!usernameParam) return;
 
-        fetch(`http://localhost:8080/api/users/profile?username=${usernameParam}`)
-            .then(res => res.json())
-            .then(data => {
-                setUser(data)
-                setAvatar(data.avatarUrl || '/profilepics/profilepic1.png') // DÜZENLENDİ
-                setShorts(data.shorts || [])
-            })
-            .catch(err => {
-                console.error('Kullanıcı verisi alınamadı:', err)
-                setUser(null)
-            })
-    }, [usernameParam])
+        const fetchData = async () => {
+            try {
+                const [userRes, courseRes] = await Promise.all([
+                    fetch(`http://localhost:8080/api/users/profile?username=${usernameParam}`),
+                    fetch(`http://localhost:8080/api/course/courses?username=${usernameParam}`)
+                ]);
+
+                const userData = await userRes.json();
+                const courseData = await courseRes.json();
+
+                setUser(userData);
+                setAvatar(userData.avatarUrl || '/profilepics/profilepic1.png');
+                setShorts(userData.shorts || []);
+                setCourses(courseData);
+            } catch (err) {
+                console.error('Veri alınamadı:', err);
+                setUser(null);
+            }
+        };
+
+        fetchData();
+    }, [usernameParam]);
 
     const handleEditClick = () => {
         fileInputRef.current.click();
@@ -90,7 +101,7 @@ export default function ProfilePage() {
                         <h3>Kurslar</h3>
                     </div>
                     <ShortsPreview shorts={shorts} isOwner={true} />
-                    <RecVideos key={user.username} videos={user.courses || []} isOwner={true} /> {/* DÜZENLENDİ */}
+                    <RecVideos key={user.username} videos={courses || []} isOwner={true} /> {/* DÜZENLENDİ */}
                 </div>
             </div>
         </div>

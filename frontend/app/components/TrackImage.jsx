@@ -30,7 +30,9 @@ export default function TrackImage({ url, classname }) {
         <div style={{ width: '1000%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} 
             onMouseMove={handleOnMouseMove}
             onMouseLeave={handleOnMouseLeave}>
-            <img className={classname && classname} src={url} style={{transition: 'transform 0.5s ease-out, box-shadow 0.5s ease-out'}} />
+            <img className={classname && classname} src={url} style={{
+                transition: 'transform 0.5s ease-out, box-shadow 0.5s ease-out',
+                aspectRatio: '16/9'}} />
         </div>
     )
 }
