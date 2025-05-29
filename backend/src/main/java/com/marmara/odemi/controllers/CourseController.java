@@ -93,7 +93,7 @@ public class CourseController {
     }
 
     @GetMapping("/courses")
-    public ResponseEntity<List<CourseDto>> getCoursesByUsername(@RequestParam String username) {
+    public ResponseEntity<List<CourseDto>> getCoursesByUsername(@RequestParam("username") String username) {
         User selectedUser = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı"));
 
@@ -124,6 +124,17 @@ public class CourseController {
             Long category_id,
             String name
     ) {};
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam("course_id") Long courseId) {
+        List<CategoryDto> list = courseCategoryRepo.findCategoryIdsByCourseId(courseId)
+                .stream().
+                map(id -> categoryRepo.findById(id)
+                        .orElseThrow(() -> new RuntimeException("sa")))
+                .map(c -> new CategoryDto(c.getId(), c.getName()))
+                .toList();
+        return ResponseEntity.ok(list);
+    }
 
     @GetMapping("/all-categories")
     public ResponseEntity<List<CategoryDto>> getAllCategories() {

@@ -68,6 +68,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                         .requestMatchers("/api/course/all-courses").permitAll()
                         .requestMatchers("/api/course/all-categories").permitAll()
+                        .requestMatchers("/api/course/categories").permitAll()
                         .requestMatchers("/api/course/thumbs").permitAll()
                         .requestMatchers("/api/course/{id}").permitAll()
                         .requestMatchers("/api/course/courses/**").permitAll()
@@ -75,7 +76,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/course/add-course").authenticated()
                         .requestMatchers("/api/shorts", "/api/shorts/**").permitAll()
                         .requestMatchers("/api/users/profile").permitAll()
-
                         .requestMatchers("/api/auth/change-password").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
