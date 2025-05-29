@@ -19,24 +19,21 @@ export default function LoginPage() {
       const res = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password }),
+        credentials: 'include'  // 🔐 Cookie'yi kabul etmek için şart
       })
 
       if (!res.ok) {
-        // 401 vs. 400 vs. 500 ayrımı yapmak isterseniz res.status’a bakabilirsiniz
         throw new Error('Kimlik doğrulama başarısız.')
       }
 
-      const { token } = await res.json()
+      // İstersen kullanıcı adını backend response'undan alabilirsin
+      const { username: returnedUsername } = await res.json()
 
-      // JWT’yi localStorage’a kaydet
+      // localStorage kullanmıyoruz artık ❌
+      // localStorage.setItem('token', ...)
+      // localStorage.setItem('username', ...)
 
-      localStorage.setItem('token', token)
-
-      // İsteğe bağlı: axios veya fetch wrapper’ınız varsa buraya interceptor ekleyin
-
-      // Başarılıysa dashboard’a geç
-      localStorage.setItem('username', username)
       router.push('/')
     } catch (err) {
       console.error(err)
@@ -47,20 +44,17 @@ export default function LoginPage() {
   return (
     <div>
      <div className="top-bar">
-        <button onClick={e => router.push('./home')}
-            style={{ cursor: 'pointer' }}>
-          <span className='top-bar-text' > ODemi </span>
+        <button onClick={e => router.push('./home')} style={{ cursor: 'pointer' }}>
+          <span className='top-bar-text'> ODemi </span>
         </button>
       </div>
       <div className="centerDIV">
-        <h1
-          style={{
-            fontWeight: 'bold',
-            fontSize: '30px',
-            margin: '20px',
-            textAlign: 'center'
-          }}
-        >
+        <h1 style={{
+          fontWeight: 'bold',
+          fontSize: '30px',
+          margin: '20px',
+          textAlign: 'center'
+        }}>
           Giriş Yap
         </h1>
 
@@ -89,25 +83,20 @@ export default function LoginPage() {
           )}
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button type="submit" className="logButton" >
-              Giriş
-            </button>
+            <button type="submit" className="logButton">Giriş</button>
           </div>
         </form>
 
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '10px'
-          }}
-        >
-          <span style={{ fontSize: '10px' }}>
-            Hesabınız yok mu?
-          </span>
-          <button className="textButton" onClick={e => router.push('./register')} >Kayıt Ol</button>
-
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: '10px'
+        }}>
+          <span style={{ fontSize: '10px' }}>Hesabınız yok mu?</span>
+          <button className="textButton" onClick={e => router.push('./register')}>
+            Kayıt Ol
+          </button>
         </div>
       </div>
     </div>

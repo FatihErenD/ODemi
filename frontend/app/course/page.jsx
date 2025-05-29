@@ -116,13 +116,15 @@ useEffect(() => {
         const username = localStorage.getItem('username')
         try {
             const res = await fetch(`http://localhost:8080/api/enroll?username=${username}&course_id=${courseId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const text = await res.text(); 
+                method: 'GET',
+                credentials: 'include', // 🔐 Cookie gönderilsin
+                });
+
+            if (!res.ok) {
+            throw new Error('Yetkisiz veya sunucu hatası');
+            }
+
+                const text = await res.text(); 
 
         } catch (error) {
             console.log('saassa');

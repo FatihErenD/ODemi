@@ -78,6 +78,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/profile").permitAll()
                         .requestMatchers("/api/lesson").permitAll()
                         .requestMatchers("/api/auth/change-password").authenticated()
+                        .requestMatchers("/api/auth/me").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
