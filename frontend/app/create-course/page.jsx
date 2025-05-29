@@ -67,36 +67,38 @@ export default function CourseCreate() {
     };
 
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
+        e.preventDefault();
 
-        e.preventDefault()
-
-        const description = descriptionRef.current.value
-        const token = localStorage.getItem('token');
-
+        const description = descriptionRef.current.value;
         const file = fileInputRef.current.files[0];
 
         const dataFrame = new FormData();
         dataFrame.append('file', file);
-        dataFrame.append("title", title);
-        dataFrame.append("description", description);
-        selectedCategories.forEach(cat => dataFrame.append("categories", cat.category_id)); // Dizi olarak gönder
-        
-        fetch('http://localhost:8080/api/course/add-course', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`},
-        body: dataFrame
-        })
-        .then(res => {
-            if (!res.ok) throw new Error(`Hata: ${res.status}`)
-            return res.json()
-        })
-        .then(data => {
-            console.log(data)
-        })
-        .catch(err => console.error(err))
-  }
+        dataFrame.append('title', title);
+        dataFrame.append('description', description);
+        selectedCategories.forEach(cat =>
+            dataFrame.append('categories', cat.category_id)
+        );
+
+        try {
+            const res = await fetch('http://localhost:8080/api/course/add-course', {
+            method: 'POST',
+            credentials: 'include', // 🔐 Cookie gönderilsin
+            body: dataFrame
+            });
+
+            if (!res.ok) {
+            throw new Error(`Sunucu hatası: ${res.status}`);
+            }
+
+            const data = await res.json();
+            console.log("Kurs eklendi:", data);
+        } catch (err) {
+            console.error("Kurs eklenirken hata:", err);
+        }
+    };
+
 
 
 //        router.push(`/edit-course?course_id=${courseId}`)

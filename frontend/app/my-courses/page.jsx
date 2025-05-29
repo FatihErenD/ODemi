@@ -16,25 +16,29 @@ export default function MyCoursesPage() {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    if (false) { // test için
-      const courses = [
-        { course_id: 1, lesson_id: 1, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { course_id: 2, lesson_id: 1, category_id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' }
-      ];
-      setMyCourses(courses);
-      setLoading(false);
-      return;
-    }
+    const fetchMyCourses = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/api/course/my-courses', {
+          method: 'GET',
+          credentials: 'include', // 🔐 Cookie gönderilsin
+        });
 
-    const token = localStorage.getItem('token');
-    axios.get('http://localhost:8080/api/course/my-courses', {
-      headers: {
-        Authorization: `Bearer ${token}`
+        if (!res.ok) {
+          throw new Error('Yetkisiz veya sunucu hatası');
+        }
+
+        const data = await res.json();
+        setMyCourses(data);
+        setIsAuthenticated(true);
+      } catch (err) {
+        console.error('Kurslar alınamadı:', err);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
       }
-    })
-    .then(res => setMyCourses(res.data))
-    .catch(err => console.log("sa"))
-    .finally(() => setLoading(false));
+    };
+
+    fetchMyCourses();
   }, []);
 
 

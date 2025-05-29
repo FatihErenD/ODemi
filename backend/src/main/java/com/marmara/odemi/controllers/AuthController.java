@@ -4,8 +4,11 @@ import com.marmara.odemi.auth.JwtUtil;
 import com.marmara.odemi.entity.User;
 import com.marmara.odemi.repository.UserRepository;
 import com.marmara.odemi.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,11 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.Duration;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
     private AuthenticationManager authManager;
     private JwtUtil jwtUtil;
@@ -45,13 +49,41 @@ public class AuthController {
     record AuthResponse(String token) {}
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
+    public ResponseEntity<?> login(@RequestBody AuthRequest req, HttpServletResponse response) {
         authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(req.username(), req.password()));
+                new UsernamePasswordAuthenticationToken(req.username(), req.password())
+        );
         UserDetails user = uds.loadUserByUsername(req.username());
         String token = jwtUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(token));
+
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true)
+                .secure(false) // DİKKAT site yayınlanırsa true olmalı
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(Duration.ofHours(2))
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok(Map.of("username", user.getUsername()));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        ResponseCookie expiredCookie = ResponseCookie.from("token", "")
+                .httpOnly(true)
+                .secure(false) // yayında true yap!
+                .path("/")
+                .maxAge(0)     // 🍪 tarayıcıdan sil
+                .sameSite("Strict") // veya "None" ise frontend uyumlu
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, expiredCookie.toString());
+
+        return ResponseEntity.ok("Çıkış başarılı.");
+    }
+
 
     record RegisterRequest(String username, String email, String password) {}
 
@@ -108,10 +140,12 @@ public class AuthController {
     }
 
 
-    // Sadece kullanıcı adı isterseniz
     @GetMapping("/me")
-    public String whoAmI(Principal principal) {
-        return principal.getName();
-    }
+    public ResponseEntity<?> me(@AuthenticationPrincipal UserDetails user) {
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
+        return ResponseEntity.ok(Map.of("username", user.getUsername()));
+    }
 }

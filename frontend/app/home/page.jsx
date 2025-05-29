@@ -13,7 +13,6 @@ export default function Home() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [courses, setCourses] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [topBarVisible, setTopBarVisible] = useState(true);
 
   const videos = [
@@ -96,8 +95,6 @@ export default function Home() {
 
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(token);
 
     fetch('http://localhost:8080/api/course/all-courses', {
       method: 'GET',

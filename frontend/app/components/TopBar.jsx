@@ -12,10 +12,24 @@ export default function TopBar({ onVisibilityChange }) {
   const router = useRouter();
 
   useEffect(() => {
-    const user = localStorage.getItem('username');
-    setUsername(user);
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token); // boolean olarak ayarlanır
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/api/auth/me', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (!res.ok) throw new Error("Unauthorized");
+
+        const user = await res.json();
+        setUsername(user.username); // backend'de username dönüyorsan
+        setIsAuthenticated(true);
+      } catch (err) {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
   }, []);
 
   useEffect(() => {
@@ -39,14 +53,17 @@ export default function TopBar({ onVisibilityChange }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY, onVisibilityChange, visible]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
+  const handleLogout = async () => {
+    await fetch('http://localhost:8080/api/auth/logout', {
+      method: 'POST',
+      credentials: 'include'
+    });
+
     router.push('/login');
   };
 
   const handleSearch = () => {
-    const token = localStorage.getItem('token');
+    
     // Arama işlemi burada yapılabilir (searchRef.current.value)
     const search = searchRef.current.value.trim();
     if (search !== '') {
