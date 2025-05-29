@@ -3,9 +3,10 @@ import { useRouter } from 'next/navigation';
 import './style/sidebar.css';
 
 export default function SideBar({ topOffset, shouldOpen, items = [] }) {
+    const [user, setUser] = useState('')
     const defaultItems = [
         { id: 1, label: "Ana Sayfa", url: "/" },
-        { id: 2, label: "Profil", url: "/profile" },
+        { id: 2, label: "Profil", url: `/profile?username=${user}` },
         { id: 3, label: "Kurslarım", url: "/my-courses" },
         { id: 4, label: "Kurs Oluştur", url: "/create-course" },
         { id: 5, label: "Shorts Oluştur", url: "/create-short"}
@@ -16,6 +17,7 @@ export default function SideBar({ topOffset, shouldOpen, items = [] }) {
     const router = useRouter();
 
     useEffect(() => {
+        setUser(localStorage.getItem('username'))
         const sidebarWidthPx = window.innerWidth * 0.25 + 20;
 
         function onMouseMove(e) {

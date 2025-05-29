@@ -92,6 +92,20 @@ public class CourseController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping("/courses")
+    public ResponseEntity<List<CourseDto>> getCoursesByUsername(@RequestParam String username) {
+        User selectedUser = userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı"));
+
+        List<CourseDto> courses = enrollRepo.findByUserOrderByEnrolledAtDesc(selectedUser)
+                .stream()
+                .map(e -> e.getCourse())
+                .map(c -> new CourseDto(c.getId(), c.getTitle(), c.getThumbnail()))
+                .toList();
+        return ResponseEntity.ok(courses);
+    }
+
+    // SADECE KAYITLI OLDUGU KURSLARI GOSTERECEK ŞEKİLDE DÜZENLE
     @GetMapping("/my-courses")
     public ResponseEntity<List<CourseDto>> getMyCourses(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
