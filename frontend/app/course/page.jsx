@@ -58,20 +58,7 @@ export default function CoursePage() {
             title: 'Python'
         }
     ])
-    const [categories, setCategories] = useState([
-        {   
-            category_id:1,
-            name: 'Araba'
-        },
-        {
-            category_id: 2,
-            name: 'Ezme'
-        },
-        {
-            category_id: 3,
-            name: 'Çarpma'
-        }
-    ])
+    const [categories, setCategories] = useState([])
 
     const other_courses = [
     { course_id: 1, lesson_id: 1, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
@@ -121,6 +108,20 @@ export default function CoursePage() {
             // burada enrolled kısmınıda döndür
         }
         )
+
+        fetch(`http://localhost:8080/api/course/categories?course_id=${courseId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error(`Hata: ${res.status}`)
+            return res.json()
+        })
+        .then(data => setCategories(data))
+        .catch(err => console.error(err))
+        if(!categories) console.log("deneme")
     }, [courseId]);
 
 
