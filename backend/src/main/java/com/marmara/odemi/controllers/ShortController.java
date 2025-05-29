@@ -13,8 +13,13 @@ import java.util.List;
 @RequestMapping("/api/shorts")
 public class ShortController {
 
-    @Autowired
+
     private ShortService shortService;
+
+    @Autowired
+    public ShortController(ShortService shortService) {
+        this.shortService = shortService;
+    }
 
     @GetMapping
     public List<Short> getAllShorts() {

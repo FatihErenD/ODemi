@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users") // <-- DÜZENLENDİ (frontend ile eşleşsin)
 public class UserController {
 
-    @Autowired
+
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PutMapping("/update-username")
     public ResponseEntity<String> updateUsername(@RequestBody UpdateUserNameRequest request) {

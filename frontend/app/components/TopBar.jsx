@@ -7,10 +7,13 @@ export default function TopBar({ onVisibilityChange }) {
   const [visible, setVisible] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [username, setUsername] = useState("");
   const searchRef = useRef();
   const router = useRouter();
 
   useEffect(() => {
+    const user = localStorage.getItem('username');
+    setUsername(user);
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token); // boolean olarak ayarlanır
   }, []);
@@ -89,7 +92,7 @@ export default function TopBar({ onVisibilityChange }) {
             <button className="signIn-OutButton" onClick={() => router.push('/my-courses')}>
               Kurslarım
             </button>
-            <button className="signIn-OutButton" onClick={() => router.push('/profile')}>
+            <button className="signIn-OutButton" onClick={() => router.push(`/profile?username=${username}`)}>
               Profil
             </button>
             <button className="signIn-OutButton" onClick={handleLogout}>
