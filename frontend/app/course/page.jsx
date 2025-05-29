@@ -48,16 +48,7 @@ export default function CoursePage() {
             date: '20/05/2025'
         }
     ])
-    const [lessons, setLessons] = useState([
-        {
-            lesson_id: 1,
-            title: 'Java'
-        },
-        {
-            lesson_id: 2,
-            title: 'Python'
-        }
-    ])
+    const [lessons, setLessons] = useState([])
     const [categories, setCategories] = useState([])
 
     const other_courses = [
@@ -78,51 +69,47 @@ export default function CoursePage() {
     const searchParams = useSearchParams()
     const courseId = Number(searchParams.get('course_id'));
 
-    useEffect(() => {
-        const user = localStorage.getItem('username')
-        setUsername(user);
-        /* SİL BURAYI */
-        setThumbnail("/thumbs/jumpscare.jpg")
-        setTitle("Kınık")
-        setDescription("Naber MÜDÜR!!!")
-        setInstructorName("Zehra")
+useEffect(() => {
+    const user = localStorage.getItem('username');
+    setUsername(user);
 
-        if(!courseId) return;
-        
-        fetch(`http://localhost:8080/api/course/${courseId}`,{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        )
-        .then(res => {
-            if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
-                return res.json();
-        })
-        .then(data => {
-            setTitle(data.title)
-            setDescription(data.description)
-            setInstructorName(data.instructorName)
-            setThumbnail(data.thumbnail)
-            // burada enrolled kısmınıda döndür
-        }
-        )
+    if (!courseId) return;
 
-        fetch(`http://localhost:8080/api/course/categories?course_id=${courseId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+    const fetchCourseData = async () => {
+        try {
+            const [courseRes, categoryRes, lessonRes] = await Promise.all([
+                fetch(`http://localhost:8080/api/course/${courseId}`),
+                fetch(`http://localhost:8080/api/course/categories?course_id=${courseId}`),
+                fetch(`http://localhost:8080/api/lesson?course_id=${courseId}`)
+            ]);
+
+            if (!courseRes.ok) throw new Error(`Kurs verisi alınamadı: ${courseRes.status}`);
+            if (!categoryRes.ok) throw new Error(`Kategori verisi alınamadı: ${categoryRes.status}`);
+            if (!lessonRes.ok) throw new Error(`Kategori verisi alınamadı: ${lessonRes.status}`)
+
+            const courseData = await courseRes.json();
+            const categoryData = await categoryRes.json();
+            const lessonData = await lessonRes.json();
+
+            // Backend'den gelen veri üzerinden state'leri set et
+            setTitle(courseData.title || "Başlık yok");
+            setDescription(courseData.description || "Açıklama yok");
+            setInstructorName(courseData.instructorName || "Eğitmen yok");
+            setThumbnail(courseData.thumbnail || "/thumbs/default.jpg");
+            setCategories(categoryData || []);
+            setLessons(lessonData);
+
+            // Eğer kurs verisinde "enrolled" gibi bir alan varsa:
+            // setEnrolled(courseData.enrolled);
+
+        } catch (err) {
+            console.error("Veriler alınırken hata oluştu:", err);
         }
-        })
-        .then(res => {
-            if (!res.ok) throw new Error(`Hata: ${res.status}`)
-            return res.json()
-        })
-        .then(data => setCategories(data))
-        .catch(err => console.error(err))
-        if(!categories) console.log("deneme")
-    }, [courseId]);
+    };
+
+    fetchCourseData();
+}, [courseId]);
+
 
 
     const handleEnroll = async () => {
@@ -203,7 +190,7 @@ export default function CoursePage() {
                         <hr></hr>
                         {lessons.map((lesson, index) => (
                             <div key={index} className="course-lesson" onClick={() => router.push(`/watch?course_id=${courseId}&lesson_id=${lesson.lesson_id}`)} > 
-                                <span> <strong> Bölüm {lesson.lesson_id}: </strong> {lesson.title} </span> 
+                                <span> <strong> Bölüm {lesson.ep}: </strong> {lesson.title} </span> 
                             </div>
                         ))}
                     </div>

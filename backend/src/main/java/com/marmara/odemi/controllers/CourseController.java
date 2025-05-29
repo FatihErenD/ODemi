@@ -150,22 +150,11 @@ public class CourseController {
             String title,
             String content,
             String url,
-            Integer ep
+            Integer ep,
+            String video
     ) {};
 
-    @GetMapping("/{courseId}/lessons")
-    public ResponseEntity<List<LessonDto>> getLessons(@PathVariable Long courseId) {
-        List<LessonDto> dtos = lessonRepo.findByCourseIdOrderByEpAsc(courseId)
-                .stream()
-                .map(l -> new LessonDto(
-                        l.getTitle(),
-                        l.getContent(),
-                         courseId+ "/" +  l.getEp(),
-                        l.getEp()
-                ))
-                .toList();
-        return ResponseEntity.ok(dtos);
-    }
+
 
 
     @PostMapping(value = "/add-course", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
