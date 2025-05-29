@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.marmara.odemi.entity.User;
+
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -30,4 +33,16 @@ public class UserService {
         user.setUsername(newUsername);
         userRepository.save(user);
     }
+
+    public Optional<User> getUserProfile(String username) {
+        return userRepository.findByUsername(username).map(user -> {
+            if (user.getAvatarUrl() == null || user.getAvatarUrl().isBlank()) {
+                user.setAvatarUrl("/profilepics/default.png");
+            }
+            return user;
+        });
+    }
+
+
+
 }

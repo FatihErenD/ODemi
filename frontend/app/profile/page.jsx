@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import './profile.css'
 import TopBar from '../components/TopBar'
 import SideBar from '../components/SideBar'
@@ -9,41 +9,32 @@ import RecVideos from '../components/RecVideos'
 import ShortsPreview from '../components/ShortsPreview'
 
 export default function ProfilePage() {
-    const [username, setUsername] = useState('')
     const fileInputRef = useRef(null)
-    const [avatar, setAvatar] = useState('/profilepics/profilepic1.png')
-    const [isAuthenticated, setIsAuthenticated] = useState('')
-    const [topBarVisible, setTopBarVisible] = useState(true)
-
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const usernameParam = searchParams.get('username')
 
-    const user = {
-        avatar_url: avatar,
-        name: 'Fatih',
-        username: 'FatihErenD',
-        followers: 3,
-        following: 3,
-        courses: [
-            { course_id: 1, lesson_id: 1, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-            { course_id: 2, lesson_id: 1, category_id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-            { course_id: 3, lesson_id: 1, category_id: 1, title: 'React Dersi 2', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' }
-        ],
-    };
+    const [avatar, setAvatar] = useState('/profilepics/profilepic1.png')
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [topBarVisible, setTopBarVisible] = useState(true)
+    const [user, setUser] = useState(null)
+    const [shorts, setShorts] = useState([])
 
-    const shorts = [
-        {
-        id: 101,
-        title: 'brainrot ders 1',
-        thumbnail: '/thumbs/thumbnail1.png',
-        videoUrl: '/videos/react1.mp4',
-        },
-        {
-        id: 102,
-        title: 'brainrot ders 2',
-        thumbnail: '/thumbs/thumbnail2.png',
-        videoUrl: '/videos/react1.mp4',
-        }
-    ]
+    useEffect(() => {
+        if (!usernameParam) return;
+
+        fetch(`http://localhost:8080/api/users/profile?username=${usernameParam}`)
+            .then(res => res.json())
+            .then(data => {
+                setUser(data)
+                setAvatar(data.avatarUrl || '/profilepics/profilepic1.png') // DÜZENLENDİ
+                setShorts(data.shorts || [])
+            })
+            .catch(err => {
+                console.error('Kullanıcı verisi alınamadı:', err)
+                setUser(null)
+            })
+    }, [usernameParam])
 
     const handleEditClick = () => {
         fileInputRef.current.click();
@@ -55,11 +46,14 @@ export default function ProfilePage() {
 
         const reader = new FileReader();
         reader.onload = (event) => {
-        setAvatar(event.target.result);
+            setAvatar(event.target.result);
         };
         reader.readAsDataURL(file);
     };
 
+    if (!user) {
+        return <p style={{ color: 'white', padding: '20px' }}>Kullanıcı yükleniyor...</p>
+    }
 
     return (
         <div>
@@ -68,7 +62,13 @@ export default function ProfilePage() {
             <div className="profile-container">
                 <div className="profile left-panel">
                     <div className='avatar-edit-div' >
-                        <img className="avatar" src={user.avatar_url} alt="avatar" draggable={false} />
+                        <img
+                          className="avatar"
+                          src={avatar}
+                          alt="avatar"
+                          draggable={false}
+                        />
+
                         <img className="avatar-edit" src={'/icons/edit-icon.png'} draggable={false} onClick={handleEditClick} />
                         <input
                             type="file"
@@ -80,9 +80,9 @@ export default function ProfilePage() {
                     </div>
 
                     <h2>{user.username}</h2>
-                    {/* Aynı kullanıcı ise */ <button className="edit-btn" onClick={() => router.push('/edit-profile')} >Edit profile</button>}
-                    {/* Aynı kullanıcı değilse */ false ? (<button className="edit-btn">Takip Et</button>) : (<button className="edit-btn">Takipten Çık</button>)}
-                    <p className="follow-info">{user.followers} Takipçi</p>
+                    <button className="edit-btn" onClick={() => router.push('/edit-profile')}>Edit profile</button>
+                    {false ? (<button className="edit-btn">Takip Et</button>) : (<button className="edit-btn">Takipten Çık</button>)}
+                    <p className="follow-info">{user.followers || 0} Takipçi</p>
                 </div>
 
                 <div >
@@ -90,11 +90,9 @@ export default function ProfilePage() {
                         <h3>Kurslar</h3>
                     </div>
                     <ShortsPreview shorts={shorts} isOwner={true} />
-                    <RecVideos key={user.username} videos={user.courses} isOwner={true} />
-
+                    <RecVideos key={user.username} videos={user.courses || []} isOwner={true} /> {/* DÜZENLENDİ */}
                 </div>
             </div>
         </div>
-        
     )
 }
