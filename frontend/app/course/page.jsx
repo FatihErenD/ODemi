@@ -172,7 +172,7 @@ useEffect(() => {
                                     </div>
                                 ))}
                             </div>
-                            
+
                             {isEnrolled ? (
                                 <div className='progressbar-div' >
                                     <h2 style={{fontWeight: 'bold'}} > İlerlemeniz: </h2>
@@ -183,7 +183,7 @@ useEffect(() => {
 
                         </div>
                     </div>
-                    
+
                     <h2 style={{margin: '30px auto 20px 20px', fontSize: '25px', fontWeight: 'bold'}} > Açıklama: </h2>
                     <p className="course-description">{description}</p>
 
@@ -229,7 +229,7 @@ useEffect(() => {
                     <div style={{marginRight: '5px'}} >
                         <RecVideos videos={other_courses} showCategories={false} />
                     </div>
-                    
+
                 </div>
             </div>
         </div>

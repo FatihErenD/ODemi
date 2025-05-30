@@ -83,9 +83,9 @@ export default function CourseCreate() {
 
         try {
             const res = await fetch('http://localhost:8080/api/course/add-course', {
-            method: 'POST',
-            credentials: 'include', // 🔐 Cookie gönderilsin
-            body: dataFrame
+                method: 'POST',
+                credentials: 'include', // 🔐 Cookie gönderilsin
+                body: dataFrame
             });
 
             if (!res.ok) {
@@ -94,6 +94,9 @@ export default function CourseCreate() {
 
             const data = await res.json();
             console.log("Kurs eklendi:", data);
+            
+            const course_id = data.course_id;
+            router.push(`/edit-course?course_id=${course_id}`)
         } catch (err) {
             console.error("Kurs eklenirken hata:", err);
         }

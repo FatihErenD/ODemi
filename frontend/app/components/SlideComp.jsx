@@ -33,7 +33,7 @@ export default function SlideComp({ course }) {
 
     const router = useRouter()
 
-    
+
     return (
         <div className='slider-container' >
             <Slider {...settings} >
@@ -48,7 +48,7 @@ export default function SlideComp({ course }) {
                                 <span> {course.descr} </span>
                             </div>
                         </div>
-                        
+
                     </div>
                 ))}
             </Slider>
