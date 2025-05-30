@@ -3,7 +3,7 @@
     border-radius: 10px;
     overflow: hidden;
     background-color: transparent;
-    height: 210px;
+    max-height: 210px;
     position: relative;
 }
 
@@ -11,6 +11,7 @@
     width: 100%; 
     height: auto; 
     display: block;
+    max-height: 180px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     aspect-ratio: 16/9;

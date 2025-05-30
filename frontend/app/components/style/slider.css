@@ -11,10 +11,10 @@
 
 .slide {
     width: 100%;
-    color: var(--background);
+    color: var(--textColor);
     margin-top: 20px;
     height: 50vh;
-    background-color: #363636;
+    background-color: #444444;
     display: flex;
     flex-direction: row;
     font-size: 2em;

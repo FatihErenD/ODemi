@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 
 import SideBar from "../components/SideBar";
@@ -9,6 +10,9 @@ import "../components/style/editcourse.css"
 
 
 export default function EditCourse() {
+    const searchParams = useSearchParams();
+    const course_id = searchParams.get("course_id");
+
     const [topBarVisible, setTopBarVisible] = useState(true);
     const [thumbnail, setThumbnail] = useState('/thumbs/no_thumbnail.png');
     const [title, setTitle] = useState('');
@@ -20,6 +24,9 @@ export default function EditCourse() {
 
     const descriptionRef = useRef();
     const fileInputRef = useRef();
+    const newEpisodeTitleRef = useRef();
+    const newEpisodeDescriptionRef = useRef();
+    const newEpisodeFileRef = useRef();
 
     const allCategories = [
         { id: 1, name: 'React' },
@@ -104,6 +111,55 @@ export default function EditCourse() {
         if (confirmed)
             setSections(prev => prev.filter(sec => sec.id !== id));
     };
+
+    const handleUploadEpisode = async () => {
+        const title = newEpisodeTitleRef.current.value.trim();
+        const description = newEpisodeDescriptionRef.current.value.trim();
+        const file = newEpisodeFileRef.current.files[0];
+
+        if (!title || !description || !file) {
+            alert("Lütfen tüm alanları doldurun ve bir video seçin.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('course_id', course_id);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('http://localhost:8080/api/lesson/addLesson', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) {
+                throw new Error("Yükleme başarısız");
+            }
+
+            const data = await res.json();
+            console.log("Yüklenen bölüm:", data);
+            alert("Video başarıyla yüklendi!");
+
+            newEpisodeTitleRef.current.value = "";
+            newEpisodeDescriptionRef.current.value = "";
+            newEpisodeFileRef.current.value = null;
+
+            setSections(prev => [
+                ...prev,
+                {
+                    id: prev.length,
+                    title: title
+                }
+            ]);
+
+        } catch (err) {
+            console.error("Yükleme hatası:", err);
+            alert("Bir hata oluştu.");
+        }
+    };
+
 
     const handleUpdate = () => {
 
@@ -233,6 +289,49 @@ export default function EditCourse() {
                                         </div>
                                     </div>
                                 ))}
+                                <div className='ep-div'>
+                                    <span style={{ fontWeight: 'bold' }}>
+                                        Bölüm Ekle:
+                                    </span>
+
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+                                        <input
+                                            type="text"
+                                            placeholder="Bölüm Adı"
+                                            ref={newEpisodeTitleRef}
+                                            className="ep-input"
+                                        />
+                                        <textarea
+                                            type="text"
+                                            placeholder="Açıklama"
+                                            ref={newEpisodeDescriptionRef}
+                                            className="ep-input"
+                                            style={{
+                                                resize: 'none',
+                                                height: '80px'
+                                            }}
+                                        />
+                                    </div>
+
+                                    <input
+                                        type="file"
+                                        id="newEpisode"
+                                        accept="video/*"
+                                        ref={newEpisodeFileRef}
+                                        style={{ display: 'none' }}
+                                    />
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+                                        <label htmlFor="newEpisode" className="logButton" style={{ cursor: 'pointer', textAlign: 'center' }}>
+                                            Video Seç
+                                        </label>
+
+                                        <button onClick={handleUploadEpisode} className='logButton' style={{ cursor: 'pointer', textAlign: 'center' }} >
+                                            Bölümü Yayınla
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+
                             </div>
                         </div>
 
