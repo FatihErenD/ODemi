@@ -21,6 +21,9 @@ export default function EditCourse() {
     const [isFocused, setFocus] = useState(false);
     const [filtered, setFiltered] = useState([]);
     const [message, setMessage] = useState(' ');
+    const [course, setCourse] = useState();
+    const[allCategories, setAllCategories] = useState([]);
+    const [categories, setCategories] = useState();
 
     const descriptionRef = useRef();
     const fileInputRef = useRef();
@@ -28,53 +31,106 @@ export default function EditCourse() {
     const newEpisodeDescriptionRef = useRef();
     const newEpisodeFileRef = useRef();
 
-    const allCategories = [
-        { id: 1, name: 'React' },
-        { id: 2, name: 'Next.js' },
-        { id: 3, name: 'Pazarlama' },
-        { id: 4, name: 'Matematik' },
-        { id: 5, name: 'Veri Bilimi' },
-        { id: 6, name: 'Yapay Zeka' },
-        { id: 7, name: 'Siber Güvenlik' },
-        { id: 8, name: 'Mobil Uygulama Geliştirme' },
-        { id: 9, name: 'Web Geliştirme' },
-        { id: 10, name: 'Oyun Tasarımı' },
-        { id: 11, name: 'Veritabanı Yönetimi' },
-        { id: 12, name: 'Makine Öğrenimi' },
-        { id: 13, name: 'Programlama' },
-        { id: 14, name: 'Tasarım' },
-    ];
-
     const [sections, setSections] = useState([
-        { id: 1, title: 'Giriş ve Tanıtım' },
-        { id: 2, title: 'Temel Kavramlar' },
-        { id: 3, title: 'Uygulamalı Örnekler' }
+        { ep: 1, title: 'Giriş ve Tanıtım' },
+        { ep: 2, title: 'Temel Kavramlar' },
+        { ep: 3, title: 'Uygulamalı Örnekler' }
     ]);
 
-    const course = {
-        course_id: 1,
-        lesson_number: 0,
-        thumbnail: '/thumbs/no_thumbnail.png',
-        title: 'JavaScript\'e Giriş',
-        description: 'Babababa'
-    }
+    useEffect(() => {
+        const fetchLessons = async () => {
+            try {
+                const res = await fetch(`http://localhost:8080/api/lesson?course_id=${course_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-    const categories = [
-        {
-            id: 1,
-            name: 'React'
-        },
-        {
-            id: 2,
-            name: 'Next.js'
-        }
-    ]
+                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
+
+                const data = await res.json();
+                setCourse(data);
+            } catch (err) {
+                console.error("Veri çekme hatası:", err);
+            } finally {
+                console.log("naber");
+            }
+        };
+
+        fetchLessons();
+    }, [course_id]);
 
     useEffect(() => {
-        setThumbnail(course.thumbnail)
-        setTitle(course.title)
-        descriptionRef.current.value = course.description
-        setSelectedCategories(categories)
+        const fetchLessons = async () => {
+            try {
+                const res = await fetch(`http://localhost:8080/api/course/${course_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
+
+                const data = await res.json();
+                setCourse(data);
+            } catch (err) {
+                console.error("Veri çekme hatası:", err);
+            } finally {
+                console.log("naber");
+            }
+        };
+
+        fetchLessons();
+    }, []);
+
+    useEffect(() => {
+        const fetchLessons = async () => {
+            try {
+                const res = await fetch(`http://localhost:8080/api/course/categories?course_id=${course_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
+
+                const data = await res.json();
+                setCategories(data);
+            } catch (err) {
+                console.error("Veri çekme hatası:", err);
+            } finally {
+                console.log("naber");
+            }
+        };
+
+        fetchLessons();
+    }, []);
+
+    useEffect(() => {
+        const fetchLessons = async () => {
+            try {
+                const res = await fetch(`http://localhost:8080/api/course/all-categories`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
+
+                const data = await res.json();
+                setAllCategories(data);
+            } catch (err) {
+                console.error("Veri çekme hatası:", err);
+            } finally {
+                console.log("naber");
+            }
+        };
+
+        fetchLessons();
     }, []);
 
     const handleThumbnailChange = (e) => {
@@ -91,7 +147,7 @@ export default function EditCourse() {
 
         const filteredOptions = allCategories.filter(cat =>
             cat.name.toLowerCase().includes(value.toLowerCase()) &&
-            !selectedCategories.some(selected => selected.id === cat.id)
+            !selectedCategories.some(selected => selected.id === cat.category_id)
         );
         setFiltered(filteredOptions);
     };
@@ -109,7 +165,7 @@ export default function EditCourse() {
     const handleDeleteSection = (id) => {
         const confirmed = window.confirm("Bu bölümü silmek istediğinize emin misiniz?");
         if (confirmed)
-            setSections(prev => prev.filter(sec => sec.id !== id));
+            setSections(prev => prev.filter(sec => sec.ep !== id));
     };
 
     const handleUploadEpisode = async () => {
@@ -149,7 +205,7 @@ export default function EditCourse() {
             setSections(prev => [
                 ...prev,
                 {
-                    id: prev.length,
+                    ep: prev.length,
                     title: title
                 }
             ]);
@@ -263,7 +319,7 @@ export default function EditCourse() {
                                 }}
                             >
                                 {sections.map((section, index) => (
-                                    <div key={section.id} className='ep-div' >
+                                    <div key={section.ep} className='ep-div' >
                                         <span style={{ fontWeight: 'bold' }}>
                                             Bölüm {index + 1}:
                                         </span>
@@ -284,7 +340,7 @@ export default function EditCourse() {
                                                 src="https://cdn.lordicon.com/oqeixref.json"
                                                 trigger="hover"
                                                 colors="primary:#ff2e2e"
-                                                onClick={() => handleDeleteSection(section.id)} >
+                                                onClick={() => handleDeleteSection(section.ep)} >
                                             </lord-icon>
                                         </div>
                                     </div>
