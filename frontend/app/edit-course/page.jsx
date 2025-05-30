@@ -50,7 +50,7 @@ export default function EditCourse() {
                 if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
 
                 const data = await res.json();
-                setCourse(data);
+                setSections(data);
             } catch (err) {
                 console.error("Veri çekme hatası:", err);
             } finally {
@@ -187,6 +187,7 @@ export default function EditCourse() {
         try {
             const res = await fetch('http://localhost:8080/api/lesson/addLesson', {
                 method: 'POST',
+                credentials: 'include',
                 body: formData
             });
 
