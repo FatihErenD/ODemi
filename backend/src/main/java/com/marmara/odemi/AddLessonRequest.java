@@ -8,7 +8,7 @@ public class AddLessonRequest {
     private String title;
     private String content;
     private Long course_id;
-    private MultipartFile file;
+    private transient MultipartFile file;
 
     public String getTitle() {
         return title;

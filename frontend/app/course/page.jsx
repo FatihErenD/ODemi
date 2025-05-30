@@ -191,7 +191,7 @@ useEffect(() => {
                         <h1 style={{margin: '10px auto 10px 20px', width: '40px', fontWeight: 'bold', fontSize: '20px'}} > Bölümler: </h1>
                         <hr></hr>
                         {lessons.map((lesson, index) => (
-                            <div key={index} className="course-lesson" onClick={() => router.push(`/watch?course_id=${courseId}&lesson_id=${lesson.lesson_id}`)} > 
+                            <div key={index} className="course-lesson" onClick={() => router.push(`/watch?course_id=${courseId}&lesson_id=${lesson.ep}`)} > 
                                 <span> <strong> Bölüm {lesson.ep}: </strong> {lesson.title} </span> 
                             </div>
                         ))}
