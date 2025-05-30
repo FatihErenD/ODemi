@@ -62,7 +62,7 @@ export default function EditCourse() {
     }, [course_id]);
 
     useEffect(() => {
-        const fetchLessons = async () => {
+        const fetchCourse = async () => {
             try {
                 const res = await fetch(`http://localhost:8080/api/course/${course_id}`, {
                     method: 'GET',
@@ -82,11 +82,11 @@ export default function EditCourse() {
             }
         };
 
-        fetchLessons();
+        fetchCourse();
     }, []);
 
     useEffect(() => {
-        const fetchLessons = async () => {
+        const fetchCategories = async () => {
             try {
                 const res = await fetch(`http://localhost:8080/api/course/categories?course_id=${course_id}`, {
                     method: 'GET',
@@ -106,11 +106,11 @@ export default function EditCourse() {
             }
         };
 
-        fetchLessons();
+        fetchCategories();
     }, []);
 
     useEffect(() => {
-        const fetchLessons = async () => {
+        const fetchAllCategories = async () => {
             try {
                 const res = await fetch(`http://localhost:8080/api/course/all-categories`, {
                     method: 'GET',
@@ -130,7 +130,7 @@ export default function EditCourse() {
             }
         };
 
-        fetchLessons();
+        fetchAllCategories();
     }, []);
 
     const handleThumbnailChange = (e) => {
@@ -179,19 +179,20 @@ export default function EditCourse() {
         }
 
         const formData = new FormData();
-        formData.append('course_id', course_id);
         formData.append('title', title);
-        formData.append('description', description);
+        formData.append('content', description);
+        formData.append('course_id', course_id);
         formData.append('file', file);
 
         try {
-            const res = await fetch('http://localhost:8080/api/lesson/addLesson', {
+            const res = await fetch('http://localhost:8080/api/lesson/add-lesson', {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
             });
 
             if (!res.ok) {
+                console.log(res.status)
                 throw new Error("Yükleme başarısız");
             }
 
@@ -201,7 +202,7 @@ export default function EditCourse() {
 
             newEpisodeTitleRef.current.value = "";
             newEpisodeDescriptionRef.current.value = "";
-            newEpisodeFileRef.current.value = null;
+            newEpisodeFileRef.current.value = "";
 
             setSections(prev => [
                 ...prev,

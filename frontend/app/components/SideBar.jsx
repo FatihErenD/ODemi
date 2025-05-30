@@ -4,8 +4,8 @@ import './style/sidebar.css';
 
 export default function SideBar({ topOffset, shouldOpen, items = [] }) {
     const [user, setUser] = useState('')
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const defaultItems = [
-        { id: 1, label: "Ana Sayfa", url: "/" },
         { id: 2, label: "Profil", url: `/profile?username=${user}` },
         { id: 3, label: "Kurslarım", url: "/my-courses" },
         { id: 4, label: "Kurs Oluştur", url: "/create-course" },
@@ -16,8 +16,29 @@ export default function SideBar({ topOffset, shouldOpen, items = [] }) {
     const [open, setOpen] = useState(shouldOpen);
     const router = useRouter();
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/api/auth/me', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (!res.ok) throw new Error("Unauthorized");
+
+        const user = await res.json();
+        setUser(user.username); // backend'de username dönüyorsan
+        setIsAuthenticated(true);
+      } catch (err) {
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+
     useEffect(() => {
-        setUser(localStorage.getItem('username'))
         const sidebarWidthPx = window.innerWidth * 0.25 + 20;
 
         function onMouseMove(e) {
@@ -38,7 +59,10 @@ export default function SideBar({ topOffset, shouldOpen, items = [] }) {
             <h3 style={{ textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}> Menü </h3>
 
             { list.map((item, index) => (
-                <button key={index} onClick={() => router.push(item.url)} >
+                <button key={index} onClick={() => {
+                    isAuthenticated &&
+                    (router.push(item.url))}
+                    }>
                     <span > {item.label} </span>
                 </button>
             ))}

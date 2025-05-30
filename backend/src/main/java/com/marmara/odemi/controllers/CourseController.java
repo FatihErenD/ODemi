@@ -200,7 +200,8 @@ public class CourseController {
             courseCategoryRepo.save(cc);
         }
 
-        return ResponseEntity.ok(Map.of("message", "Kurs başarıyla eklendi"));
+        return ResponseEntity.ok(Map.of("message", "Kurs başarıyla eklendi",
+                "course_id", course.getId()));
     }
 //    @PostMapping("/add-course")
 //    public ResponseEntity<?> addCourse(@RequestBody AddCourseRequest req,  @AuthenticationPrincipal UserDetails userDetails) {
