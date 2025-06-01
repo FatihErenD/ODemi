@@ -122,7 +122,7 @@ export default function ChangePassword({ type, username, setUsername }) {
                         </div>
                     )}
 
-                    <button type="submit" className='primary-btn'>
+                    <button type="submit" >
                         {type ? "Şifreyi Değiştir" : "Kullanıcı Adı Değiştir"}
                     </button>
                 </form>
