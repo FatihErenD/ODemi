@@ -8,53 +8,51 @@ import WatchContainer from '../components/WatchContainer';
 
 
 export default function WatchPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [topBarVisible, setTopBarVisible] = useState(true);
+    const [lessons, setLessons] = useState([]);
+    const [video, setVideo] = useState([]);
 
-    const router = useRouter();
-    const searchParams = useSearchParams()
-    const videoRef = useRef(null);
+    const searchParams = useSearchParams();
 
     const courseId = Number(searchParams.get('course_id'));
     const lessonId = Number(searchParams.get('lesson_id'));
 
-    const videoList = [
-        {
-        course_id: 1,
-        lesson_id: 1,
-        title: 'JavaScript Temelleri',
-        url: '/videos/react1.mp4',
-        description: 'Bu derste JavaScript\'in temel sözdizimi, değişkenler ve veri tipleri örneklerle ele alınır.'
-        },
-        {
-        course_id: 1,
-        lesson_id: 2,
-        title: 'JavaScript Garip Dil',
-        url: '/videos/react1.mp4',
-        description: '🥷🏿👍'
-        },
-        {
-        course_id: 1,
-        lesson_id: 3,
-        title: 'JavaScript Garip Dil 2',
-        url: '/videos/react1.mp4',
-        description: '🥷🏿👍'
-        },
-        {
-        course_id: 2,
-        lesson_id: 1,
-        title: 'Fonksiyonlar',
-        url: '/videos/react1.mp4',
-        description: 'Bu derste fonksiyonların tanımı ve kullanımı anlatılır.'
-        }
-    ];
-
-  const video = videoList.find(v => (v.course_id === courseId && v.lesson_id === lessonId));
 
   useEffect(() => {
-        const token = localStorage.getItem('token');
-        setIsAuthenticated(token);
-    }, []);
+    const getLessons = async() => {
+      try {
+            const res = await fetch(`http://localhost:8080/api/lesson?course_id=${courseId}`, {
+                  method: 'GET',
+                  credentials: 'include',
+                });
+
+            if (!res.ok) {
+              throw new Error('Yetkisiz veya sunucu hatası');
+            }
+
+            const response = await res.json(); 
+
+            setLessons(response);
+
+            const found = lessons.find(l => l.ep === lessonId);
+
+            if (found) {
+              setVideo({
+                ep: found.ep,
+                title: found.title,
+                url: found.video,
+                content: found.content
+              });
+            }
+
+
+        } catch (error) {
+            console.log('saassa');
+        }
+    }
+
+    getLessons()
+  }, []);
 
 
   if (!video) return <div>Video yükleniyor...</div>;
@@ -63,7 +61,7 @@ export default function WatchPage() {
     <div >
       <TopBar onVisibilityChange={setTopBarVisible} />
       <SideBar topOffset={topBarVisible} shouldOpen={false} />
-      <WatchContainer key={`${courseId}-${lessonId}`} video={video} />
+      <WatchContainer key={`${courseId}-${lessonId}`} video={video} lessons={lessons} />
         
     </div>
   );

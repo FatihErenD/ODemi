@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SideBar from "../components/SideBar";
 import TopBar from "../components/TopBar";
 import RecVideos from '../components/RecVideos';
@@ -12,11 +12,36 @@ export default function Search() {
     const searchText = searchParams.get("text");
 
     const [topBarVisible, setTopBarVisible] = useState(true);
+    const [videos, setVideos] = useState([])
 
-    const videos = [
-        { id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-        { id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' }
-    ]
+    useEffect(() => {
+        if (!searchText) {
+            setVideos([]);
+            return;
+        }
+
+        const fetchSearchedLessons = async () => {
+        try {
+            const res = await fetch(`http://localhost:8080/api/lesson/search?search=${searchText}`,{ 
+                    method: 'GET' 
+                }
+            );
+
+            if (!res.ok) {
+            console.log("Status kodu:", res.status);
+            throw new Error("Yükleme başarısız");
+            }
+
+            const result = await res.json();
+
+            setVideos(result);
+        } catch (err) {
+            console.error("Yükleme hatası:", err);
+        }
+    };
+
+    fetchSearchedLessons();
+  }, [searchText]);
 
     return (
         <div >

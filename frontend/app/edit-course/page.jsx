@@ -17,13 +17,12 @@ export default function EditCourse() {
     const [thumbnail, setThumbnail] = useState('/thumbs/no_thumbnail.png');
     const [title, setTitle] = useState('');
     const [query, setQuery] = useState('');
-    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [isFocused, setFocus] = useState(false);
     const [filtered, setFiltered] = useState([]);
     const [message, setMessage] = useState(' ');
     const [course, setCourse] = useState();
     const[allCategories, setAllCategories] = useState([]);
-    const [categories, setCategories] = useState();
 
     const descriptionRef = useRef();
     const fileInputRef = useRef();
@@ -38,100 +37,57 @@ export default function EditCourse() {
     ]);
 
     useEffect(() => {
-        const fetchLessons = async () => {
+        const fetchAllData = async () => {
             try {
-                const res = await fetch(`http://localhost:8080/api/lesson?course_id=${course_id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const [courseRes, lessonsRes, categoriesRes, allCategoriesRes] = await Promise.all([
+                    fetch(`http://localhost:8080/api/course/${course_id}`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    }),
+                    fetch(`http://localhost:8080/api/lesson?course_id=${course_id}`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    }),
+                    fetch(`http://localhost:8080/api/course/categories?course_id=${course_id}`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    }),
+                    fetch(`http://localhost:8080/api/course/all-categories`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    })
+                ]);
 
-                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
+                // Hata kontrolü
+                if (!courseRes.ok) throw new Error(`Course hatası: ${courseRes.status}`);
+                if (!lessonsRes.ok) throw new Error(`Lessons hatası: ${lessonsRes.status}`);
+                if (!categoriesRes.ok) throw new Error(`Categories hatası: ${categoriesRes.status}`);
+                if (!allCategoriesRes.ok) throw new Error(`All categories hatası: ${allCategoriesRes.status}`);
 
-                const data = await res.json();
-                setSections(data);
+                const [courseData, lessonsData, categoriesData, allCategoriesData] = await Promise.all([
+                    courseRes.json(),
+                    lessonsRes.json(),
+                    categoriesRes.json(),
+                    allCategoriesRes.json()
+                ]);
+
+                // State güncellemeleri
+                setCourse(courseData);
+                setSections(lessonsData);
+                setCategories(categoriesData);
+                setAllCategories(allCategoriesData);
+
+                setTitle(course.title)
+                setThumbnail(course.thumbnail)
+                descriptionRef.current.value = course.description
             } catch (err) {
                 console.error("Veri çekme hatası:", err);
-            } finally {
-                console.log("naber");
-            }
+            } 
         };
 
-        fetchLessons();
+        fetchAllData();
     }, [course_id]);
 
-    useEffect(() => {
-        const fetchCourse = async () => {
-            try {
-                const res = await fetch(`http://localhost:8080/api/course/${course_id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
-
-                const data = await res.json();
-                setCourse(data);
-            } catch (err) {
-                console.error("Veri çekme hatası:", err);
-            } finally {
-                console.log("naber");
-            }
-        };
-
-        fetchCourse();
-    }, []);
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const res = await fetch(`http://localhost:8080/api/course/categories?course_id=${course_id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
-
-                const data = await res.json();
-                setCategories(data);
-            } catch (err) {
-                console.error("Veri çekme hatası:", err);
-            } finally {
-                console.log("naber");
-            }
-        };
-
-        fetchCategories();
-    }, []);
-
-    useEffect(() => {
-        const fetchAllCategories = async () => {
-            try {
-                const res = await fetch(`http://localhost:8080/api/course/all-categories`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) throw new Error(`Sunucu hatası: ${res.status}`);
-
-                const data = await res.json();
-                setAllCategories(data);
-            } catch (err) {
-                console.error("Veri çekme hatası:", err);
-            } finally {
-                console.log("naber");
-            }
-        };
-
-        fetchAllCategories();
-    }, []);
 
     const handleThumbnailChange = (e) => {
         const file = e.target.files[0];
@@ -147,19 +103,19 @@ export default function EditCourse() {
 
         const filteredOptions = allCategories.filter(cat =>
             cat.name.toLowerCase().includes(value.toLowerCase()) &&
-            !selectedCategories.some(selected => selected.id === cat.category_id)
+            !categories.some(selected => selected.id === cat.category_id)
         );
         setFiltered(filteredOptions);
     };
 
     const handleSelect = (category) => {
-        setSelectedCategories(prev => [...prev, category]);
+        setCategories(prev => [...prev, category]);
         setQuery('');
         setFiltered([]);
     };
 
     const handleRemove = (category) => {
-        setSelectedCategories(prev => prev.filter(c => c.id !== category.id));
+        setCategories(prev => prev.filter(c => c.id !== category.id));
     };
 
     const handleDeleteSection = (id) => {
@@ -259,7 +215,7 @@ export default function EditCourse() {
                                     <input type='text' className='logTextbox' style={{width: '23vw', marginTop: 0}} value={query} 
                                         onChange={handleInputChange} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
                                     <div style={{display: 'flex', maxHeight: '136px', flexWrap: 'wrap', overflow: 'auto', maxWidth: '20vw', zIndex: '1001'}} >
-                                        {selectedCategories.map((cat, index) => (
+                                        {categories.map((cat, index) => (
                                             <div key={index} className='category-div' >
                                                 <span>{cat.name}</span>
                                                 <span onClick={() => handleRemove(cat)} className='cat-span'>×</span>

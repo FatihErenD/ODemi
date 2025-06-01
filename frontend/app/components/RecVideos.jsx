@@ -44,7 +44,7 @@ export default function RecVideos({ videos, isOwner=false, showCategories=true }
         .then(data => setCategories(data))
         .catch(err => console.error(err))
         
-    })
+    }, [])
 
     return (
         <div style={{display: 'flex', width: '100%', height: '100%'}} >

@@ -92,14 +92,26 @@ public class CourseController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<CourseDto>> getSearchedCourses(@RequestParam("search") String search) {
+        List<CourseDto> dtos = courseRepo
+                .findByTitleContainingIgnoreCase(search)
+                .stream()
+                .map(c -> new CourseDto(
+                        c.getId(),
+                        c.getTitle(),
+                        c.getThumbnail()
+                ))
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
     @GetMapping("/courses")
     public ResponseEntity<List<CourseDto>> getCoursesByUsername(@RequestParam("username") String username) {
         User selectedUser = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı"));
 
-        List<CourseDto> courses = enrollRepo.findByUserOrderByEnrolledAtDesc(selectedUser)
-                .stream()
-                .map(e -> e.getCourse())
+        List<CourseDto> courses = courseRepo.findByUser(selectedUser).stream()
                 .map(c -> new CourseDto(c.getId(), c.getTitle(), c.getThumbnail()))
                 .toList();
         return ResponseEntity.ok(courses);

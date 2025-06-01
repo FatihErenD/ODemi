@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from "react"
 import Lessons from "./Lessons"
 
 
-export default function WatchContainer({ video }) {
+export default function WatchContainer({ video, lessons }) {
     const [isCommenting, setIsCommenting] = useState(false);
     const inputRef = useRef();
 
@@ -37,21 +37,6 @@ export default function WatchContainer({ video }) {
       }, []);
 
 
-
-    const lessons = [
-        {
-            ep: 1,
-            title: 'JavaScript\'e Giriş',
-            url: '/videos/react1.mp4'
-        },
-        {
-            ep: 2,
-            title: 'Böyle Dilin Ben...',
-            url: '/videos/react1.mp4'
-        },
-    ]
-
-
     const handleComment = () => {
         const text = inputRef.current.value;
         if (text.trim() !== "") {
@@ -71,13 +56,13 @@ export default function WatchContainer({ video }) {
                 <div className="left-panel" >
 
                     <h1 > {video.title} </h1>
-                    <h3> {lessons?.[video?.lesson_id - 1]?.title ?? ''} </h3>
+                    <h3> {lessons?.[video?.ep - 1]?.title ?? ''} </h3>
 
-                    <VideoPlayer video={video} />
+                    <VideoPlayer video={video.url} />
 
                 <div className="description" >
                     <h3>Ders Açıklaması</h3>
-                    <p >{video.description}</p>
+                    <p >{video.content}</p>
                 </div>
 
                 <div style={{ marginTop: '40px', color: 'var(--textColor)' }}>
@@ -108,7 +93,7 @@ export default function WatchContainer({ video }) {
 
                     {lessons.map((lesson, index) => (
                         <Lessons key={index} id={video.course_id} ep={lesson.ep} 
-                        title={lesson.title} isSelected={lesson.ep === video.lesson_id} />
+                        title={lesson.title} isSelected={lesson.ep === video.ep} />
                     ))}
                         
             </div>

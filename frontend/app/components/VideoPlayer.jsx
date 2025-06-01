@@ -9,10 +9,10 @@ export default function VideoPlayer( {video} ) {
         <div className="wrapper" >
             {video ? (
                 <ReactPlayer
-                url={video.url}
-                controls
-                width="100%"
-                height="100%"
+                    url={video}
+                    controls
+                    width="100%"
+                    height="100%"
                 />
             ) : null}
         </div>
