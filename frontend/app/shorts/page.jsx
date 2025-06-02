@@ -6,57 +6,46 @@ import ShortsFeed from '../components/ShortsFeed';
 
 export default function ShortsPage() {
   const searchParams = useSearchParams();
-  const startId = parseInt(searchParams.get('id'));
+  const shortId = parseInt(searchParams.get('id'));
 
-  const [videos, setVideos] = useState([]);
+  const [shorts, setShorts] = useState([]);
 
   useEffect(() => {
-    const allVideos = [
-      {
-        id: 101,
-        title: 'Kısa Video 1 - React',
-        videoUrl: '/videos/react1.mp4',
-        thumbnail: '/thumbs/thumbnail1.png',
-      },
-      {
-        id: 102,
-        title: 'Kısa Video 2 - JS',
-        videoUrl: '/videos/react1.mp4',
-        thumbnail: '/thumbs/thumbnail2.png',
-      },
-      {
-        id: 103,
-        title: 'Kısa Video 3 - HTML',
-        videoUrl: '/videos/react1.mp4',
-        thumbnail: '/thumbs/thumbnail3.png',
-      },
-    ];
-
-    if (startId) {
-      const index = allVideos.findIndex((v) => v.id === startId);
-      if (index !== -1) {
-        const reordered = [...allVideos.slice(index), ...allVideos.slice(0, index)];
-        setVideos(reordered);
-        return;
-      }
-
-      // id sahte videolarda yoksa → backend'den çek
-      fetch(`http://localhost:8080/api/shorts/${startId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const reordered = [data, ...allVideos];
-          setVideos(reordered);
-        })
-        .catch((err) => {
-          console.error('Short fetch error:', err);
-          setVideos(allVideos);
+    const fetchData = async () => {
+      try {
+        const resShorts = await fetch('http://localhost:8080/api/shorts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
 
-      return;
-    }
+        if (!resShorts.ok) throw new Error(`Shorts verisi alınamadı: ${resShorts.status}`);
 
-    setVideos(allVideos);
-  }, [startId]);
+        const shortsData = await resShorts.json();
+        setShorts(shortsData);
 
-  return <ShortsFeed videos={videos} />;
+      } catch (error) {
+        console.error('Shorts verisi hatası:', error);
+      }
+
+      if (shortId) {
+        fetch(`http://localhost:8080/api/shorts/${shortId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const reordered = [data, ...shorts];
+            setShorts(reordered);
+          })
+          .catch((err) => {
+            console.error('Short fetch error:', err);
+          });
+
+        return;
+      }
+    };
+
+    fetchData();
+  }, [shortId]);
+
+  return <ShortsFeed shorts={shorts} />;
 }

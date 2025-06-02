@@ -1,4 +1,4 @@
-package com.marmara.odemi.service;
+package com.marmara.odemi;
 
 import java.time.LocalDateTime;
 
