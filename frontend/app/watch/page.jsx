@@ -33,9 +33,8 @@ export default function WatchPage() {
             const response = await res.json(); 
 
             setLessons(response);
-
-            const found = lessons.find(l => l.ep === lessonId);
-
+            
+            const found = response.find(l => l.ep === lessonId); // ✅ Doğrudan güncel veriyi kullan
             if (found) {
               setVideo({
                 ep: found.ep,
