@@ -5,51 +5,18 @@ import { useRef, useEffect, useState } from "react"
 import Lessons from "./Lessons"
 
 
-export default function WatchContainer({ video, lessons }) {
+export default function WatchContainer({ video, lessons, comments, handleComment }) {
     const [isCommenting, setIsCommenting] = useState(false);
     const inputRef = useRef();
 
-    const [comments, setComments] = useState([
-        {
-            name: 'Ali',
-            text: 'Harika anlatım!',
-            date: '15/05/2025'
-        },
-        {
-            name:'Yusuf Frontendoğulları',
-            text: '🥷🏿',
-            date: '18/05/2025'
-        },
-        {
-            name:'Beton Buğra',
-            text: 'Staj ver!',
-            date: '19/05/2025'
-        },
-        {
-            name:'Erol DB',
-            text: '👍👍',
-            date: '20/05/2025'
-        }
-    ])
-
-    useEffect(() => {
-        const username = localStorage.getItem('username');
-      }, []);
-
-
-    const handleComment = () => {
+    const handleClick = () => {
         const text = inputRef.current.value;
-        if (text.trim() !== "") {
-            const newComment = {
-            name: 'user', /* Username yazdıracak */
-            text: text.trim(),
-            date: '26-05-2025'
-            };
-            inputRef.current.value = ""
-            setComments([newComment, ...comments])
-            setIsCommenting(false);
-        }
-    }
+        if (text.trim() !== "") 
+            handleComment(text);
+
+        inputRef.current.value = ""
+        setIsCommenting(false);
+    } 
 
     return (
         <div className="two-panel-container" >
@@ -74,7 +41,7 @@ export default function WatchContainer({ video, lessons }) {
                             <input ref={inputRef} type="text" placeholder="Yorum" onFocus={e => setIsCommenting(true)} onBlur={() => setTimeout(() => setIsCommenting(false), 200)} />
                         </div>
                         
-                        <button className={`comm-button ${isCommenting ? 'show' : 'hide'}`} onClick={handleComment} >
+                        <button className={`comm-button ${isCommenting ? 'show' : 'hide'}`} onClick={handleClick} >
                             Yorum Yap
                         </button>
                             

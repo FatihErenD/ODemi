@@ -73,6 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/course/{id}").permitAll()
                         .requestMatchers("/api/course/courses/**").permitAll()
                         .requestMatchers("/api/course/search").permitAll()
+                        .requestMatchers("/api/comment/comments").permitAll()
                         .requestMatchers("/api/user/update-username").authenticated()
                         .requestMatchers("/api/course/add-course").authenticated()
                         .requestMatchers("/api/shorts", "/api/shorts/**").permitAll()

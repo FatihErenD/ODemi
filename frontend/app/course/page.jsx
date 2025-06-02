@@ -50,66 +50,84 @@ export default function CoursePage() {
     ])
     const [lessons, setLessons] = useState([])
     const [categories, setCategories] = useState([])
+    const [otherCourses, setOtherCourses] = useState([])
 
-    const other_courses = [
-    { course_id: 1, lesson_id: 1, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 1, lesson_id: 2, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 1, lesson_id: 3, category_id: 1, title: 'React Dersi 1', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 2, lesson_id: 1, category_id: 2, title: 'Next.js Başlangıç', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 3, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 4, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 5, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 6, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 7, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 8, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 9, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-    { course_id: 10, lesson_id: 1, category_id: 3, title: 'JWT Mantığı', thumbnail: '/thumbs/react1.png', videoUrl: '/videos/react1.mp4' },
-  ];
 
     const searchParams = useSearchParams()
     const courseId = Number(searchParams.get('course_id'));
 
-useEffect(() => {
-    const user = localStorage.getItem('username');
-    setUsername(user);
+    useEffect(() => {
+        const user = localStorage.getItem('username');
+        setUsername(user);
 
-    if (!courseId) return;
+        if (!courseId) return;
 
-    const fetchCourseData = async () => {
+        const fetchCourseData = async () => {
+            try {
+                const [courseRes, categoryRes, lessonRes] = await Promise.all([
+                    fetch(`http://localhost:8080/api/course/${courseId}`),
+                    fetch(`http://localhost:8080/api/course/categories?course_id=${courseId}`),
+                    fetch(`http://localhost:8080/api/lesson?course_id=${courseId}`)
+                ]);
+
+                if (!courseRes.ok) throw new Error(`Kurs verisi alınamadı: ${courseRes.status}`);
+                if (!categoryRes.ok) throw new Error(`Kategori verisi alınamadı: ${categoryRes.status}`);
+                if (!lessonRes.ok) throw new Error(`Kategori verisi alınamadı: ${lessonRes.status}`)
+
+                const courseData = await courseRes.json();
+                const categoryData = await categoryRes.json();
+                const lessonData = await lessonRes.json();
+
+                // Backend'den gelen veri üzerinden state'leri set et
+                setTitle(courseData.title || "Başlık yok");
+                setDescription(courseData.description || "Açıklama yok");
+                setInstructorName(courseData.instructorName || "Eğitmen yok");
+                setThumbnail(courseData.thumbnail || "/thumbs/default.jpg");
+                setCategories(categoryData || []);
+                setLessons(lessonData);
+
+                // Eğer kurs verisinde "enrolled" gibi bir alan varsa:
+                // setEnrolled(courseData.enrolled);
+
+                const otherRes = await fetch(`http://localhost:8080/api/course/courses?username=${instructorName}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(payload)
+                });
+
+                if (!otherRes.ok) throw new Error(`Diğer kurs verisi alınamadı: ${otherRes.status}`)
+
+                const otherData = await otherRes.json()
+
+                setOtherCourses(otherData)
+
+            } catch (err) {
+                console.error("Veriler alınırken hata oluştu:", err);
+            }
+        };
+
+        fetchCourseData();
+    }, [courseId]);
+
+    const fetchComments = async () => {
         try {
-            const [courseRes, categoryRes, lessonRes] = await Promise.all([
-                fetch(`http://localhost:8080/api/course/${courseId}`),
-                fetch(`http://localhost:8080/api/course/categories?course_id=${courseId}`),
-                fetch(`http://localhost:8080/api/lesson?course_id=${courseId}`)
-            ]);
+            const resComments = await fetch(`http://localhost:8080/api/comment/comments?course_id=${courseId}`, {
+                method: 'GET'
+            });
 
-            if (!courseRes.ok) throw new Error(`Kurs verisi alınamadı: ${courseRes.status}`);
-            if (!categoryRes.ok) throw new Error(`Kategori verisi alınamadı: ${categoryRes.status}`);
-            if (!lessonRes.ok) throw new Error(`Kategori verisi alınamadı: ${lessonRes.status}`)
+            if (!resComments.ok) {
+                throw new Error('Yetkisiz veya sunucu hatası (comments)');
+            }
 
-            const courseData = await courseRes.json();
-            const categoryData = await categoryRes.json();
-            const lessonData = await lessonRes.json();
-
-            // Backend'den gelen veri üzerinden state'leri set et
-            setTitle(courseData.title || "Başlık yok");
-            setDescription(courseData.description || "Açıklama yok");
-            setInstructorName(courseData.instructorName || "Eğitmen yok");
-            setThumbnail(courseData.thumbnail || "/thumbs/default.jpg");
-            setCategories(categoryData || []);
-            setLessons(lessonData);
-
-            // Eğer kurs verisinde "enrolled" gibi bir alan varsa:
-            // setEnrolled(courseData.enrolled);
-
-        } catch (err) {
-            console.error("Veriler alınırken hata oluştu:", err);
+            const commentsData = await resComments.json();
+            setComments(commentsData);
+        } catch (error) {
+            console.error('Veri çekme hatası:', error);
         }
-    };
-
-    fetchCourseData();
-}, [courseId]);
-
+    }
 
 
     const handleEnroll = async () => {
@@ -117,7 +135,7 @@ useEffect(() => {
         try {
             const res = await fetch(`http://localhost:8080/api/enroll?username=${username}&course_id=${courseId}`, {
                 method: 'GET',
-                credentials: 'include', // 🔐 Cookie gönderilsin
+                credentials: 'include',
                 });
 
             if (!res.ok) {
@@ -132,17 +150,35 @@ useEffect(() => {
         
     };
 
-    const handleComment = () => {
+    const handleComment = async() => {
         const text = inputRef.current.value;
         if (text.trim() !== "") {
-            const newComment = {
-            name: 'user', /* Username yazdıracak */
-            text: text.trim(),
-            date: '26-05-2025'
-            };
-            inputRef.current.value = ""
-            setComments([newComment, ...comments])
-            setIsCommenting(false);
+            const payload = {
+            content: text.trim(),
+            courseId: courseId
+        };
+
+        try {
+            const res = await fetch("http://localhost:8080/api/comment/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                throw new Error("Yorum gönderilemedi.");
+                }
+
+                fetchComments()
+
+            } catch (error) {
+                console.error("Yorum gönderme hatası:", error);
+            }
+                inputRef.current.value = ""
+                setIsCommenting(false);
         }
     }
 
@@ -227,7 +263,7 @@ useEffect(() => {
                     <button className="enroll-button" onClick={() => router.push(`/profile?username=${instructorName}`)} >Profili Görüntüle</button>
                     <h2 style={{margin: '50px auto auto auto', fontSize: '18px', fontWeight: 'bold'}} > Diğer Kurslar: </h2>
                     <div style={{marginRight: '5px'}} >
-                        <RecVideos videos={other_courses} showCategories={false} />
+                        <RecVideos videos={otherCourses} showCategories={false} />
                     </div>
 
                 </div>
