@@ -20,9 +20,9 @@ export default function Search() {
             return;
         }
 
-        const fetchSearchedLessons = async () => {
+        const fetchSearchedCourses = async () => {
         try {
-            const res = await fetch(`http://localhost:8080/api/lesson/search?search=${searchText}`,{ 
+            const res = await fetch(`http://localhost:8080/api/course/search?search=${searchText}`,{ 
                     method: 'GET' 
                 }
             );
@@ -40,7 +40,7 @@ export default function Search() {
         }
     };
 
-    fetchSearchedLessons();
+    fetchSearchedCourses();
   }, [searchText]);
 
     return (
