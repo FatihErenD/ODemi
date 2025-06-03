@@ -95,7 +95,6 @@ export default function CoursePage() {
                         "Content-Type": "application/json"
                     },
                     credentials: "include",
-                    body: JSON.stringify(payload)
                 });
 
                 if (!otherRes.ok) throw new Error(`Diğer kurs verisi alınamadı: ${otherRes.status}`)
