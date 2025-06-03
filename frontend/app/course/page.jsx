@@ -26,28 +26,7 @@ export default function CoursePage() {
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [username, setUsername] = useState('');
     const [isCommenting, setIsCommenting] = useState(false);
-    const [comments, setComments] = useState([
-        {
-            name: 'Ali',
-            text: 'Harika anlatım!',
-            date: '15/05/2025'
-        },
-        {
-            name:'Yusuf Frontendoğulları',
-            text: '🥷🏿',
-            date: '18/05/2025'
-        },
-        {
-            name:'Beton Buğra',
-            text: 'Staj ver!',
-            date: '19/05/2025'
-        },
-        {
-            name:'Erol DB',
-            text: '👍👍',
-            date: '20/05/2025'
-        }
-    ])
+    const [comments, setComments] = useState([])
     const [lessons, setLessons] = useState([])
     const [categories, setCategories] = useState([])
     const [otherCourses, setOtherCourses] = useState([])
@@ -55,6 +34,23 @@ export default function CoursePage() {
 
     const searchParams = useSearchParams()
     const courseId = Number(searchParams.get('course_id'));
+
+    const fetchComments = async () => {
+        try {
+            const resComments = await fetch(`http://localhost:8080/api/comment/comments?course_id=${courseId}`, {
+                method: 'GET'
+            });
+
+            if (!resComments.ok) {
+                throw new Error('Yetkisiz veya sunucu hatası (comments)');
+            }
+
+            const commentsData = await resComments.json();
+            setComments(commentsData);
+        } catch (error) {
+            console.error('Veri çekme hatası:', error);
+        }
+    }
 
     useEffect(() => {
         const user = localStorage.getItem('username');
@@ -109,25 +105,8 @@ export default function CoursePage() {
         };
 
         fetchCourseData();
+        fetchComments();
     }, [courseId]);
-
-    const fetchComments = async () => {
-        try {
-            const resComments = await fetch(`http://localhost:8080/api/comment/comments?course_id=${courseId}`, {
-                method: 'GET'
-            });
-
-            if (!resComments.ok) {
-                throw new Error('Yetkisiz veya sunucu hatası (comments)');
-            }
-
-            const commentsData = await resComments.json();
-            setComments(commentsData);
-        } catch (error) {
-            console.error('Veri çekme hatası:', error);
-        }
-    }
-
 
     const handleEnroll = async () => {
         const username = localStorage.getItem('username')
@@ -235,18 +214,16 @@ export default function CoursePage() {
                     <div className="course-lessons" >
                         <h1 style={{margin: '10px auto 10px 20px', width: '40px', fontWeight: 'bold', fontSize: '20px'}} > Yorumlar: </h1>
                         <hr></hr>
-                        {username === instructorName ? (null) : (
-                            <div className="comm" >
-                                <div style={{height: '5vh'}}>
-                                    <input ref={inputRef} type="text" placeholder="Yorum" onFocus={e => setIsCommenting(true)} 
-                                    onBlur={() => setTimeout(() => setIsCommenting(false), 200)} style={{width: '65vw'}} />
-                                </div>
-                                
-                                <button className={`comm-button ${isCommenting ? 'show' : 'hide'}`} onClick={handleComment} >
-                                    Yorum Yap
-                                </button>
+                        <div className="comm" >
+                            <div style={{height: '5vh'}}>
+                                <input ref={inputRef} type="text" placeholder="Yorum" onFocus={e => setIsCommenting(true)} 
+                                onBlur={() => setTimeout(() => setIsCommenting(false), 200)} style={{width: '65vw'}} />
                             </div>
-                        )}
+                                
+                            <button className={`comm-button ${isCommenting ? 'show' : 'hide'}`} onClick={handleComment} >
+                                Yorum Yap
+                            </button>
+                        </div>
                         {comments.map((comment, index) => (
                             <Comment key={index} comment={comment} />
                         ))}
