@@ -112,7 +112,7 @@ export default function CoursePage() {
         const username = localStorage.getItem('username')
         try {
             const res = await fetch(`http://localhost:8080/api/enroll?username=${username}&course_id=${courseId}`, {
-                method: 'GET',
+                method: 'POST',
                 credentials: 'include',
                 });
 
