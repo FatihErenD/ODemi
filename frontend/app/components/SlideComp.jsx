@@ -26,11 +26,11 @@ export default function SlideComp({ courses }) {
                     <div className='slide' key={index} >
                         <div style={{width: '100%', height: '100%', display: 'flex'}} >
                             <div style={{ width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => router.push(`/course?course_id=${course.course_id}`)} >
-                                <TrackImage url={course.url} />
+                                <TrackImage url={course.thumbnail} />
                             </div>
                             <div style={{ width: '50%', height: '100%' }} >
                                 <h3 onClick={() => router.push(`/course?course_id=${course.course_id}`)} > {course.title} </h3>
-                                <span> {course.descr} </span>
+                                <span> {course.description} </span>
                             </div>
                         </div>
 
