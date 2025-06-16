@@ -19,18 +19,17 @@ export default function SlideComp({ courses }) {
 
     const router = useRouter()
 
-
     return (
         <div className='slider-container' >
             <Slider {...settings} >
                 {courses.map((course, index) => (
                     <div className='slide' key={index} >
                         <div style={{width: '100%', height: '100%', display: 'flex'}} >
-                            <div style={{ width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                            <div style={{ width: '50%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => router.push(`/course?course_id=${course.course_id}`)} >
                                 <TrackImage url={course.url} />
                             </div>
                             <div style={{ width: '50%', height: '100%' }} >
-                                <h3> {course.title} </h3>
+                                <h3 onClick={() => router.push(`/course?course_id=${course.course_id}`)} > {course.title} </h3>
                                 <span> {course.descr} </span>
                             </div>
                         </div>

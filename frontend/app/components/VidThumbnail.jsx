@@ -7,7 +7,7 @@ export default function VidThumbnail({ courseId, thumbnail, title, isOwner=false
     return (
         <div
             key={courseId}
-            onClick={() =>  router.push(`/course?course_id=${courseId}`)}
+            onClick={() => router.push(`/course?course_id=${courseId}`)}
             className='vid-thumb-div'
         >
             <img
