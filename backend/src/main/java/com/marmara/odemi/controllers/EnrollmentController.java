@@ -11,6 +11,8 @@ import com.marmara.odemi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,10 +34,12 @@ public class EnrollmentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> enrollUser(@RequestParam("username") String username,
+    public ResponseEntity<?> enrollUser(@AuthenticationPrincipal UserDetails userDetails,
                                         @RequestParam("course_id") Long courseId
                                         )
     {
+
+        String username = userDetails.getUsername();
 
         User user = (User) userRepo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));

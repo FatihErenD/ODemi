@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useRef, useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import TopBar from '../components/TopBar';
 import SideBar from '../components/SideBar';
 import WatchContainer from '../components/WatchContainer';

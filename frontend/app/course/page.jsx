@@ -24,7 +24,6 @@ export default function CoursePage() {
     const [instructorName, setInstructorName] = useState('');
     const [thumbnail, setThumbnail] = useState('');
     const [isEnrolled, setIsEnrolled] = useState(false);
-    const [username, setUsername] = useState('');
     const [isCommenting, setIsCommenting] = useState(false);
     const [comments, setComments] = useState([])
     const [lessons, setLessons] = useState([])
@@ -53,9 +52,6 @@ export default function CoursePage() {
     }
 
     useEffect(() => {
-        const user = localStorage.getItem('username');
-        setUsername(user);
-
         if (!courseId) return;
 
         const fetchCourseData = async () => {
@@ -109,9 +105,8 @@ export default function CoursePage() {
     }, [courseId]);
 
     const handleEnroll = async () => {
-        const username = localStorage.getItem('username')
         try {
-            const res = await fetch(`http://localhost:8080/api/enroll?username=${username}&course_id=${courseId}`, {
+            const res = await fetch(`http://localhost:8080/api/enroll?course_id=${courseId}`, {
                 method: 'POST',
                 credentials: 'include',
                 });
@@ -123,7 +118,7 @@ export default function CoursePage() {
                 const text = await res.text(); 
 
         } catch (error) {
-            console.log('saassa');
+            console.log(text);
         }
         
     };
