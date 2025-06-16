@@ -15,6 +15,7 @@ export default function Home() {
   const [courses, setCourses] = useState([]);
   const [topBarVisible, setTopBarVisible] = useState(true);
   const [shorts, setShorts] = useState([]);
+  const [recCourses, setRecCourses] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +52,24 @@ export default function Home() {
       } catch (error) {
         console.error('Shorts verisi hatası:', error);
       }
+
+      try {
+        const res = await fetch('http://localhost:8080/api/course/rec-courses', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include'
+        });
+        if (!res.ok) 
+          throw new Error(`Kurs verisi alınamadı: ${res.status}`)
+
+        const recVideos = await res.json()
+        setRecCourses(recVideos)
+
+      } catch(error) {
+        console.log(`Kurs verisi alınamadı: ${res.status}`)
+      }
     };
 
     fetchData();
@@ -61,7 +80,7 @@ export default function Home() {
     <div>
       <TopBar onVisibilityChange={setTopBarVisible} />
       <SideBar topOffset={topBarVisible} shouldOpen={true} />
-      <SlideComp />
+      <SlideComp courses={recCourses} />
 
       <ShortsPreview shorts={shorts} />
 

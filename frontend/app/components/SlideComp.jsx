@@ -8,21 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import TrackImage from './TrackImage';
 
 
-export default function SlideComp({ course }) {
-    const courses = [
-        {
-            id: 1,
-            url: '/thumbs/jumpscare.jpg',
-            title: 'Kınık',
-            descr: 'Bu kursta nasıl yayalara çarpabileceğinizi ustasından öğreneceksiniz! Yazı rengini ne yapalım la güzel birşey bulamadım. Bu yazıyı okuyan kişi düzeltsin 😈'
-        },
-        {
-            id: 2,
-            url: '/thumbs/jumpscare.jpg',
-            title: 'Kınık',
-            descr: 'Bu kursta nasıl yayalara çarpabileceğinizi ustasından öğreneceksiniz!'
-        }   
-    ]
+export default function SlideComp({ courses }) {
     const settings = {
         dots: true,
         infinite: true,

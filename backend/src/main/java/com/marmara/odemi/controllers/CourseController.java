@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -79,6 +80,13 @@ public class CourseController {
             String thumbnail
     ) {}
 
+    public record CourseDetailedDto(
+            Long course_id,
+            String title,
+            String description,
+            String thumbnail
+    ) {}
+
     @GetMapping("/all-courses")
     public ResponseEntity<List<CourseDto>> getAllCourses() {
 
@@ -90,6 +98,51 @@ public class CourseController {
                 ))
                 .toList();
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/rec-courses")
+    public ResponseEntity<List<CourseDetailedDto>> getReccommendedCourses(@AuthenticationPrincipal UserDetails userDetails) {
+        List<Course> recommendedCourses;
+
+        if (userDetails == null) {
+            List<Course> allCourses = courseRepo.findAll();
+            Collections.shuffle(allCourses);
+            recommendedCourses = allCourses.stream().limit(5).toList();
+        } else {
+            String username = userDetails.getUsername();
+            User user = userRepo.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
+
+            List<Course> enrolledCourses = enrollRepo.findByUser(user)
+                    .stream().map(Enrollment::getCourse).toList();
+
+            if (enrolledCourses.isEmpty()) {
+                List<Course> allCourses = courseRepo.findAll();
+                Collections.shuffle(allCourses);
+                recommendedCourses = allCourses.stream().limit(5).toList();
+            } else {
+                List<User> instructors = enrolledCourses.stream()
+                        .map(Course::getUser)
+                        .distinct()
+                        .toList();
+
+                recommendedCourses = courseRepo.findByUserIn(instructors).stream()
+                        .filter(course -> !enrolledCourses.contains(course))
+                        .limit(5)
+                        .toList();
+            }
+        }
+
+        List<CourseDetailedDto> result = recommendedCourses.stream()
+                .map(c -> new CourseDetailedDto(
+                        c.getId(),
+                        c.getTitle(),
+                        c.getDescription(),
+                        c.getThumbnail()
+                ))
+                .toList();
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/search")
