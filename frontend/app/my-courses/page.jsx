@@ -20,7 +20,7 @@ export default function MyCoursesPage() {
       try {
         const res = await fetch('http://localhost:8080/api/course/my-courses', {
           method: 'GET',
-          credentials: 'include', // 🔐 Cookie gönderilsin
+          credentials: 'include',
         });
 
         if (!res.ok) {

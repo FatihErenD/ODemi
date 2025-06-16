@@ -20,19 +20,15 @@ export default function LoginPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
-        credentials: 'include'  // 🔐 Cookie'yi kabul etmek için şart
+        credentials: 'include'
       })
 
       if (!res.ok) {
         throw new Error('Kimlik doğrulama başarısız.')
       }
 
-      // İstersen kullanıcı adını backend response'undan alabilirsin
       const { username: returnedUsername } = await res.json()
 
-      // localStorage kullanmıyoruz artık ❌
-      // localStorage.setItem('token', ...)
-      // localStorage.setItem('username', ...)
       localStorage.setItem('username', username)
       router.push('/')
     } catch (err) {
