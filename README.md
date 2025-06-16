@@ -72,6 +72,28 @@ Bu proje, YouTube tarzı çalışan bir **online eğitim platformudur**. Kullan�
 ## 🖼️ Ekran Görüntüleri
 
 Aşağıda uygulamaya ait bazı ekran görüntülerine yer verilmiştir:
+| ![Login Ekranı](https://github.com/user-attachments/assets/d333d745-b0f4-4081-b2a2-5e948ec044b7) |
+|:--:|
+| **_Giriş Ekranı_** |
+
+<br>
+
+| ![Ana Ekran](https://github.com/user-attachments/assets/1e7c9212-f3e5-4caa-b58a-d6e6edd81642) |
+|:--:|
+| **_Ana Sayfa_** |
+
+<br>
+
+| ![Kurs Ekranı](https://github.com/user-attachments/assets/dca34f0c-beb2-4396-837e-354e07134428) |
+|:--:|
+| **_Kurs Ekranı_** |
+
+<br>
+
+| ![Profil Ekranı](https://github.com/user-attachments/assets/4d3d5d5d-d624-4efa-90dc-0da18f6b798d) |
+|:--:|
+| **_Profil Ekranı_** |
+
 
 ## 🚀 Notlar
 
@@ -87,7 +109,7 @@ Bu proje, hem öğrenenler hem de eğitmenler için esnek, açık ve özgün bir
 
 Projeyi geliştiren ekip üyeleri:
 
-Buğra Burak Uzun - 170422029
-Ertunga Yusuf Ocak - 170422028
-Erol Yeşilyurt - 170422058
-Fatih Eren Durmuş – 171422006
+- **Buğra Burak Uzun** – 170422029  
+- **Erol Yeşilyurt** – 170422058  
+- **Ertunga Yusuf Ocak** – 170422028  
+- **Fatih Eren Durmuş** – 171422006  
