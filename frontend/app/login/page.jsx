@@ -33,7 +33,7 @@ export default function LoginPage() {
       // localStorage kullanmıyoruz artık ❌
       // localStorage.setItem('token', ...)
       // localStorage.setItem('username', ...)
-
+      localStorage.setItem('username', username)
       router.push('/')
     } catch (err) {
       console.error(err)
